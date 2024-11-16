@@ -100,7 +100,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
         onMouseEnter={() => setShowToolbar(true)}
         onMouseLeave={() => setShowToolbar(false)}
       >
-        <div className={`transition-transform duration-300 ${showToolbar ? 'translate-x-0' : 'translate-x-14'}`}>
+        <div className={`transition-transform duration-300 ${showToolbar ? 'translate-x-0' : 'translate-x-10'}`}>
           <div className={`flex flex-col items-center gap-2 p-2 bg-gray-900/90 border-l border-y rounded-l-xl backdrop-blur-sm ${themeClasses[theme]}`}>
             {toolbarItems.map((item) => (
               <div key={item.id} className="relative group">
@@ -130,7 +130,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
       <LensFeedModal isOpen={showLensFeed} onClose={() => setShowLensFeed(false)} theme={theme} />
       <GamebModal isOpen={showGameb} onClose={() => setShowGameb(false)} theme={theme} iframeUrl="https://www.example.com" />
       <CryptoPricesModal isOpen={showCryptoPrices} onClose={() => setShowCryptoPrices(false)} theme={theme} />
-      <IPFSModal isOpen={showIPFSModal} onClose={() => setShowIPFSModal(false)} theme={theme} /> {/* Render IPFSModal */}
+      <IPFSModal isOpen={showIPFSModal} onClose={() => setShowIPFSModal(false)} theme={theme} />
     </>
   );
 };
