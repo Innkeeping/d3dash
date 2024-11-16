@@ -1,5 +1,5 @@
 import React from 'react'
-import { X, Heart, Leaf, TreePine, Sun } from 'lucide-react'
+import { X, Heart, Leaf, Pill, Shrub, Orbit } from 'lucide-react'
 import { Theme } from '../types'
 
 interface RefiModalProps {
@@ -19,27 +19,33 @@ const RefiModal: React.FC<RefiModalProps> = ({ isOpen, onClose, theme }) => {
   const projects = [
     {
       name: 'Giveth',
-      icon: <Heart className="text-pink-400" size={24} />,
+      icon: <Heart className="text-purple-400" size={24} />,
       url: 'https://giveth.io',
       description: 'Building the Future of Giving through blockchain technology',
+    },
+    {
+      name: 'GreenPill Network',
+      icon: <Pill className="text-green-400" size={24} />,
+      url: 'https://greenpill.network',
+      description: 'Turning degens to regens.',
+    },
+    {
+      name: 'Letʼs GROW DAO',
+      icon: <Shrub className="text-emerald-400" size={24} />,
+      url: 'https://www.letsgrow.network/',
+      description: 'On a mission to unite & GROW the Regen Movement',
+    },
+    {
+      name: 'ReFi DAO',
+      icon: <Orbit className="text-purple-400" size={24} />,
+      url: 'https://www.refidao.com/',
+      description: 'The home of the regenerative finance ecosystem.',
     },
     {
       name: 'Klima DAO',
       icon: <Leaf className="text-green-400" size={24} />,
       url: 'https://www.klimadao.finance',
       description: 'Driving climate action through tokenized carbon credits',
-    },
-    {
-      name: 'Regen Network',
-      icon: <TreePine className="text-emerald-400" size={24} />,
-      url: 'https://www.regen.network',
-      description: 'Ecological assets and data for regenerative land management',
-    },
-    {
-      name: 'Solar DAO',
-      icon: <Sun className="text-yellow-400" size={24} />,
-      url: 'https://solardao.me',
-      description: 'Democratizing solar energy investment and development',
     },
   ]
 

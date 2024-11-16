@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import {
-  Menu, Terminal, Settings, Wallet, Palette,
+  Terminal, Settings, Wallet, Palette,
   Coffee, Network, Heart, Radio, Coins
 } from 'lucide-react'
 import { Theme } from '../types'
@@ -8,6 +8,7 @@ import PomodoroModal from './PomodoroModal'
 import RefiModal from './RefiModal'
 import GovernanceModal from './GovernanceModal'
 import Networks from './Networks'
+import DefiModal from './DefiModal' // Import DefiModal
 
 interface ToolbarProps {
   theme: Theme;
@@ -21,6 +22,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
   const [showRefi, setShowRefi] = useState(false)
   const [showGovernance, setShowGovernance] = useState(false)
   const [showNetworks, setShowNetworks] = useState(false)
+  const [showDefi, setShowDefi] = useState(false) // State for DefiModal
 
   const themeClasses = {
     purple: 'border-purple-500/30 text-purple-300 hover:text-purple-100',
@@ -28,12 +30,11 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
   };
 
   const toolbarItems = [
-    { id: 'apps', icon: <Menu size={20} />, label: 'Applications' },
     { id: 'wallet', icon: <Wallet size={20} />, label: 'Connect Wallet' },
     { id: 'blockchain', icon: <Network size={20} />, label: 'Networks' },
     { id: 'dao', icon: <Radio size={20} />, label: 'Governance' },
     { id: 'refi', icon: <Heart size={20} />, label: 'ReFi Projects' },
-    { id: 'defi', icon: <Coins size={20} />, label: 'DeFi Tools' },
+    { id: 'defi', icon: <Coins size={20} />, label: 'DeFi Tools' }, // Defi Tools
     { id: 'terminal', icon: <Terminal size={20} />, label: 'Dev Console' },
     { id: 'theme', icon: <Palette size={20} />, label: 'Theme' },
     { id: 'settings', icon: <Settings size={20} />, label: 'Settings' },
@@ -51,6 +52,8 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
       setShowGovernance(true)
     } else if (id === 'blockchain') {
       setShowNetworks(true);
+    } else if (id === 'defi') { // Handle Defi Tools
+      setShowDefi(true);
     }
     setActiveMenu(activeMenu === id ? null : id);
   };
@@ -86,6 +89,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
       <RefiModal isOpen={showRefi} onClose={() => setShowRefi(false)} theme={theme} />
       <GovernanceModal isOpen={showGovernance} onClose={() => setShowGovernance(false)} theme={theme} />
       <Networks isOpen={showNetworks} onClose={() => setShowNetworks(false)} theme={theme} />
+      <DefiModal isOpen={showDefi} onClose={() => setShowDefi(false)} theme={theme} /> {/* DefiModal */}
     </>
   );
 };

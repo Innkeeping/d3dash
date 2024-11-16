@@ -1,5 +1,5 @@
 import React from 'react'
-import { X, Radio, Vote, Users, MessageSquare, GitMerge } from 'lucide-react'
+import { X, Radio, Vote, Users, MessageSquare, Flower2 } from 'lucide-react'
 import { Theme } from '../types'
 
 interface GovernanceModalProps {
@@ -42,10 +42,10 @@ const GovernanceModal: React.FC<GovernanceModalProps> = ({ isOpen, onClose, them
       description: 'Community discussion and governance forum',
     },
     {
-      name: 'Governor',
-      icon: <GitMerge className="text-pink-400" size={24} />,
-      url: 'https://docs.openzeppelin.com/contracts/4.x/api/governance',
-      description: 'OpenZeppelin Governor - Standard for DAO governance',
+      name: 'Gardens',
+      icon: <Flower2 className="text-pink-400" size={24} />,
+      url: 'https://www.gardens.fund/',
+      description: 'Gardens is a coordination platform',
     },
   ]
 
