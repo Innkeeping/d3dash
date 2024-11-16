@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import {
   Terminal, Settings, Wallet, Palette,
   Coffee, Network, Heart, Radio, Coins, Book, Clock,
-  Glasses
+  Glasses, DollarSign // Import DollarSign icon for the new item
 } from 'lucide-react';
 import { Theme } from '../types';
 import PomodoroModal from './PomodoroModal';
@@ -15,6 +15,7 @@ import DocsModal from './DocsModal';
 import TimeZonesModal from './TimeZonesModal';
 import LensFeedModal from './LensFeedModal';
 import GamebModal from './GamebModal';
+import CryptoPricesModal from './CryptoPricesModal'; // Import CryptoPricesModal
 
 interface ToolbarProps {
   theme: Theme;
@@ -33,6 +34,8 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
   const [showTimeZones, setShowTimeZones] = useState(false);
   const [showLensFeed, setShowLensFeed] = useState(false);
   const [showGameb, setShowGameb] = useState(false);
+  const [showCryptoPrices, setShowCryptoPrices] = useState(false); // New state for CryptoPricesModal
+
   const themeClasses = {
     purple: 'border-purple-500/30 text-purple-300 hover:text-purple-100',
     green: 'border-green-500/30 text-green-300 hover:text-green-100',
@@ -40,7 +43,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
   };
 
   const toolbarItems = [
-    { id: 'wallet', icon: <Wallet size={20} />, label: 'Connect Wallet' },
+    // { id: 'wallet', icon: <Wallet size={20} />, label: 'Connect Wallet' },
     { id: 'blockchain', icon: <Network size={20} />, label: 'Networks' },
     { id: 'dao', icon: <Radio size={20} />, label: 'Governance' },
     { id: 'refi', icon: <Heart size={20} />, label: 'ReFi Projects' },
@@ -48,10 +51,11 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
     { id: 'docs', icon: <Book size={20} />, label: 'Documentation' },
     { id: 'terminal', icon: <Terminal size={20} />, label: 'Dev Console' },
     { id: 'theme', icon: <Palette size={20} />, label: 'Theme' },
-    { id: 'settings', icon: <Settings size={20} />, label: 'Settings' },
+    // { id: 'settings', icon: <Settings size={20} />, label: 'Settings' },
     { id: 'break', icon: <Coffee size={20} />, label: 'Take a Break' },
     { id: 'timezones', icon: <Clock size={20} />, label: 'World Clock' },
     { id: 'lensfeed', icon: <Glasses size={20} />, label: 'Lens Feed' },
+    { id: 'cryptoprices', icon: <DollarSign size={20} />, label: 'Token Prices' },
   ];
 
   const handleItemClick = (id: string) => {
@@ -77,6 +81,8 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
       setShowLensFeed(true);
     } else if (id === 'terminal') {
       setShowGameb(true);
+    } else if (id === 'cryptoprices') { // Handle new item
+      setShowCryptoPrices(true);
     }
 
     setActiveMenu(activeMenu === id ? null : id);
@@ -118,6 +124,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
       <TimeZonesModal isOpen={showTimeZones} onClose={() => setShowTimeZones(false)} theme={theme} />
       <LensFeedModal isOpen={showLensFeed} onClose={() => setShowLensFeed(false)} theme={theme} />
       <GamebModal isOpen={showGameb} onClose={() => setShowGameb(false)} theme={theme} iframeUrl="https://www.example.com" />
+      <CryptoPricesModal isOpen={showCryptoPrices} onClose={() => setShowCryptoPrices(false)} theme={theme} /> {/* Render CryptoPricesModal */}
     </>
   );
 };
