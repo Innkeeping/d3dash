@@ -52,7 +52,17 @@ const LinkGrid: React.FC<LinkGridProps> = ({ links, theme }) => {
     'GreenPill Network': <Pill className="text-green-400" size={24} />,
     'Letʼs GROW DAO': <Shrub className="text-emerald-400" size={24} />,
     'ReFi DAO': <Orbit className="text-purple-400" size={24} />,
-    'Klima DAO': <Leaf className="text-green-400" size={24} />
+    'Klima DAO': <Leaf className="text-green-400" size={24} />,
+    'Aave': <PieChart className="text-green-400" size={24} />,
+    'Balancer': <Compass className="text-orange-400" size={24} />,
+    'Compound': <BarChart className="text-blue-400" size={24} />,
+    'Curve': <Briefcase className="text-pink-400" size={24} />,
+    'Rari Capital': <CircleDollarSign className="text-teal-400" size={24} />,
+    'Uniswap': <DollarSign className="text-purple-400" size={24} />,
+    'Yearn': <HardDrive className="text-cyan-400" size={24} />,
+    '1inch': <Network className="text-purple-400" size={24} />,
+    'Jumper.Exchange': <Network className="text-purple-400" size={24} />,
+    'QuickSwap': <Network className="text-purple-400" size={24} />
   }
 
   return (
