@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   Terminal, Settings, Wallet, Palette,
-  Coffee, Network, Heart, Radio, Coins
+  Coffee, Network, Heart, Radio, Coins, Book
 } from 'lucide-react';
 import { Theme } from '../types';
 import PomodoroModal from './PomodoroModal';
@@ -9,6 +9,7 @@ import RefiModal from './RefiModal';
 import GovernanceModal from './GovernanceModal';
 import Networks from './Networks';
 import DefiModal from './DefiModal'; // Import DefiModal
+import DocsModal from './DocsModal'; // Import DocsModal
 
 interface ToolbarProps {
   theme: Theme;
@@ -23,6 +24,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
   const [showGovernance, setShowGovernance] = useState(false);
   const [showNetworks, setShowNetworks] = useState(false);
   const [showDefi, setShowDefi] = useState(false); // State for DefiModal
+  const [showDocs, setShowDocs] = useState(false); // State for DocsModal
 
   const themeClasses = {
     purple: 'border-purple-500/30 text-purple-300 hover:text-purple-100',
@@ -36,6 +38,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
     { id: 'dao', icon: <Radio size={20} />, label: 'Governance' },
     { id: 'refi', icon: <Heart size={20} />, label: 'ReFi Projects' },
     { id: 'defi', icon: <Coins size={20} />, label: 'DeFi Tools' }, // Defi Tools
+    { id: 'docs', icon: <Book size={20} />, label: 'Documentation' }, // Documentation
     { id: 'terminal', icon: <Terminal size={20} />, label: 'Dev Console' },
     { id: 'theme', icon: <Palette size={20} />, label: 'Theme' },
     { id: 'settings', icon: <Settings size={20} />, label: 'Settings' },
@@ -57,6 +60,8 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
       setShowNetworks(true);
     } else if (id === 'defi') { // Handle Defi Tools
       setShowDefi(true);
+    } else if (id === 'docs') { // Handle Documentation
+      setShowDocs(true);
     }
     setActiveMenu(activeMenu === id ? null : id);
   };
@@ -93,6 +98,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
       <GovernanceModal isOpen={showGovernance} onClose={() => setShowGovernance(false)} theme={theme} />
       <Networks isOpen={showNetworks} onClose={() => setShowNetworks(false)} theme={theme} />
       <DefiModal isOpen={showDefi} onClose={() => setShowDefi(false)} theme={theme} /> {/* DefiModal */}
+      <DocsModal isOpen={showDocs} onClose={() => setShowDocs(false)} theme={theme} /> {/* DocsModal */}
     </>
   );
 };
