@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import {
   Terminal, Settings, Wallet, Palette,
-  Coffee, Network, Heart, Radio, Coins, Book, Clock
+  Coffee, Network, Heart, Radio, Coins, Book, Clock,
+  Glasses
 } from 'lucide-react';
 import { Theme } from '../types';
 import PomodoroModal from './PomodoroModal';
@@ -11,8 +12,9 @@ import GovernanceModal from './GovernanceModal';
 import Networks from './Networks';
 import DefiModal from './DefiModal';
 import DocsModal from './DocsModal';
-import TimeZonesModal from './TimeZonesModal'; // Import the TimeZonesModal
-import LensFeedModal from './LensFeedModal'; // Import the LensFeedModal
+import TimeZonesModal from './TimeZonesModal';
+import LensFeedModal from './LensFeedModal';
+import GamebModal from './GamebModal';
 
 interface ToolbarProps {
   theme: Theme;
@@ -28,9 +30,9 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
   const [showNetworks, setShowNetworks] = useState(false);
   const [showDefi, setShowDefi] = useState(false);
   const [showDocs, setShowDocs] = useState(false);
-  const [showTimeZones, setShowTimeZones] = useState(false); // New state for TimeZonesModal
-  const [showLensFeed, setShowLensFeed] = useState(false); // New state for LensFeedModal
-
+  const [showTimeZones, setShowTimeZones] = useState(false);
+  const [showLensFeed, setShowLensFeed] = useState(false);
+  const [showGameb, setShowGameb] = useState(false);
   const themeClasses = {
     purple: 'border-purple-500/30 text-purple-300 hover:text-purple-100',
     green: 'border-green-500/30 text-green-300 hover:text-green-100',
@@ -48,8 +50,8 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
     { id: 'theme', icon: <Palette size={20} />, label: 'Theme' },
     { id: 'settings', icon: <Settings size={20} />, label: 'Settings' },
     { id: 'break', icon: <Coffee size={20} />, label: 'Take a Break' },
-    { id: 'timezones', icon: <Clock size={20} />, label: 'World Clock' }, // New item for TimeZonesModal
-    { id: 'lensfeed', icon: <Book size={20} />, label: 'Lens Feed' }, // New item for LensFeedModal
+    { id: 'timezones', icon: <Clock size={20} />, label: 'World Clock' },
+    { id: 'lensfeed', icon: <Glasses size={20} />, label: 'Lens Feed' },
   ];
 
   const handleItemClick = (id: string) => {
@@ -73,6 +75,8 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
       setShowTimeZones(true);
     } else if (id === 'lensfeed') {
       setShowLensFeed(true);
+    } else if (id === 'terminal') {
+      setShowGameb(true);
     }
 
     setActiveMenu(activeMenu === id ? null : id);
@@ -112,7 +116,8 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
       <DefiModal isOpen={showDefi} onClose={() => setShowDefi(false)} theme={theme} />
       <DocsModal isOpen={showDocs} onClose={() => setShowDocs(false)} theme={theme} />
       <TimeZonesModal isOpen={showTimeZones} onClose={() => setShowTimeZones(false)} theme={theme} />
-      <LensFeedModal isOpen={showLensFeed} onClose={() => setShowLensFeed(false)} theme={theme} /> {/* Add LensFeedModal */}
+      <LensFeedModal isOpen={showLensFeed} onClose={() => setShowLensFeed(false)} theme={theme} />
+      <GamebModal isOpen={showGameb} onClose={() => setShowGameb(false)} theme={theme} iframeUrl="https://www.example.com" />
     </>
   );
 };
