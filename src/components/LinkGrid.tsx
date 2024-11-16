@@ -1,4 +1,3 @@
-// src/LinkGrid.tsx
 import React from 'react'
 import { Theme, Link } from '../types'
 import { BarChart, Book, Briefcase, CircleDollarSign, Compass, DollarSign, Flower2, HardDrive, Heart, Leaf, MessageSquare, Network, Orbit, PieChart, Pill, Radio, Shrub, Users, Vote } from 'lucide-react'
@@ -59,7 +58,9 @@ const LinkGrid: React.FC<LinkGridProps> = ({ links, theme }) => {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 relative z-10">
       {links.map((link, index) => {
-        const icon = link.icon ? <div dangerouslySetInnerHTML={{ __html: link.icon }} /> : defaultIcons[link.name] || null;
+        console.log('Link Name:', link.name);
+        const icon = defaultIcons[link.name] || <Book className="text-gray-400" size={24} />;
+        console.log('Icon:', icon);
         return (
           <a
             key={index}
