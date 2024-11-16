@@ -1,6 +1,6 @@
-import React from 'react'
-import { X, Network } from 'lucide-react'
-import { Theme } from '../types'
+import React, { useState, useRef, useEffect } from 'react';
+import { X, Network } from 'lucide-react';
+import { Theme } from '../types';
 
 interface NetworksProps {
   isOpen: boolean;
@@ -9,13 +9,16 @@ interface NetworksProps {
 }
 
 const Networks: React.FC<NetworksProps> = ({ isOpen, onClose, theme }) => {
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   const themeClasses = {
     purple: 'border-purple-500/30 bg-purple-900/20',
     green: 'border-green-500/30 bg-green-900/20',
     teal: 'border-teal-500/30 bg-teal-900/20'
-  }
+  };
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
 
   const chainInfo = [
     {
@@ -66,7 +69,17 @@ const Networks: React.FC<NetworksProps> = ({ isOpen, onClose, theme }) => {
       currency: 'ETH',
       url: 'https://zkevm.polygonscan.com/'
     },
-  ]
+  ];
+
+  const filteredChains = chainInfo.filter((chain) =>
+    chain.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  useEffect(() => {
+    if (isOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [isOpen]);
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -78,8 +91,19 @@ const Networks: React.FC<NetworksProps> = ({ isOpen, onClose, theme }) => {
           </button>
         </div>
 
+        <div className="mb-6">
+          <input
+            ref={searchInputRef}
+            type="text"
+            placeholder="Search networks..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full p-4 rounded-lg border border-gray-700 bg-gray-800/50 focus:outline-none focus:border-purple-400"
+          />
+        </div>
+
         <div className="space-y-4">
-          {chainInfo.map((chain) => (
+          {filteredChains.map((chain) => (
             <a
               key={chain.name}
               href={chain.url}
@@ -100,12 +124,18 @@ const Networks: React.FC<NetworksProps> = ({ isOpen, onClose, theme }) => {
           ))}
         </div>
 
+        {filteredChains.length === 0 && (
+          <div className="mt-6 text-sm opacity-75">
+            <p>No results found for "{searchQuery}".</p>
+          </div>
+        )}
+
         <div className="mt-6 text-sm opacity-75">
           <p>Information for various blockchain networks.</p>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Networks
+export default Networks;

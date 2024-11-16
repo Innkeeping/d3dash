@@ -1,6 +1,6 @@
-import React from 'react'
-import { X, DollarSign, PieChart, BarChart, Compass, Briefcase, HardDrive, CircleDollarSign } from 'lucide-react'
-import { Theme } from '../types'
+import React, { useState, useRef, useEffect } from 'react';
+import { X, DollarSign, PieChart, BarChart, Compass, Briefcase, HardDrive, CircleDollarSign, Network } from 'lucide-react';
+import { Theme } from '../types';
 
 interface DefiModalProps {
   isOpen: boolean;
@@ -9,32 +9,23 @@ interface DefiModalProps {
 }
 
 const DefiModal: React.FC<DefiModalProps> = ({ isOpen, onClose, theme }) => {
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   const themeClasses = {
     purple: 'border-purple-500/30 bg-purple-900/20',
     green: 'border-green-500/30 bg-green-900/20',
     teal: 'border-teal-500/30 bg-teal-900/20'
-  }
+  };
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
 
   const defiProjects = [
-    {
-      name: 'Uniswap',
-      icon: <DollarSign className="text-purple-400" size={24} />,
-      url: 'https://uniswap.org',
-      description: 'A decentralized exchange (DEX) for ERC-20 tokens',
-    },
     {
       name: 'Aave',
       icon: <PieChart className="text-green-400" size={24} />,
       url: 'https://aave.com',
       description: 'A decentralized lending and borrowing protocol',
-    },
-    {
-      name: 'Compound',
-      icon: <BarChart className="text-blue-400" size={24} />,
-      url: 'https://compound.finance',
-      description: 'A decentralized lending protocol on Ethereum',
     },
     {
       name: 'Balancer',
@@ -43,10 +34,28 @@ const DefiModal: React.FC<DefiModalProps> = ({ isOpen, onClose, theme }) => {
       description: 'A decentralized exchange and automated market maker',
     },
     {
+      name: 'Compound',
+      icon: <BarChart className="text-blue-400" size={24} />,
+      url: 'https://compound.finance',
+      description: 'A decentralized lending protocol on Ethereum',
+    },
+    {
       name: 'Curve',
       icon: <Briefcase className="text-pink-400" size={24} />,
       url: 'https://curve.fi',
       description: 'A decentralized exchange for stablecoins',
+    },
+    {
+      name: 'Rari Capital',
+      icon: <CircleDollarSign className="text-teal-400" size={24} />,
+      url: 'https://rari.capital',
+      description: 'A decentralized lending and borrowing protocol with smart yield farming',
+    },
+    {
+      name: 'Uniswap',
+      icon: <DollarSign className="text-purple-400" size={24} />,
+      url: 'https://uniswap.org',
+      description: 'A decentralized exchange (DEX) for ERC-20 tokens',
     },
     {
       name: 'Yearn',
@@ -55,12 +64,34 @@ const DefiModal: React.FC<DefiModalProps> = ({ isOpen, onClose, theme }) => {
       description: 'A suite of DeFi tools for managing decentralized assets',
     },
     {
-      name: 'Rari Capital',
-      icon: <CircleDollarSign className="text-teal-400" size={24} />,
-      url: 'https://rari.capital',
-      description: 'A decentralized lending and borrowing protocol with smart yield farming',
+      name: '1inch',
+      icon: <Network className="text-purple-400" size={24} />,
+      url: 'https://1inch.exchange/',
+      description: 'A decentralized exchange (DEX) aggregator',
     },
-  ]
+    {
+      name: 'Jumper.Exchange',
+      icon: <Network className="text-purple-400" size={24} />,
+      url: 'https://jumper.exchange/',
+      description: 'A decentralized exchange (DEX)',
+    },
+    {
+      name: 'QuickSwap',
+      icon: <Network className="text-purple-400" size={24} />,
+      url: 'https://quickswap.exchange/',
+      description: 'A decentralized exchange (DEX) on the Polygon network',
+    },
+  ];
+
+  const filteredDefiProjects = defiProjects.filter((project) =>
+    project.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  useEffect(() => {
+    if (isOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [isOpen]);
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -72,8 +103,19 @@ const DefiModal: React.FC<DefiModalProps> = ({ isOpen, onClose, theme }) => {
           </button>
         </div>
 
+        <div className="mb-6">
+          <input
+            ref={searchInputRef}
+            type="text"
+            placeholder="Search DeFi projects..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full p-4 rounded-lg border border-gray-700 bg-gray-800/50 focus:outline-none focus:border-purple-400"
+          />
+        </div>
+
         <div className="space-y-4">
-          {defiProjects.map((project) => (
+          {filteredDefiProjects.map((project) => (
             <a
               key={project.name}
               href={project.url}
@@ -92,12 +134,18 @@ const DefiModal: React.FC<DefiModalProps> = ({ isOpen, onClose, theme }) => {
           ))}
         </div>
 
+        {filteredDefiProjects.length === 0 && (
+          <div className="mt-6 text-sm opacity-75">
+            <p>No results found for "{searchQuery}".</p>
+          </div>
+        )}
+
         <div className="mt-6 text-sm opacity-75">
           <p>DeFi projects use blockchain technology to create financial applications that operate without centralized intermediaries.</p>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DefiModal
+export default DefiModal;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { X, Book } from 'lucide-react';
 import { Theme } from '../types';
 
@@ -17,146 +17,141 @@ const DocsModal: React.FC<DocsModalProps> = ({ isOpen, onClose, theme }) => {
     teal: 'border-teal-500/30 bg-teal-900/20',
   };
 
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
+
   const docs = [
     {
-      name: 'Viem',
+      name: 'Alchemy',
       icon: <Book className="text-purple-400" size={24} />,
-      url: 'https://viem.sh/',
-      description: 'A lightweight, powerful, and type-safe Ethereum JavaScript library.',
-    },
-    {
-      name: 'Scaffold-ETH 2',
-      icon: <Book className="text-green-400" size={24} />,
-      url: 'https://github.com/scaffold-eth/scaffold-eth-2',
-      description: 'A full-stack Ethereum development scaffold.',
-    },
-    {
-      name: 'Foundry',
-      icon: <Book className="text-emerald-400" size={24} />,
-      url: 'https://book.getfoundry.sh/',
-      description: 'A blazing fast, portable, and modular toolkit for Ethereum development.',
-    },
-    {
-      name: 'Wagmi',
-      icon: <Book className="text-purple-400" size={24} />,
-      url: 'https://wagmi.sh/',
-      description: 'React Hooks for Ethereum.',
-    },
-    {
-      name: 'RainbowKit',
-      icon: <Book className="text-green-400" size={24} />,
-      url: 'https://www.rainbowkit.com/docs/',
-      description: 'Beautiful, modular, and extensible wallet connection UIs for Ethereum.',
-    },
-    {
-      name: 'ThirdWeb',
-      icon: <Book className="text-emerald-400" size={24} />,
-      url: 'https://portal.thirdweb.com/',
-      description: 'Build web3 apps with the most intuitive SDK.',
-    },
-    {
-      name: 'Aave',
-      icon: <Book className="text-purple-400" size={24} />,
-      url: 'https://docs.aave.com/',
-      description: 'Documentation for the Aave Protocol.',
-    },
-    {
-      name: 'Uniswap',
-      icon: <Book className="text-green-400" size={24} />,
-      url: 'https://docs.uniswap.org/',
-      description: 'Documentation for the Uniswap Protocol.',
-    },
-    {
-      name: 'ENS (Ethereum Name Service)',
-      icon: <Book className="text-emerald-400" size={24} />,
-      url: 'https://docs.ens.domains/',
-      description: 'Documentation for ENS.',
+      url: 'https://docs.alchemy.com/',
+      description: 'A web3 developer platform providing powerful tools for building blockchain applications.',
     },
     {
       name: 'Chainlink',
       icon: <Book className="text-purple-400" size={24} />,
       url: 'https://docs.chain.link/',
-      description: 'Documentation for Chainlink.',
-    },
-    {
-      name: 'The Graph',
-      icon: <Book className="text-green-400" size={24} />,
-      url: 'https://thegraph.com/docs/en/',
-      description: 'Documentation for The Graph.',
-    },
-    {
-      name: 'Alchemy',
-      icon: <Book className="text-emerald-400" size={24} />,
-      url: 'https://docs.alchemy.com/',
-      description: 'Documentation for Alchemy.',
-    },
-    {
-      name: 'Infura',
-      icon: <Book className="text-purple-400" size={24} />,
-      url: 'https://docs.infura.io/',
-      description: 'Documentation for Infura.',
-    },
-    {
-      name: 'MetaMask',
-      icon: <Book className="text-green-400" size={24} />,
-      url: 'https://docs.metamask.io/',
-      description: 'Documentation for MetaMask.',
+      description: 'A decentralized oracle network that provides real-world data to smart contracts.',
     },
     {
       name: 'Ethereum',
       icon: <Book className="text-emerald-400" size={24} />,
       url: 'https://ethereum.org/en/developers/docs/',
-      description: 'Ethereum documentation for developers.',
+      description: 'Ethereum resources for developers, covering smart contracts, wallets, and more.',
     },
     {
-      name: 'Solidity',
-      icon: <Book className="text-purple-400" size={24} />,
-      url: 'https://docs.soliditylang.org/en/latest/',
-      description: 'Solidity documentation.',
+      name: 'ENS (Ethereum Name Service)',
+      icon: <Book className="text-emerald-400" size={24} />,
+      url: 'https://docs.ens.domains/',
+      description: 'A decentralized domain name system for Ethereum.',
+    },
+    {
+      name: 'Foundry',
+      icon: <Book className="text-emerald-400" size={24} />,
+      url: 'https://book.getfoundry.sh/',
+      description: 'A fast, portable, and modular toolkit for Ethereum development.',
     },
     {
       name: 'Hardhat',
       icon: <Book className="text-green-400" size={24} />,
       url: 'https://hardhat.org/hardhat-runner/docs/getting-started',
-      description: 'Hardhat documentation.',
+      description: 'A development environment for Ethereum with local blockchain development, testing, and deployment.',
     },
     {
-      name: 'Remix IDE',
-      icon: <Book className="text-emerald-400" size={24} />,
-      url: 'https://remix-ide.readthedocs.io/en/latest/',
-      description: 'Remix documentation.',
-    },
-    {
-      name: 'OpenZeppelin',
+      name: 'Infura',
       icon: <Book className="text-purple-400" size={24} />,
-      url: 'https://docs.openzeppelin.com/contracts/',
-      description: 'OpenZeppelin Contracts documentation.',
-    },
-    {
-      name: 'Web3.js',
-      icon: <Book className="text-green-400" size={24} />,
-      url: 'https://web3js.readthedocs.io/en/v1.7.0/',
-      description: 'Web3.js documentation.',
-    },
-    {
-      name: 'Ethers.js',
-      icon: <Book className="text-emerald-400" size={24} />,
-      url: 'https://docs.ethers.io/v5/',
-      description: 'Ethers.js documentation.',
+      url: 'https://docs.infura.io/',
+      description: 'Blockchain infrastructure for dapps, providing access to Ethereum and other blockchains.',
     },
     {
       name: 'IPFS',
       icon: <Book className="text-purple-400" size={24} />,
       url: 'https://docs.ipfs.tech/',
-      description: 'IPFS documentation.',
+      description: 'A decentralized file system for building distributed applications.',
+    },
+    {
+      name: 'OpenZeppelin',
+      icon: <Book className="text-purple-400" size={24} />,
+      url: 'https://docs.openzeppelin.com/contracts/',
+      description: 'A library of secure and community-audited smart contracts for Ethereum.',
+    },
+    {
+      name: 'RainbowKit',
+      icon: <Book className="text-green-400" size={24} />,
+      url: 'https://www.rainbowkit.com/docs/',
+      description: 'Beautiful, modular, and extensible wallet connection UIs for Ethereum dapps.',
     },
     {
       name: 'Reown',
       icon: <Book className="text-green-400" size={24} />,
       url: 'https://docs.reown.io/',
-      description: 'Reown documentation.',
+      description: 'A platform for building and managing decentralized applications.',
+    },
+    {
+      name: 'Remix IDE',
+      icon: <Book className="text-emerald-400" size={24} />,
+      url: 'https://remix-ide.readthedocs.io/en/latest/',
+      description: 'An in-browser Solidity IDE for writing, testing, and deploying smart contracts.',
+    },
+    {
+      name: 'Solidity',
+      icon: <Book className="text-purple-400" size={24} />,
+      url: 'https://docs.soliditylang.org/en/latest/',
+      description: 'The programming language for writing smart contracts on Ethereum.',
+    },
+    {
+      name: 'Scaffold-ETH 2',
+      icon: <Book className="text-green-400" size={24} />,
+      url: 'https://github.com/scaffold-eth/scaffold-eth-2',
+      description: 'A full-stack Ethereum development scaffold to build and deploy dapps quickly.',
+    },
+    {
+      name: 'The Graph',
+      icon: <Book className="text-green-400" size={24} />,
+      url: 'https://thegraph.com/docs/en/',
+      description: 'A decentralized indexing protocol for building subgraphs to query blockchain data.',
+    },
+    {
+      name: 'ThirdWeb',
+      icon: <Book className="text-emerald-400" size={24} />,
+      url: 'https://portal.thirdweb.com/',
+      description: 'A platform for building web3 apps with the most intuitive SDK and tools.',
+    },
+    {
+      name: 'Viem',
+      icon: <Book className="text-purple-400" size={24} />,
+      url: 'https://viem.sh/',
+      description: 'A lightweight, powerful, and type-safe Ethereum JavaScript library for building dapps.',
+    },
+    {
+      name: 'Wagmi',
+      icon: <Book className="text-purple-400" size={24} />,
+      url: 'https://wagmi.sh/',
+      description: 'React Hooks for Ethereum that simplifies building dapps.',
+    },
+    {
+      name: 'Web3.js',
+      icon: <Book className="text-green-400" size={24} />,
+      url: 'https://web3js.readthedocs.io/en/v1.7.0/',
+      description: 'A JavaScript library for interacting with the Ethereum blockchain and smart contracts.',
+    },
+    {
+      name: 'Ethers.js',
+      icon: <Book className="text-emerald-400" size={24} />,
+      url: 'https://docs.ethers.io/v5/',
+      description: 'A JavaScript library for interacting with the Ethereum blockchain and smart contracts, providing a simple and powerful API.',
     },
   ];
+
+  const filteredDocs = docs.filter((doc) =>
+    doc.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  useEffect(() => {
+    if (isOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [isOpen]);
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -168,8 +163,19 @@ const DocsModal: React.FC<DocsModalProps> = ({ isOpen, onClose, theme }) => {
           </button>
         </div>
 
+        <div className="mb-6">
+          <input
+            ref={searchInputRef}
+            type="text"
+            placeholder="Search documentation..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full p-4 rounded-lg border border-gray-700 bg-gray-800/50 focus:outline-none focus:border-purple-400"
+          />
+        </div>
+
         <div className="space-y-4">
-          {docs.map((doc) => (
+          {filteredDocs.map((doc) => (
             <a
               key={doc.name}
               href={doc.url}
@@ -188,8 +194,14 @@ const DocsModal: React.FC<DocsModalProps> = ({ isOpen, onClose, theme }) => {
           ))}
         </div>
 
+        {filteredDocs.length === 0 && (
+          <div className="mt-6 text-sm opacity-75">
+            <p>No results found for "{searchQuery}".</p>
+          </div>
+        )}
+
         <div className="mt-6 text-sm opacity-75">
-          <p>Explore a variety of resources and documentation for web3 development, from smart contract development to blockchain infrastructure and tools.</p>
+          <p>Explore a variety of resources for web3 development, from smart contract development to blockchain infrastructure and tools.</p>
         </div>
       </div>
     </div>
