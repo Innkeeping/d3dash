@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   Terminal, Settings, Wallet, Palette,
-  Coffee, Network, Heart, Radio, Coins, Book,
+  Coffee, Network, Heart, Radio, Coins, Book, Clock
 } from 'lucide-react';
 import { Theme } from '../types';
 import PomodoroModal from './PomodoroModal';
@@ -10,7 +10,7 @@ import GovernanceModal from './GovernanceModal';
 import Networks from './Networks';
 import DefiModal from './DefiModal';
 import DocsModal from './DocsModal';
-
+import TimeZonesModal from './TimeZonesModal'; // Import the TimeZonesModal
 
 interface ToolbarProps {
   theme: Theme;
@@ -26,6 +26,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
   const [showNetworks, setShowNetworks] = useState(false);
   const [showDefi, setShowDefi] = useState(false);
   const [showDocs, setShowDocs] = useState(false);
+  const [showTimeZones, setShowTimeZones] = useState(false); // New state for TimeZonesModal
 
   const themeClasses = {
     purple: 'border-purple-500/30 text-purple-300 hover:text-purple-100',
@@ -44,6 +45,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
     { id: 'theme', icon: <Palette size={20} />, label: 'Theme' },
     { id: 'settings', icon: <Settings size={20} />, label: 'Settings' },
     { id: 'break', icon: <Coffee size={20} />, label: 'Take a Break' },
+    { id: 'timezones', icon: <Clock size={20} />, label: 'World Clock' }, // New item for TimeZonesModal
   ];
 
   const handleItemClick = (id: string) => {
@@ -63,6 +65,8 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
       setShowDefi(true);
     } else if (id === 'docs') {
       setShowDocs(true);
+    } else if (id === 'timezones') {
+      setShowTimeZones(true);
     }
 
     setActiveMenu(activeMenu === id ? null : id);
@@ -101,6 +105,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
       <Networks isOpen={showNetworks} onClose={() => setShowNetworks(false)} theme={theme} />
       <DefiModal isOpen={showDefi} onClose={() => setShowDefi(false)} theme={theme} />
       <DocsModal isOpen={showDocs} onClose={() => setShowDocs(false)} theme={theme} />
+      <TimeZonesModal isOpen={showTimeZones} onClose={() => setShowTimeZones(false)} theme={theme} />
     </>
   );
 };
