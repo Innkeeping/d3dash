@@ -11,7 +11,8 @@ interface SearchBarProps {
 const SearchBar: React.FC<SearchBarProps> = ({ search, setSearch, theme }) => {
   const themeClasses = {
     purple: 'border-purple-500/30 focus:ring-purple-500/50 text-purple-100 placeholder-purple-300/50',
-    green: 'border-green-500/30 focus:ring-green-500/50 text-green-100 placeholder-green-300/50'
+    green: 'border-green-500/30 focus:ring-green-500/50 text-green-100 placeholder-green-300/50',
+    teal: 'border-teal-500/30 focus:ring-teal-500/50 text-teal-100 placeholder-teal-300/50'
   }
 
   return (
