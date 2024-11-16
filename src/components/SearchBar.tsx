@@ -3,7 +3,7 @@ import { Search } from 'lucide-react'
 import { Theme } from '../types'
 
 interface SearchBarProps {
-  search: string
+  search: string;
   setSearch: (value: string) => void
   theme: Theme
 }

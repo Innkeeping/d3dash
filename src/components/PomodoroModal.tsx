@@ -1,53 +1,53 @@
-import React, { useState, useEffect } from 'react'
-import { X, Play, Pause, RotateCcw } from 'lucide-react'
-import { Theme } from '../types'
+import React, { useState, useEffect } from 'react';
+import { X, Play, Pause, RotateCcw } from 'lucide-react';
+import { Theme } from '../types';
 
 interface PomodoroModalProps {
   isOpen: boolean;
-  onClose: () => void
-  theme: Theme
+  onClose: () => void;
+  theme: Theme;
 }
 
 const PomodoroModal: React.FC<PomodoroModalProps> = ({ isOpen, onClose, theme }) => {
-  const [timeLeft, setTimeLeft] = useState(25 * 60)
-  const [isRunning, setIsRunning] = useState(false)
+  const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 minutes in seconds
+  const [isRunning, setIsRunning] = useState(false);
   const [currentMode, setCurrentMode] = useState<'work' | 'break'>('work');
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (isRunning && timeLeft > 0) {
       interval = setInterval(() => {
-        setTimeLeft((time) => time - 1)
-      }, 1000)
+        setTimeLeft((time) => time - 1);
+      }, 1000);
     }
-    return () => clearInterval(interval)
-  }, [isRunning, timeLeft])
+    return () => clearInterval(interval);
+  }, [isRunning, timeLeft]);
 
-  const toggleTimer = () => setIsRunning(!isRunning)
+  const toggleTimer = () => setIsRunning(!isRunning);
 
   const resetTimer = () => {
-    setIsRunning(false)
-    setTimeLeft(currentMode === 'work' ? 25 * 60 : 5 * 60)
-  }
+    setIsRunning(false);
+    setTimeLeft(currentMode === 'work' ? 25 * 60 : 5 * 60);
+  };
 
   const toggleMode = () => {
-    setCurrentMode(currentMode === 'work' ? 'break' : 'work')
-    setTimeLeft(currentMode === 'work' ? 5 * 60 : 25 * 60)
-    setIsRunning(false)
-  }
+    setCurrentMode(currentMode === 'work' ? 'break' : 'work');
+    setTimeLeft(currentMode === 'work' ? 5 * 60 : 25 * 60);
+    setIsRunning(false);
+  };
 
   const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = seconds % 60
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  }
+  };
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   const themeClasses = {
     purple: 'border-purple-500/30 bg-purple-900/20',
     green: 'border-green-500/30 bg-green-900/20'
-  }
+  };
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -96,7 +96,7 @@ const PomodoroModal: React.FC<PomodoroModalProps> = ({ isOpen, onClose, theme })
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PomodoroModal
+export default PomodoroModal;
