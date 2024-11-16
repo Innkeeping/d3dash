@@ -57,7 +57,7 @@ const TimeZonesModal: React.FC<TimeZonesModalProps> = ({ isOpen, onClose, theme 
     const options = { timeZone: timeZone, timeZoneName: 'shortOffset' } as const;
     const formatted = date.toLocaleTimeString('en-US', options);
     const offset = formatted.split(' ').pop();
-    return offset || '';
+    return offset ? offset.replace('GMT', 'UTC') : '';
   };
 
   // Function to get the offset in minutes from UTC
@@ -78,6 +78,11 @@ const TimeZonesModal: React.FC<TimeZonesModalProps> = ({ isOpen, onClose, theme 
     return getTimeZoneOffset(a.value) - getTimeZoneOffset(b.value);
   });
 
+  // Function to normalize the offset string for comparison
+  const normalizeOffset = (offset: string) => {
+    return offset.replace(/GMT/g, 'UTC').toLowerCase();
+  };
+
   // Filter time zones based on search query
   const filteredTimeZones = sortedTimeZones.filter(tz => {
     const labelMatch = tz.label.toLowerCase().includes(searchQuery.toLowerCase());
@@ -85,8 +90,10 @@ const TimeZonesModal: React.FC<TimeZonesModalProps> = ({ isOpen, onClose, theme 
       city.toLowerCase().includes(searchQuery.toLowerCase())
     );
     const countryMatch = tz.country && tz.country.toLowerCase().includes(searchQuery.toLowerCase());
-    const timezoneMatch = tz.timezone && tz.timezone.toLowerCase().includes(searchQuery.toLowerCase());
-    return labelMatch || cityMatch || countryMatch || timezoneMatch;
+    const timezoneMatch = tz.timezone && normalizeOffset(tz.timezone).includes(normalizeOffset(searchQuery));
+    const offsetMatch = formatTimeZoneOffset(tz.value).includes(normalizeOffset(searchQuery));
+
+    return labelMatch || cityMatch || countryMatch || timezoneMatch || offsetMatch;
   });
 
   useEffect(() => {
@@ -161,7 +168,7 @@ const TimeZonesModal: React.FC<TimeZonesModalProps> = ({ isOpen, onClose, theme 
                   )}
                   {tz.timezone && (
                     <p className="text-xs opacity-50">
-                      Timezone: {tz.timezone}
+                      Timezone: {tz.timezone.replace('GMT', 'UTC')}
                     </p>
                   )}
                 </div>
