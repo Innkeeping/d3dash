@@ -1,0 +1,128 @@
+// src/components/IPFSModal.tsx
+import React, { useState, useRef, useEffect } from 'react';
+import { X, Loader2 } from 'lucide-react';
+import { Theme } from '../types';
+
+interface IPFSModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  theme: Theme;
+}
+
+const IPFSModal: React.FC<IPFSModalProps> = ({ isOpen, onClose, theme }) => {
+  if (!isOpen) return null;
+
+  const themeClasses = {
+    purple: 'border-purple-500/30 bg-purple-900/20 text-purple-300',
+    green: 'border-green-500/30 bg-green-900/20 text-green-300',
+    teal: 'border-teal-500/30 bg-teal-900/20 text-teal-300'
+  };
+
+  const dropdownClasses = {
+    purple: 'border-purple-500/30 focus:border-purple-500',
+    green: 'border-green-500/30 focus:border-green-500',
+    teal: 'border-teal-500/30 focus:border-teal-500'
+  };
+
+  const [cid, setCid] = useState('');
+  const [selectedGateway, setSelectedGateway] = useState('https://w3s.link/ipfs/');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const gateways = [
+    { label: 'w3s.link', value: 'https://w3s.link/ipfs/' },
+    { label: 'ipfs.io', value: 'https://ipfs.io/ipfs/' },
+    // Removed dweb.link
+  ];
+
+  const modalRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    // Add event listener for clicks outside the modal
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [onClose]);
+
+  const handleGatewayChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedGateway(e.target.value);
+  };
+
+  const handleCidChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCid(e.target.value);
+  };
+
+  const handleCheck = () => {
+    if (cid) {
+      setIsLoading(true);
+      const url = `${selectedGateway}${cid}`;
+      window.open(url, '_blank');
+      setIsLoading(false); // Immediately close loading state since we're opening a new tab
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div
+        ref={modalRef}
+        className={`w-[800px] rounded-xl border ${themeClasses[theme]} backdrop-blur-md p-6`}
+      >
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold">Check IPFS CID</h2>
+          <button onClick={onClose} className="p-1 hover:bg-gray-800/50 rounded-lg">
+            <X size={20} />
+          </button>
+        </div>
+
+        <div className="space-y-4">
+          <div className="flex flex-col">
+            <label className={`block ${themeClasses[theme]} text-sm font-bold mb-2`} htmlFor="gateway">
+              Select Gateway
+            </label>
+            <select
+              id="gateway"
+              className={`shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline ${dropdownClasses[theme]}`}
+              value={selectedGateway}
+              onChange={handleGatewayChange}
+            >
+              {gateways.map((gateway) => (
+                <option key={gateway.value} value={gateway.value}>
+                  {gateway.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex flex-col">
+            <label className={`block ${themeClasses[theme]} text-sm font-bold mb-2`} htmlFor="cid">
+              CID
+            </label>
+            <input
+              id="cid"
+              type="text"
+              className={`shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline ${themeClasses[theme]}`}
+              value={cid}
+              onChange={handleCidChange}
+            />
+          </div>
+
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            onClick={handleCheck}
+            disabled={isLoading}
+          >
+            {isLoading ? <Loader2 className="animate-spin" size={20} /> : 'Check'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default IPFSModal;

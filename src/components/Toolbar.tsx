@@ -16,6 +16,7 @@ import TimeZonesModal from './TimeZonesModal';
 import LensFeedModal from './LensFeedModal';
 import GamebModal from './GamebModal';
 import CryptoPricesModal from './CryptoPricesModal'; // Import CryptoPricesModal
+import IPFSModal from './IPFSModal'; // Import IPFSModal
 
 interface ToolbarProps {
   theme: Theme;
@@ -35,6 +36,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
   const [showLensFeed, setShowLensFeed] = useState(false);
   const [showGameb, setShowGameb] = useState(false);
   const [showCryptoPrices, setShowCryptoPrices] = useState(false); // New state for CryptoPricesModal
+  const [showIPFSModal, setShowIPFSModal] = useState(false); // New state for IPFSModal
 
   const themeClasses = {
     purple: 'border-purple-500/30 text-purple-300 hover:text-purple-100',
@@ -56,6 +58,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
     { id: 'timezones', icon: <Clock size={20} />, label: 'World Clock' },
     { id: 'lensfeed', icon: <Glasses size={20} />, label: 'Lens Feed' },
     { id: 'cryptoprices', icon: <DollarSign size={20} />, label: 'Token Prices' },
+    { id: 'ipfs', icon: <Network size={20} />, label: 'IPFS CID Checker' }, // New item for IPFSModal
   ];
 
   const handleItemClick = (id: string) => {
@@ -81,8 +84,10 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
       setShowLensFeed(true);
     } else if (id === 'terminal') {
       setShowGameb(true);
-    } else if (id === 'cryptoprices') { // Handle new item
+    } else if (id === 'cryptoprices') {
       setShowCryptoPrices(true);
+    } else if (id === 'ipfs') {
+      setShowIPFSModal(true);
     }
 
     setActiveMenu(activeMenu === id ? null : id);
@@ -124,7 +129,8 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
       <TimeZonesModal isOpen={showTimeZones} onClose={() => setShowTimeZones(false)} theme={theme} />
       <LensFeedModal isOpen={showLensFeed} onClose={() => setShowLensFeed(false)} theme={theme} />
       <GamebModal isOpen={showGameb} onClose={() => setShowGameb(false)} theme={theme} iframeUrl="https://www.example.com" />
-      <CryptoPricesModal isOpen={showCryptoPrices} onClose={() => setShowCryptoPrices(false)} theme={theme} /> {/* Render CryptoPricesModal */}
+      <CryptoPricesModal isOpen={showCryptoPrices} onClose={() => setShowCryptoPrices(false)} theme={theme} />
+      <IPFSModal isOpen={showIPFSModal} onClose={() => setShowIPFSModal(false)} theme={theme} /> {/* Render IPFSModal */}
     </>
   );
 };
