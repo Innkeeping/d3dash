@@ -4,16 +4,16 @@ import SearchBar from './SearchBar';
 import ShortcutGrid from './ShortcutGrid';
 import LinkGrid from './LinkGrid';
 import Toolbar from './Toolbar';
-import PriceCard from './PriceCard'; // Import the PriceCard component
+// import PriceCard from './PriceCard'; // Import the PriceCard component
 import { shortcuts } from '../data/shortcuts';
 import linksData from '../data/links.json';
 import { Theme, Link, DescribedLink, NetworkLink } from '../types';
-import { CandlestickChart } from 'lucide-react';
+// import { CandlestickChart } from 'lucide-react';
 
 const Desktop: React.FC = () => {
   const [search, setSearch] = useState('');
   const [theme, setTheme] = useState<Theme>('purple');
-  const [showPriceCard, setShowPriceCard] = useState(true); // State to manage PriceCard visibility
+  // const [showPriceCard, setShowPriceCard] = useState(true); // State to manage PriceCard visibility
 
   // Flatten the links data into a single array
   const allLinks: Link[] = Object.values(linksData).flat();
@@ -71,8 +71,7 @@ const Desktop: React.FC = () => {
       <ShortcutGrid shortcuts={filteredShortcuts} theme={theme} />
       {search && <LinkGrid links={filteredLinks} theme={theme} />} {/* Conditionally render LinkGrid */}
       <Toolbar theme={theme} setTheme={setTheme} />
-
-      {/* Price Card Toggle */}
+{/*
       <div className="absolute top-4 right-4">
         {showPriceCard ? (
           <PriceCard theme={theme} toggleVisibility={() => setShowPriceCard(false)} />
@@ -88,7 +87,7 @@ const Desktop: React.FC = () => {
 
           </button>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };
