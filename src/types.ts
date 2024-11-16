@@ -32,3 +32,7 @@ export interface NetworkLink {
 
 // Union type for links
 export type Link = DescribedLink | NetworkLink;
+
+export type CitiesToTimeZones = {
+  [key: string]: string[];
+};
