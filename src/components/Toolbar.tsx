@@ -1,3 +1,4 @@
+// src/components/Toolbar.tsx
 import React, { useState } from 'react';
 import {
   Terminal, Settings, Wallet, Palette,
@@ -11,6 +12,7 @@ import Networks from './Networks';
 import DefiModal from './DefiModal';
 import DocsModal from './DocsModal';
 import TimeZonesModal from './TimeZonesModal'; // Import the TimeZonesModal
+import LensFeedModal from './LensFeedModal'; // Import the LensFeedModal
 
 interface ToolbarProps {
   theme: Theme;
@@ -27,6 +29,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
   const [showDefi, setShowDefi] = useState(false);
   const [showDocs, setShowDocs] = useState(false);
   const [showTimeZones, setShowTimeZones] = useState(false); // New state for TimeZonesModal
+  const [showLensFeed, setShowLensFeed] = useState(false); // New state for LensFeedModal
 
   const themeClasses = {
     purple: 'border-purple-500/30 text-purple-300 hover:text-purple-100',
@@ -46,6 +49,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
     { id: 'settings', icon: <Settings size={20} />, label: 'Settings' },
     { id: 'break', icon: <Coffee size={20} />, label: 'Take a Break' },
     { id: 'timezones', icon: <Clock size={20} />, label: 'World Clock' }, // New item for TimeZonesModal
+    { id: 'lensfeed', icon: <Book size={20} />, label: 'Lens Feed' }, // New item for LensFeedModal
   ];
 
   const handleItemClick = (id: string) => {
@@ -67,6 +71,8 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
       setShowDocs(true);
     } else if (id === 'timezones') {
       setShowTimeZones(true);
+    } else if (id === 'lensfeed') {
+      setShowLensFeed(true);
     }
 
     setActiveMenu(activeMenu === id ? null : id);
@@ -106,6 +112,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
       <DefiModal isOpen={showDefi} onClose={() => setShowDefi(false)} theme={theme} />
       <DocsModal isOpen={showDocs} onClose={() => setShowDocs(false)} theme={theme} />
       <TimeZonesModal isOpen={showTimeZones} onClose={() => setShowTimeZones(false)} theme={theme} />
+      <LensFeedModal isOpen={showLensFeed} onClose={() => setShowLensFeed(false)} theme={theme} /> {/* Add LensFeedModal */}
     </>
   );
 };

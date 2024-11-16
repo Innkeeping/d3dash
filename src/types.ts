@@ -36,3 +36,38 @@ export type Link = DescribedLink | NetworkLink;
 export type CitiesToTimeZones = {
   [key: string]: string[];
 };
+
+// Define types for the Lens API response
+export type LensPublicationStats = {
+  reactions: number;
+};
+
+export type LensImageMetadataV3 = {
+  __typename: 'ImageMetadataV3'; // Ensure this matches the typename returned by the API
+  id: string;
+  content: string;
+  asset: {
+    image: {
+      optimized: {
+        uri: string;
+      };
+    };
+  };
+};
+
+export type LensTextOnlyMetadataV3 = {
+  __typename: 'TextOnlyMetadataV3'; // Ensure this matches the typename returned by the API
+  id: string;
+  content: string;
+};
+
+export type LensPostMetadata = LensImageMetadataV3 | LensTextOnlyMetadataV3;
+
+export type LensPublication = {
+  stats: LensPublicationStats;
+  metadata: LensPostMetadata;
+};
+
+export type LensExplorePublicationsResponse = {
+  items: LensPublication[];
+};
