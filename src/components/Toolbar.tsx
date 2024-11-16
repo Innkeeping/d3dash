@@ -21,12 +21,12 @@ import IPFSModal from './IPFSModal'; // Import IPFSModal
 interface ToolbarProps {
   theme: Theme;
   setTheme: (theme: Theme) => void;
+  onPomodoroOpen: () => void;
 }
 
-const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
+const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, onPomodoroOpen }) => {
   const [showToolbar, setShowToolbar] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
-  const [showPomodoro, setShowPomodoro] = useState(false);
   const [showRefi, setShowRefi] = useState(false);
   const [showGovernance, setShowGovernance] = useState(false);
   const [showNetworks, setShowNetworks] = useState(false);
@@ -45,7 +45,6 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
   };
 
   const toolbarItems = [
-    // { id: 'wallet', icon: <Wallet size={20} />, label: 'Connect Wallet' },
     { id: 'blockchain', icon: <Network size={20} />, label: 'Networks' },
     { id: 'dao', icon: <Radio size={20} />, label: 'Governance' },
     { id: 'refi', icon: <Heart size={20} />, label: 'ReFi Projects' },
@@ -53,7 +52,6 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
     { id: 'docs', icon: <Book size={20} />, label: 'Documentation' },
     { id: 'terminal', icon: <Terminal size={20} />, label: 'Dev Console' },
     { id: 'theme', icon: <Palette size={20} />, label: 'Theme' },
-    // { id: 'settings', icon: <Settings size={20} />, label: 'Settings' },
     { id: 'break', icon: <Coffee size={20} />, label: 'Take a Break' },
     { id: 'timezones', icon: <Clock size={20} />, label: 'World Clock' },
     { id: 'lensfeed', icon: <Glasses size={20} />, label: 'Lens Feed' },
@@ -67,7 +65,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
       const currentThemeIndex = themes.indexOf(theme);
       setTheme(themes[(currentThemeIndex + 1) % themes.length]);
     } else if (id === 'break') {
-      setShowPomodoro(true);
+      onPomodoroOpen(); // Open Pomodoro Modal
     } else if (id === 'refi') {
       setShowRefi(true);
     } else if (id === 'dao') {
@@ -111,7 +109,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
                   }`}
                 >
                   {item.icon}
-                  <span className="absolute left-0 top-1/2 transform -translate-x-full -translate-y-1/2 mr-2 px-2 py-1 text-xs bg-gray-900/90 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap -ml-2">
+                  <span className="absolute left-0 top-1/2 transform -translate-x-full -translate-y-1/2 mr-2 px-2 py-1 text-xs bg-gray-900/90 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap -ml-2">
                     {item.label}
                   </span>
                 </button>
@@ -120,7 +118,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
           </div>
         </div>
       </div>
-      <PomodoroModal isOpen={showPomodoro} onClose={() => setShowPomodoro(false)} theme={theme} />
+      <PomodoroModal isOpen={false} onClose={() => {}} theme={theme} onTimerUpdate={() => {}} />
       <RefiModal isOpen={showRefi} onClose={() => setShowRefi(false)} theme={theme} />
       <GovernanceModal isOpen={showGovernance} onClose={() => setShowGovernance(false)} theme={theme} />
       <Networks isOpen={showNetworks} onClose={() => setShowNetworks(false)} theme={theme} />

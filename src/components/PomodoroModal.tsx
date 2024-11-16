@@ -1,3 +1,4 @@
+// src/components/PomodoroModal.tsx
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Play, Pause, RotateCcw } from 'lucide-react';
 import { Theme } from '../types';
@@ -6,23 +7,39 @@ interface PomodoroModalProps {
   isOpen: boolean;
   onClose: () => void;
   theme: Theme;
+  onTimerUpdate: (isRunning: boolean, timeLeft: number) => void; // New prop to pass timer state
 }
 
-const PomodoroModal: React.FC<PomodoroModalProps> = ({ isOpen, onClose, theme }) => {
+const PomodoroModal: React.FC<PomodoroModalProps> = ({ isOpen, onClose, theme, onTimerUpdate }) => {
   const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 minutes in seconds
   const [isRunning, setIsRunning] = useState(false);
   const [currentMode, setCurrentMode] = useState<'work' | 'break'>('work');
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: NodeJS.Timeout | null = null;
+
     if (isRunning && timeLeft > 0) {
       interval = setInterval(() => {
         setTimeLeft((time) => time - 1);
       }, 1000);
+    } else if (timeLeft === 0) {
+      if (interval) clearInterval(interval);
+      setShowNotification(true);
+      setNotificationMessage(currentMode === 'work' ? 'Work Time Over!' : 'Break Time Over!');
+      setTimeout(() => setShowNotification(false), 3000); // Hide notification after 3 seconds
+      toggleMode(); // Automatically switch mode after timer ends
     }
-    return () => clearInterval(interval);
-  }, [isRunning, timeLeft]);
+
+    // Pass the timer state to the parent component
+    onTimerUpdate(isRunning, timeLeft);
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isRunning, timeLeft, currentMode, onTimerUpdate]);
 
   useEffect(() => {
     // Add event listener for clicks outside the modal
@@ -43,12 +60,14 @@ const PomodoroModal: React.FC<PomodoroModalProps> = ({ isOpen, onClose, theme })
   const resetTimer = () => {
     setIsRunning(false);
     setTimeLeft(currentMode === 'work' ? 25 * 60 : 5 * 60);
+    setShowNotification(false); // Hide notification on reset
   };
 
   const toggleMode = () => {
     setCurrentMode(currentMode === 'work' ? 'break' : 'work');
     setTimeLeft(currentMode === 'work' ? 5 * 60 : 25 * 60);
     setIsRunning(false);
+    setShowNotification(false); // Hide notification on mode toggle
   };
 
   const formatTime = (seconds: number) => {
@@ -69,8 +88,13 @@ const PomodoroModal: React.FC<PomodoroModalProps> = ({ isOpen, onClose, theme })
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div
         ref={modalRef}
-        className={`w-96 rounded-xl border ${themeClasses[theme]} backdrop-blur-md p-6`}
+        className={`w-96 rounded-xl border ${themeClasses[theme]} backdrop-blur-md p-6 relative`}
       >
+        {showNotification && (
+          <div className="absolute top-0 left-0 w-full bg-green-500 text-white p-3 text-center rounded-t-lg">
+            {notificationMessage}
+          </div>
+        )}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Pomodoro Timer</h2>
           <button onClick={onClose} className="p-1 hover:bg-gray-800/50 rounded-lg">
