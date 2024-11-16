@@ -80,18 +80,37 @@ const TimeZonesModal: React.FC<TimeZonesModalProps> = ({ isOpen, onClose, theme 
 
   // Function to normalize the offset string for comparison
   const normalizeOffset = (offset: string) => {
-    return offset.replace(/GMT/g, 'UTC').toLowerCase();
+    return offset
+      .replace(/GMT/g, 'UTC')
+      .replace(/\s+/g, '')
+      .toLowerCase();
+  };
+
+  // Function to extract the offset from the search query
+  const extractOffsetFromQuery = (query: string) => {
+    const match = query.match(/(UTC|GMT)\s*([+-]?\d+)/i);
+    if (match) {
+      return normalizeOffset(match[1] + match[2]);
+    }
+    return normalizeOffset(query);
+  };
+
+  // Function to format the offset for comparison
+  const formatOffsetForComparison = (offset: string) => {
+    return offset.replace(/UTC([+-])(\d+)/, 'UTC$1$2');
   };
 
   // Filter time zones based on search query
   const filteredTimeZones = sortedTimeZones.filter(tz => {
-    const labelMatch = tz.label.toLowerCase().includes(searchQuery.toLowerCase());
+    const labelMatch = tz.label.toLowerCase().includes(normalizeOffset(searchQuery));
     const cityMatch = tz.cities.some(city =>
-      city.toLowerCase().includes(searchQuery.toLowerCase())
+      city.toLowerCase().includes(normalizeOffset(searchQuery))
     );
-    const countryMatch = tz.country && tz.country.toLowerCase().includes(searchQuery.toLowerCase());
+    const countryMatch = tz.country && tz.country.toLowerCase().includes(normalizeOffset(searchQuery));
     const timezoneMatch = tz.timezone && normalizeOffset(tz.timezone).includes(normalizeOffset(searchQuery));
-    const offsetMatch = formatTimeZoneOffset(tz.value).includes(normalizeOffset(searchQuery));
+    const offsetMatch = formatTimeZoneOffset(tz.value)
+      .toLowerCase()
+      .includes(formatOffsetForComparison(extractOffsetFromQuery(searchQuery)));
 
     return labelMatch || cityMatch || countryMatch || timezoneMatch || offsetMatch;
   });
