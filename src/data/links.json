@@ -1,0 +1,341 @@
+{
+  "Defi": [
+    {
+      "name": "Aave",
+      "icon": "<PieChart className=\"text-green-400\" size={24} />",
+      "url": "https://aave.com",
+      "description": "A decentralized lending and borrowing protocol",
+      "category": "Defi"
+    },
+    {
+      "name": "Balancer",
+      "icon": "<Compass className=\"text-orange-400\" size={24} />",
+      "url": "https://balancer.fi",
+      "description": "A decentralized exchange and automated market maker",
+      "category": "Defi"
+    },
+    {
+      "name": "Compound",
+      "icon": "<BarChart className=\"text-blue-400\" size={24} />",
+      "url": "https://compound.finance",
+      "description": "A decentralized lending protocol on Ethereum",
+      "category": "Defi"
+    },
+    {
+      "name": "Curve",
+      "icon": "<Briefcase className=\"text-pink-400\" size={24} />",
+      "url": "https://curve.fi",
+      "description": "A decentralized exchange for stablecoins",
+      "category": "Defi"
+    },
+    {
+      "name": "Rari Capital",
+      "icon": "<CircleDollarSign className=\"text-teal-400\" size={24} />",
+      "url": "https://rari.capital",
+      "description": "A decentralized lending and borrowing protocol with smart yield farming",
+      "category": "Defi"
+    },
+    {
+      "name": "Uniswap",
+      "icon": "<DollarSign className=\"text-purple-400\" size={24} />",
+      "url": "https://uniswap.org",
+      "description": "A decentralized exchange (DEX) for ERC-20 tokens",
+      "category": "Defi"
+    },
+    {
+      "name": "Yearn",
+      "icon": "<HardDrive className=\"text-cyan-400\" size={24} />",
+      "url": "https://yearn.finance",
+      "description": "A suite of DeFi tools for managing decentralized assets",
+      "category": "Defi"
+    },
+    {
+      "name": "1inch",
+      "icon": "<Network className=\"text-purple-400\" size={24} />",
+      "url": "https://1inch.exchange/",
+      "description": "A decentralized exchange (DEX) aggregator",
+      "category": "Defi"
+    },
+    {
+      "name": "Jumper.Exchange",
+      "icon": "<Network className=\"text-purple-400\" size={24} />",
+      "url": "https://jumper.exchange/",
+      "description": "A decentralized exchange (DEX)",
+      "category": "Defi"
+    },
+    {
+      "name": "QuickSwap",
+      "icon": "<Network className=\"text-purple-400\" size={24} />",
+      "url": "https://quickswap.exchange/",
+      "description": "A decentralized exchange (DEX) on the Polygon network",
+      "category": "Defi"
+    }
+  ],
+  "Docs": [
+    {
+      "name": "Alchemy",
+      "icon": "<Book className=\"text-purple-400\" size={24} />",
+      "url": "https://docs.alchemy.com/",
+      "description": "A web3 developer platform providing powerful tools for building blockchain applications.",
+      "category": "Docs"
+    },
+    {
+      "name": "Chainlink",
+      "icon": "<Book className=\"text-purple-400\" size={24} />",
+      "url": "https://docs.chain.link/",
+      "description": "A decentralized oracle network that provides real-world data to smart contracts.",
+      "category": "Docs"
+    },
+    {
+      "name": "Ethereum",
+      "icon": "<Book className=\"text-emerald-400\" size={24} />",
+      "url": "https://ethereum.org/en/developers/docs/",
+      "description": "Ethereum resources for developers, covering smart contracts, wallets, and more.",
+      "category": "Docs"
+    },
+    {
+      "name": "Foundry",
+      "icon": "<Book className=\"text-emerald-400\" size={24} />",
+      "url": "https://book.getfoundry.sh/",
+      "description": "A fast, portable, and modular toolkit for Ethereum development.",
+      "category": "Docs"
+    },
+    {
+      "name": "Hardhat",
+      "icon": "<Book className=\"text-green-400\" size={24} />",
+      "url": "https://hardhat.org/hardhat-runner/docs/getting-started",
+      "description": "A development environment for Ethereum with local blockchain development, testing, and deployment.",
+      "category": "Docs"
+    },
+    {
+      "name": "Infura",
+      "icon": "<Book className=\"text-purple-400\" size={24} />",
+      "url": "https://docs.infura.io/",
+      "description": "Blockchain infrastructure for dapps, providing access to Ethereum and other blockchains.",
+      "category": "Docs"
+    },
+    {
+      "name": "IPFS",
+      "icon": "<Book className=\"text-purple-400\" size={24} />",
+      "url": "https://docs.ipfs.tech/",
+      "description": "A decentralized file system for building distributed applications.",
+      "category": "Docs"
+    },
+    {
+      "name": "OpenZeppelin",
+      "icon": "<Book className=\"text-purple-400\" size={24} />",
+      "url": "https://docs.openzeppelin.com/contracts/",
+      "description": "A library of secure and community-audited smart contracts for Ethereum.",
+      "category": "Docs"
+    },
+    {
+      "name": "RainbowKit",
+      "icon": "<Book className=\"text-green-400\" size={24} />",
+      "url": "https://www.rainbowkit.com/docs/",
+      "description": "Beautiful, modular, and extensible wallet connection UIs for Ethereum dapps.",
+      "category": "Docs"
+    },
+    {
+      "name": "Reown",
+      "icon": "<Book className=\"text-green-400\" size={24} />",
+      "url": "https://docs.reown.io/",
+      "description": "A platform for building and managing decentralized applications.",
+      "category": "Docs"
+    },
+    {
+      "name": "Remix IDE",
+      "icon": "<Book className=\"text-emerald-400\" size={24} />",
+      "url": "https://remix-ide.readthedocs.io/en/latest/",
+      "description": "An in-browser Solidity IDE for writing, testing, and deploying smart contracts.",
+      "category": "Docs"
+    },
+    {
+      "name": "Solidity",
+      "icon": "<Book className=\"text-purple-400\" size={24} />",
+      "url": "https://docs.soliditylang.org/en/latest/",
+      "description": "The programming language for writing smart contracts on Ethereum.",
+      "category": "Docs"
+    },
+    {
+      "name": "Scaffold-ETH 2",
+      "icon": "<Book className=\"text-green-400\" size={24} />",
+      "url": "https://github.com/scaffold-eth/scaffold-eth-2",
+      "description": "A full-stack Ethereum development scaffold to build and deploy dapps quickly.",
+      "category": "Docs"
+    },
+    {
+      "name": "The Graph",
+      "icon": "<Book className=\"text-green-400\" size={24} />",
+      "url": "https://thegraph.com/docs/en/",
+      "description": "A decentralized indexing protocol for building subgraphs to query blockchain data.",
+      "category": "Docs"
+    },
+    {
+      "name": "ThirdWeb",
+      "icon": "<Book className=\"text-emerald-400\" size={24} />",
+      "url": "https://portal.thirdweb.com/",
+      "description": "A platform for building web3 apps with the most intuitive SDK and tools.",
+      "category": "Docs"
+    },
+    {
+      "name": "Viem",
+      "icon": "<Book className=\"text-purple-400\" size={24} />",
+      "url": "https://viem.sh/",
+      "description": "A lightweight, powerful, and type-safe Ethereum JavaScript library for building dapps.",
+      "category": "Docs"
+    },
+    {
+      "name": "Wagmi",
+      "icon": "<Book className=\"text-purple-400\" size={24} />",
+      "url": "https://wagmi.sh/",
+      "description": "React Hooks for Ethereum that simplifies building dapps.",
+      "category": "Docs"
+    },
+    {
+      "name": "Web3.js",
+      "icon": "<Book className=\"text-green-400\" size={24} />",
+      "url": "https://web3js.readthedocs.io/en/v1.7.0/",
+      "description": "A JavaScript library for interacting with the Ethereum blockchain and smart contracts.",
+      "category": "Docs"
+    },
+    {
+      "name": "Ethers.js",
+      "icon": "<Book className=\"text-emerald-400\" size={24} />",
+      "url": "https://docs.ethers.io/v5/",
+      "description": "A JavaScript library for interacting with the Ethereum blockchain and smart contracts, providing a simple and powerful API.",
+      "category": "Docs"
+    }
+  ],
+  "DAO Governance": [
+    {
+      "name": "Snapshot",
+      "icon": "<Vote className=\"text-blue-400\" size={24} />",
+      "url": "https://snapshot.org",
+      "description": "Gasless, off-chain voting system for DAOs",
+      "category": "DAO Governance"
+    },
+    {
+      "name": "Tally",
+      "icon": "<Radio className=\"text-purple-400\" size={24} />",
+      "url": "https://www.tally.xyz",
+      "description": "DAO governance dashboard and voting interface",
+      "category": "DAO Governance"
+    },
+    {
+      "name": "Commonwealth",
+      "icon": "<Users className=\"text-green-400\" size={24} />",
+      "url": "https://commonwealth.im",
+      "description": "Discussion forum and governance platform for Web3 communities",
+      "category": "DAO Governance"
+    },
+    {
+      "name": "Discourse",
+      "icon": "<MessageSquare className=\"text-orange-400\" size={24} />",
+      "url": "https://www.discourse.org",
+      "description": "Community discussion and governance forum",
+      "category": "DAO Governance"
+    },
+    {
+      "name": "Gardens",
+      "icon": "<Flower2 className=\"text-pink-400\" size={24} />",
+      "url": "https://www.gardens.fund/",
+      "description": "Gardens is a coordination platform",
+      "category": "DAO Governance"
+    }
+  ],
+  "Networks": [
+    {
+      "name": "Arbitrum One",
+      "chainId": "42161 (0xa4b1)",
+      "currency": "ETH",
+      "url": "https://arbiscan.io/",
+      "category": "Networks"
+    },
+    {
+      "name": "Base",
+      "chainId": "8453 (0x2105)",
+      "currency": "ETH",
+      "url": "https://basescan.org/",
+      "category": "Networks"
+    },
+    {
+      "name": "Celo Mainnet",
+      "chainId": "42220 (0xa4ec)",
+      "currency": "CELO",
+      "url": "https://celoscan.io/",
+      "category": "Networks"
+    },
+    {
+      "name": "Ethereum Mainnet",
+      "chainId": "1 (0x1)",
+      "currency": "ETH",
+      "url": "https://etherscan.io/",
+      "category": "Networks"
+    },
+    {
+      "name": "Gnosis",
+      "chainId": "100 (0x64)",
+      "currency": "XDAI",
+      "url": "https://gnosisscan.io/",
+      "category": "Networks"
+    },
+    {
+      "name": "OP Mainnet",
+      "chainId": "10 (0xa)",
+      "currency": "ETH",
+      "url": "https://optimistic.etherscan.io/",
+      "category": "Networks"
+    },
+    {
+      "name": "Polygon Mainnet",
+      "chainId": "137 (0x89)",
+      "currency": "POL",
+      "url": "https://polygonscan.com/",
+      "category": "Networks"
+    },
+    {
+      "name": "Polygon zkEVM",
+      "chainId": "1101 (0x44d)",
+      "currency": "ETH",
+      "url": "https://zkevm.polygonscan.com/",
+      "category": "Networks"
+    }
+  ],
+  "Refi": [
+    {
+      "name": "Giveth",
+      "icon": "<Heart className=\"text-purple-400\" size={24} />",
+      "url": "https://giveth.io",
+      "description": "Building the Future of Giving through blockchain technology",
+      "category": "Refi"
+    },
+    {
+      "name": "GreenPill Network",
+      "icon": "<Pill className=\"text-green-400\" size={24} />",
+      "url": "https://greenpill.network",
+      "description": "Turning degens to regens.",
+      "category": "Refi"
+    },
+    {
+      "name": "Letʼs GROW DAO",
+      "icon": "<Shrub className=\"text-emerald-400\" size={24} />",
+      "url": "https://www.letsgrow.network/",
+      "description": "On a mission to unite & GROW the Regen Movement",
+      "category": "Refi"
+    },
+    {
+      "name": "ReFi DAO",
+      "icon": "<Orbit className=\"text-purple-400\" size={24} />",
+      "url": "https://www.refidao.com/",
+      "description": "The home of the regenerative finance ecosystem.",
+      "category": "Refi"
+    },
+    {
+      "name": "Klima DAO",
+      "icon": "<Leaf className=\"text-green-400\" size={24} />",
+      "url": "https://www.klimadao.finance",
+      "description": "Driving climate action through tokenized carbon credits",
+      "category": "Refi"
+    }
+  ]
+}
