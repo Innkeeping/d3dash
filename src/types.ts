@@ -8,4 +8,4 @@ export interface Shortcut {
   category: string;
 }
 
-export type Theme = 'purple' | 'green';
+export type Theme = 'purple' | 'green'| 'teal';

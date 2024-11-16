@@ -13,7 +13,8 @@ const GovernanceModal: React.FC<GovernanceModalProps> = ({ isOpen, onClose, them
 
   const themeClasses = {
     purple: 'border-purple-500/30 bg-purple-900/20',
-    green: 'border-green-500/30 bg-green-900/20'
+    green: 'border-green-500/30 bg-green-900/20',
+    teal: 'border-teal-500/30 bg-teal-900/20'
   }
 
   const tools = [

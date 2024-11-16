@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import {
   Terminal, Settings, Wallet, Palette,
   Coffee, Network, Heart, Radio, Coins
-} from 'lucide-react'
-import { Theme } from '../types'
-import PomodoroModal from './PomodoroModal'
-import RefiModal from './RefiModal'
-import GovernanceModal from './GovernanceModal'
-import Networks from './Networks'
-import DefiModal from './DefiModal' // Import DefiModal
+} from 'lucide-react';
+import { Theme } from '../types';
+import PomodoroModal from './PomodoroModal';
+import RefiModal from './RefiModal';
+import GovernanceModal from './GovernanceModal';
+import Networks from './Networks';
+import DefiModal from './DefiModal'; // Import DefiModal
 
 interface ToolbarProps {
   theme: Theme;
@@ -16,17 +16,18 @@ interface ToolbarProps {
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
-  const [showToolbar, setShowToolbar] = useState(false)
-  const [activeMenu, setActiveMenu] = useState<string | null>(null)
-  const [showPomodoro, setShowPomodoro] = useState(false)
-  const [showRefi, setShowRefi] = useState(false)
-  const [showGovernance, setShowGovernance] = useState(false)
-  const [showNetworks, setShowNetworks] = useState(false)
-  const [showDefi, setShowDefi] = useState(false) // State for DefiModal
+  const [showToolbar, setShowToolbar] = useState(false);
+  const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const [showPomodoro, setShowPomodoro] = useState(false);
+  const [showRefi, setShowRefi] = useState(false);
+  const [showGovernance, setShowGovernance] = useState(false);
+  const [showNetworks, setShowNetworks] = useState(false);
+  const [showDefi, setShowDefi] = useState(false); // State for DefiModal
 
   const themeClasses = {
     purple: 'border-purple-500/30 text-purple-300 hover:text-purple-100',
-    green: 'border-green-500/30 text-green-300 hover:text-green-100'
+    green: 'border-green-500/30 text-green-300 hover:text-green-100',
+    teal: 'border-teal-500/30 text-teal-300 hover:text-teal-100' // Add styles for 'teal'
   };
 
   const toolbarItems = [
@@ -43,13 +44,15 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
 
   const handleItemClick = (id: string) => {
     if (id === 'theme') {
-      setTheme(theme === 'purple' ? 'green' : 'purple')
+      const themes = ['purple', 'green', 'teal'] as const;
+      const currentThemeIndex = themes.indexOf(theme);
+      setTheme(themes[(currentThemeIndex + 1) % themes.length]);
     } else if (id === 'break') {
-      setShowPomodoro(true)
+      setShowPomodoro(true);
     } else if (id === 'refi') {
-      setShowRefi(true)
+      setShowRefi(true);
     } else if (id === 'dao') {
-      setShowGovernance(true)
+      setShowGovernance(true);
     } else if (id === 'blockchain') {
       setShowNetworks(true);
     } else if (id === 'defi') { // Handle Defi Tools
@@ -72,7 +75,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme }) => {
                 <button
                   onClick={() => handleItemClick(item.id)}
                   className={`p-2 hover:bg-gray-800/50 rounded-lg transition-colors relative ${
-                    activeMenu === item.id ? (theme === 'purple' ? 'bg-purple-900/50' : 'bg-green-900/50') : ''
+                    activeMenu === item.id ? (theme === 'purple' ? 'bg-purple-900/50' : theme === 'green' ? 'bg-green-900/50' : 'bg-teal-900/50') : ''
                   }`}
                 >
                   {item.icon}

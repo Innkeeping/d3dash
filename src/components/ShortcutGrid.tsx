@@ -9,7 +9,8 @@ interface ShortcutGridProps {
 const ShortcutGrid: React.FC<ShortcutGridProps> = ({ shortcuts, theme }) => {
   const themeClasses = {
     purple: 'border-purple-500/20 hover:border-purple-500/40 text-purple-300 group-hover:text-purple-200',
-    green: 'border-green-500/20 hover:border-green-500/40 text-green-300 group-hover:text-green-200'
+    green: 'border-green-500/20 hover:border-green-500/40 text-green-300 group-hover:text-green-200',
+    teal: 'border-teal-500/20 hover:border-teal-500/40 text-teal-300 group-hover:text-teal-200'
   }
 
   return (

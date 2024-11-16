@@ -38,3 +38,11 @@ body {
 .green ::-webkit-scrollbar-thumb:hover {
   background: rgba(16, 185, 129, 0.7);
 }
+
+.teal ::-webkit-scrollbar-thumb {
+  background: rgba(0, 128, 128, 0.5);
+}
+
+.teal ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0 ,128 ,128, 0.7);
+}

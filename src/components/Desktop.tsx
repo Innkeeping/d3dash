@@ -16,7 +16,8 @@ const Desktop: React.FC = () => {
 
   const themeClasses = {
     purple: 'bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900',
-    green: 'bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900'
+    green: 'bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900',
+    teal: 'bg-gradient-to-br from-gray-900 via-teal-900 to-emerald-900'
   }
 
   return (
