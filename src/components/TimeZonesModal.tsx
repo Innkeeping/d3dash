@@ -85,7 +85,8 @@ const TimeZonesModal: React.FC<TimeZonesModalProps> = ({ isOpen, onClose, theme 
       city.toLowerCase().includes(searchQuery.toLowerCase())
     );
     const countryMatch = tz.country && tz.country.toLowerCase().includes(searchQuery.toLowerCase());
-    return labelMatch || cityMatch || countryMatch;
+    const timezoneMatch = tz.timezone && tz.timezone.toLowerCase().includes(searchQuery.toLowerCase());
+    return labelMatch || cityMatch || countryMatch || timezoneMatch;
   });
 
   useEffect(() => {
@@ -156,6 +157,11 @@ const TimeZonesModal: React.FC<TimeZonesModalProps> = ({ isOpen, onClose, theme 
                   {tz.country && (
                     <p className="text-xs opacity-50">
                       Country: {tz.country}
+                    </p>
+                  )}
+                  {tz.timezone && (
+                    <p className="text-xs opacity-50">
+                      Timezone: {tz.timezone}
                     </p>
                   )}
                 </div>
