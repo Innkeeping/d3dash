@@ -1,21 +1,21 @@
-import React from 'react'
-import { X, Heart, Leaf, Pill, Shrub, Orbit } from 'lucide-react'
-import { Theme } from '../types'
+import React, { useRef, useEffect } from 'react';
+import { X, Heart, Leaf, Pill, Shrub, Orbit } from 'lucide-react';
+import { Theme } from '../types';
 
 interface RefiModalProps {
   isOpen: boolean;
-  onClose: () => void
-  theme: Theme
+  onClose: () => void;
+  theme: Theme;
 }
 
 const RefiModal: React.FC<RefiModalProps> = ({ isOpen, onClose, theme }) => {
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   const themeClasses = {
     purple: 'border-purple-500/30 bg-purple-900/20',
     green: 'border-green-500/30 bg-green-900/20',
     teal: 'border-teal-500/30 bg-teal-900/20'
-  }
+  };
 
   const projects = [
     {
@@ -31,7 +31,7 @@ const RefiModal: React.FC<RefiModalProps> = ({ isOpen, onClose, theme }) => {
       description: 'Turning degens to regens.',
     },
     {
-      name: 'Letʼs GROW DAO',
+      name: "Let's GROW DAO",
       icon: <Shrub className="text-emerald-400" size={24} />,
       url: 'https://www.letsgrow.network/',
       description: 'On a mission to unite & GROW the Regen Movement',
@@ -48,11 +48,30 @@ const RefiModal: React.FC<RefiModalProps> = ({ isOpen, onClose, theme }) => {
       url: 'https://www.klimadao.finance',
       description: 'Driving climate action through tokenized carbon credits',
     },
-  ]
+  ];
+
+  const modalRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    // Add event listener for clicks outside the modal
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [onClose]);
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className={`w-[600px] rounded-xl border ${themeClasses[theme]} backdrop-blur-md p-6`}>
+      <div
+        ref={modalRef}
+        className={`w-[600px] rounded-xl border ${themeClasses[theme]} backdrop-blur-md p-6`}
+      >
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">ReFi Projects</h2>
           <button onClick={onClose} className="p-1 hover:bg-gray-800/50 rounded-lg">
@@ -85,7 +104,7 @@ const RefiModal: React.FC<RefiModalProps> = ({ isOpen, onClose, theme }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default RefiModal
+export default RefiModal;

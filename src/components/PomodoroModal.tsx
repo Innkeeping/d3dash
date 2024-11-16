@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { X, Play, Pause, RotateCcw } from 'lucide-react';
 import { Theme } from '../types';
 
@@ -12,6 +12,7 @@ const PomodoroModal: React.FC<PomodoroModalProps> = ({ isOpen, onClose, theme })
   const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 minutes in seconds
   const [isRunning, setIsRunning] = useState(false);
   const [currentMode, setCurrentMode] = useState<'work' | 'break'>('work');
+  const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -22,6 +23,20 @@ const PomodoroModal: React.FC<PomodoroModalProps> = ({ isOpen, onClose, theme })
     }
     return () => clearInterval(interval);
   }, [isRunning, timeLeft]);
+
+  useEffect(() => {
+    // Add event listener for clicks outside the modal
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [onClose]);
 
   const toggleTimer = () => setIsRunning(!isRunning);
 
@@ -52,7 +67,10 @@ const PomodoroModal: React.FC<PomodoroModalProps> = ({ isOpen, onClose, theme })
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className={`w-96 rounded-xl border ${themeClasses[theme]} backdrop-blur-md p-6`}>
+      <div
+        ref={modalRef}
+        className={`w-96 rounded-xl border ${themeClasses[theme]} backdrop-blur-md p-6`}
+      >
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Pomodoro Timer</h2>
           <button onClick={onClose} className="p-1 hover:bg-gray-800/50 rounded-lg">

@@ -19,6 +19,7 @@ const Networks: React.FC<NetworksProps> = ({ isOpen, onClose, theme }) => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const modalRef = useRef<HTMLDivElement | null>(null);
 
   const chainInfo = [
     {
@@ -81,9 +82,26 @@ const Networks: React.FC<NetworksProps> = ({ isOpen, onClose, theme }) => {
     }
   }, [isOpen]);
 
+  useEffect(() => {
+    // Add event listener for clicks outside the modal
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [onClose]);
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className={`w-[600px] max-h-[90vh] rounded-xl border ${themeClasses[theme]} backdrop-blur-md p-6 overflow-y-auto`}>
+      <div
+        ref={modalRef}
+        className={`w-[600px] max-h-[90vh] rounded-xl border ${themeClasses[theme]} backdrop-blur-md p-6 overflow-y-auto`}
+      >
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Network Info/Scans</h2>
           <button onClick={onClose} className="p-1 hover:bg-gray-800/50 rounded-lg">

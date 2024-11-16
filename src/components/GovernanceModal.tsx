@@ -1,21 +1,21 @@
-import React from 'react'
-import { X, Radio, Vote, Users, MessageSquare, Flower2 } from 'lucide-react'
-import { Theme } from '../types'
+import React, { useRef, useEffect } from 'react';
+import { X, Radio, Vote, Users, MessageSquare, Flower2 } from 'lucide-react';
+import { Theme } from '../types';
 
 interface GovernanceModalProps {
   isOpen: boolean;
-  onClose: () => void
-  theme: Theme
+  onClose: () => void;
+  theme: Theme;
 }
 
 const GovernanceModal: React.FC<GovernanceModalProps> = ({ isOpen, onClose, theme }) => {
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   const themeClasses = {
     purple: 'border-purple-500/30 bg-purple-900/20',
     green: 'border-green-500/30 bg-green-900/20',
-    teal: 'border-teal-500/30 bg-teal-900/20'
-  }
+    teal: 'border-teal-500/30 bg-teal-900/20',
+  };
 
   const tools = [
     {
@@ -48,11 +48,30 @@ const GovernanceModal: React.FC<GovernanceModalProps> = ({ isOpen, onClose, them
       url: 'https://www.gardens.fund/',
       description: 'Gardens is a coordination platform',
     },
-  ]
+  ];
+
+  const modalRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    // Add event listener for clicks outside the modal
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [onClose]);
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className={`w-[600px] rounded-xl border ${themeClasses[theme]} backdrop-blur-md p-6`}>
+      <div
+        ref={modalRef}
+        className={`w-[600px] rounded-xl border ${themeClasses[theme]} backdrop-blur-md p-6`}
+      >
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Governance Tools</h2>
           <button onClick={onClose} className="p-1 hover:bg-gray-800/50 rounded-lg">
@@ -85,7 +104,7 @@ const GovernanceModal: React.FC<GovernanceModalProps> = ({ isOpen, onClose, them
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default GovernanceModal
+export default GovernanceModal;
