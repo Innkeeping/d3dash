@@ -1,3 +1,4 @@
+// src/components/TimeZonesModal.tsx
 import React, { useRef, useEffect, useState } from 'react';
 import { X, Clock } from 'lucide-react';
 import { Theme } from '../types';
@@ -24,19 +25,16 @@ const TimeZonesModal: React.FC<TimeZonesModalProps> = ({ isOpen, onClose, theme 
   const searchInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    console.log('Setting up interval for current time');
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
 
     return () => {
-      console.log('Clearing interval');
       clearInterval(timer);
     };
   }, []);
 
   useEffect(() => {
-    console.log('Focusing search input');
     if (isOpen && searchInputRef.current) {
       searchInputRef.current.focus();
     }
@@ -60,7 +58,6 @@ const TimeZonesModal: React.FC<TimeZonesModalProps> = ({ isOpen, onClose, theme 
     return offset ? offset.replace('GMT', 'UTC') : '';
   };
 
-  // Function to get the offset in minutes from UTC
   const getTimeZoneOffset = (timeZone: string) => {
     const date = new Date();
     const options = { timeZone: timeZone, timeZoneName: 'shortOffset' } as const;
@@ -73,12 +70,10 @@ const TimeZonesModal: React.FC<TimeZonesModalProps> = ({ isOpen, onClose, theme 
     return totalMinutes;
   };
 
-  // Sort time zones by their offset from UTC
   const sortedTimeZones = [...timeZonesWithCities].sort((a, b) => {
     return getTimeZoneOffset(a.value) - getTimeZoneOffset(b.value);
   });
 
-  // Function to normalize the offset string for comparison
   const normalizeOffset = (offset: string) => {
     return offset
       .replace(/GMT/g, 'UTC')
@@ -86,7 +81,6 @@ const TimeZonesModal: React.FC<TimeZonesModalProps> = ({ isOpen, onClose, theme 
       .toLowerCase();
   };
 
-  // Function to extract the offset from the search query
   const extractOffsetFromQuery = (query: string) => {
     const match = query.match(/(UTC|GMT)\s*([+-]?\d+)/i);
     if (match) {
@@ -95,12 +89,10 @@ const TimeZonesModal: React.FC<TimeZonesModalProps> = ({ isOpen, onClose, theme 
     return normalizeOffset(query);
   };
 
-  // Function to format the offset for comparison
   const formatOffsetForComparison = (offset: string) => {
     return offset.replace(/UTC([+-])(\d+)/, 'UTC$1$2');
   };
 
-  // Filter time zones based on search query
   const filteredTimeZones = sortedTimeZones.filter(tz => {
     const labelMatch = tz.label.toLowerCase().includes(normalizeOffset(searchQuery));
     const cityMatch = tz.cities.some(city =>
@@ -116,11 +108,6 @@ const TimeZonesModal: React.FC<TimeZonesModalProps> = ({ isOpen, onClose, theme 
   });
 
   useEffect(() => {
-    console.log('Filtered Time Zones:', filteredTimeZones);
-  }, [filteredTimeZones]);
-
-  useEffect(() => {
-    // Add event listener for clicks outside the modal
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
         onClose();
@@ -152,10 +139,7 @@ const TimeZonesModal: React.FC<TimeZonesModalProps> = ({ isOpen, onClose, theme 
             type="text"
             placeholder="Search time zones, cities, or countries..."
             value={searchQuery}
-            onChange={(e) => {
-              console.log('Search Query:', e.target.value);
-              setSearchQuery(e.target.value);
-            }}
+            onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full p-2 rounded-lg border border-gray-700 bg-gray-800/50 focus:outline-none focus:border-purple-500"
           />
         </div>

@@ -1,11 +1,12 @@
-import React from 'react'
-import { Search } from 'lucide-react'
-import { Theme } from '../types'
+// src/components/SearchBar.tsx
+import React from 'react';
+import { Search } from 'lucide-react';
+import { Theme } from '../types';
 
 interface SearchBarProps {
   search: string;
-  setSearch: (value: string) => void
-  theme: Theme
+  setSearch: (value: string) => void;
+  theme: Theme;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ search, setSearch, theme }) => {
@@ -13,7 +14,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ search, setSearch, theme }) => {
     purple: 'border-purple-500/30 focus:ring-purple-500/50 text-purple-100 placeholder-purple-300/50',
     green: 'border-green-500/30 focus:ring-green-500/50 text-green-100 placeholder-green-300/50',
     teal: 'border-teal-500/30 focus:ring-teal-500/50 text-teal-100 placeholder-teal-300/50'
-  }
+  };
 
   return (
     <div className="relative z-10 mb-8">
@@ -30,7 +31,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ search, setSearch, theme }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SearchBar
+export default SearchBar;

@@ -1,10 +1,10 @@
 // src/Desktop.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchBar from './SearchBar';
 import ShortcutGrid from './ShortcutGrid';
 import LinkGrid from './LinkGrid';
 import Toolbar from './Toolbar';
-import PomodoroModal from './PomodoroModal'; // Import the PomodoroModal component
+import TimeZonesModal from './TimeZonesModal';
 import { shortcuts } from '../data/shortcuts';
 import linksData from '../data/links.json';
 import { Theme, Link, DescribedLink, NetworkLink } from '../types';
@@ -16,6 +16,7 @@ const Desktop: React.FC = () => {
   const [isPomodoroModalOpen, setIsPomodoroModalOpen] = useState(false);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [timerTimeLeft, setTimerTimeLeft] = useState(0);
+  const [isTimeZonesModalOpen, setIsTimeZonesModalOpen] = useState(false);
 
   const allLinks: Link[] = Object.values(linksData).flat();
 
@@ -70,6 +71,14 @@ const Desktop: React.FC = () => {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
+  useEffect(() => {
+    if (search.toLowerCase().includes('clock') || search.toLowerCase().includes('time zones') || search.toLowerCase().includes('utc')) {
+      setIsTimeZonesModalOpen(true);
+    } else {
+      setIsTimeZonesModalOpen(false);
+    }
+  }, [search]);
+
   return (
     <div className={`relative min-h-screen ${themeClasses[theme]} p-6 overflow-hidden`}>
       <div className={`absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgaTExMC0xMCBMMTAgaDQwIE0wIDIwIEwgNDAgMjAgaTExMC0yMCBMMTAgaDQwIE0wIDMwIEwgNDAgMzAgaTExMC0zMCBMMTAgaDQwIE0zMCAwIEwgMzA0MCBMMTAgaDQwIiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-20`}></div>
@@ -91,14 +100,10 @@ const Desktop: React.FC = () => {
         onPomodoroOpen={() => setIsPomodoroModalOpen(true)}
       />
 
-      <PomodoroModal
-        isOpen={isPomodoroModalOpen}
-        onClose={() => setIsPomodoroModalOpen(false)}
+      <TimeZonesModal
+        isOpen={isTimeZonesModalOpen}
+        onClose={() => setIsTimeZonesModalOpen(false)}
         theme={theme}
-        onTimerUpdate={(isRunning, timeLeft) => {
-          setIsTimerRunning(isRunning);
-          setTimerTimeLeft(timeLeft);
-        }}
       />
     </div>
   );
