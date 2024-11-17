@@ -1,10 +1,11 @@
 // src/Desktop.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import SearchBar from './SearchBar';
 import ShortcutGrid from './ShortcutGrid';
 import LinkGrid from './LinkGrid';
 import Toolbar from './Toolbar';
 import TimeZonesModal from './TimeZonesModal';
+import CryptoPricesModal from './CryptoPricesModal'; // Import CryptoPricesModal
 import { shortcuts } from '../data/shortcuts';
 import linksData from '../data/links.json';
 import { Theme, Link, DescribedLink, NetworkLink } from '../types';
@@ -18,6 +19,7 @@ const Desktop: React.FC = () => {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [timerTimeLeft, setTimerTimeLeft] = useState(0);
   const [isTimeZonesModalOpen, setIsTimeZonesModalOpen] = useState(false);
+  const [isCryptoPricesModalOpen, setIsCryptoPricesModalOpen] = useState(false); // New state for CryptoPricesModal
 
   const allLinks: Link[] = Object.values(linksData).flat();
 
@@ -66,10 +68,36 @@ const Desktop: React.FC = () => {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
+
   useEffect(() => {
-    const searchTerms = ['clock', 'time', 'utc'];
-    if (searchTerms.some(term => search.toLowerCase().includes(term))) {
-      setIsTimeZonesModalOpen(true);
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.key === 'k') {
+        event.preventDefault(); // Prevent any default action for Ctrl + K
+        if (searchInputRef.current) {
+          searchInputRef.current.focus();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  useEffect(() => {
+    const searchTerms = ['clock', 'time', 'utc', 'price'];
+    const lowerSearch = search.toLowerCase();
+    const matchedTerm = searchTerms.find(term => lowerSearch.includes(term));
+
+    if (matchedTerm) {
+      if (matchedTerm === 'price') {
+        setIsCryptoPricesModalOpen(true);
+      } else if (matchedTerm === 'clock' || matchedTerm === 'time' || matchedTerm === 'utc') {
+        setIsTimeZonesModalOpen(true);
+      }
       setSearch(''); // Reset the search query
     }
   }, [search]);
@@ -78,7 +106,7 @@ const Desktop: React.FC = () => {
     <div className={`relative min-h-screen ${themeClasses[theme]} p-6 overflow-hidden`}>
       <div className={`absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgaTExMC0xMCBMMTAgaDQwIE0wIDIwIEwgNDAgMjAgaTExMC0yMCBMMTAgaDQwIE0wIDMwIEwgNDAgMzAgaTExMC0zMCBMMTAgaDQwIE0zMCAwIEwgMzA0MCBMMTAgaDQwIiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-20`}></div>
 
-      <SearchBar search={search} setSearch={setSearch} theme={theme} />
+      <SearchBar search={search} setSearch={setSearch} theme={theme} inputRef={searchInputRef} />
       <ShortcutGrid shortcuts={filteredShortcuts} theme={theme} />
       {search && <LinkGrid links={filteredLinks} theme={theme} />}
 
@@ -109,6 +137,12 @@ const Desktop: React.FC = () => {
       <TimeZonesModal
         isOpen={isTimeZonesModalOpen}
         onClose={() => setIsTimeZonesModalOpen(false)}
+        theme={theme}
+      />
+
+      <CryptoPricesModal
+        isOpen={isCryptoPricesModalOpen}
+        onClose={() => setIsCryptoPricesModalOpen(false)}
         theme={theme}
       />
     </div>
