@@ -9,6 +9,7 @@ import { shortcuts } from '../data/shortcuts';
 import linksData from '../data/links.json';
 import { Theme, Link, DescribedLink, NetworkLink } from '../types';
 import { Timer } from 'lucide-react'; // Import the Tomato icon
+import PomodoroModal from './PomodoroModal';
 
 const Desktop: React.FC = () => {
   const [search, setSearch] = useState('');
@@ -20,8 +21,6 @@ const Desktop: React.FC = () => {
 
   const allLinks: Link[] = Object.values(linksData).flat();
 
-  console.log('All Links:', allLinks);
-
   const filteredShortcuts = shortcuts.filter(shortcut =>
     shortcut.name.toLowerCase().includes(search.toLowerCase()) ||
     shortcut.category.toLowerCase().includes(search.toLowerCase())
@@ -30,8 +29,6 @@ const Desktop: React.FC = () => {
   const filteredLinks = allLinks.filter(link => {
     const lowerSearch = search.toLowerCase();
     const lowerName = link.name.toLowerCase();
-
-    console.log('Link:', link);
 
     if ('description' in link && 'category' in link) {
       const linkWithDescriptionAndCategory = link as DescribedLink;
@@ -57,8 +54,6 @@ const Desktop: React.FC = () => {
     }
   });
 
-  console.log('Filtered Links:', filteredLinks);
-
   const themeClasses = {
     purple: 'bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900',
     green: 'bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900',
@@ -72,7 +67,8 @@ const Desktop: React.FC = () => {
   };
 
   useEffect(() => {
-    if (search.toLowerCase().includes('clock') || search.toLowerCase().includes('time zones') || search.toLowerCase().includes('utc')) {
+    const searchTerms = ['clock', 'time', 'utc'];
+    if (searchTerms.some(term => search.toLowerCase().includes(term))) {
       setIsTimeZonesModalOpen(true);
       setSearch(''); // Reset the search query
     }
@@ -97,6 +93,17 @@ const Desktop: React.FC = () => {
         theme={theme}
         setTheme={setTheme}
         onPomodoroOpen={() => setIsPomodoroModalOpen(true)}
+        onTimeZonesOpen={() => setIsTimeZonesModalOpen(true)} // Pass the onTimeZonesOpen prop
+      />
+
+      <PomodoroModal
+        isOpen={isPomodoroModalOpen}
+        onClose={() => setIsPomodoroModalOpen(false)}
+        theme={theme}
+        onTimerUpdate={(isRunning, timeLeft) => {
+          setIsTimerRunning(isRunning);
+          setTimerTimeLeft(timeLeft);
+        }}
       />
 
       <TimeZonesModal

@@ -1,10 +1,6 @@
-// src/components/Toolbar.tsx
+// src/Toolbar.tsx
 import React, { useState } from 'react';
-import {
-  Terminal, Settings, Wallet, Palette,
-  Coffee, Network, Heart, Radio, Coins, Book, Clock,
-  Glasses, DollarSign // Import DollarSign icon for the new item
-} from 'lucide-react';
+import { Network, Radio, Heart, Coins, Book, Terminal, Palette, Coffee, Clock, Glasses, DollarSign } from 'lucide-react';
 import { Theme } from '../types';
 import PomodoroModal from './PomodoroModal';
 import RefiModal from './RefiModal';
@@ -22,9 +18,10 @@ interface ToolbarProps {
   theme: Theme;
   setTheme: (theme: Theme) => void;
   onPomodoroOpen: () => void;
+  onTimeZonesOpen: () => void; // Add a prop to open TimeZonesModal
 }
 
-const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, onPomodoroOpen }) => {
+const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, onPomodoroOpen, onTimeZonesOpen }) => {
   const [showToolbar, setShowToolbar] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [showRefi, setShowRefi] = useState(false);
@@ -38,10 +35,41 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, onPomodoroOpen }) =>
   const [showCryptoPrices, setShowCryptoPrices] = useState(false); // New state for CryptoPricesModal
   const [showIPFSModal, setShowIPFSModal] = useState(false); // New state for IPFSModal
 
-  const themeClasses = {
-    purple: 'border-purple-500/30 text-purple-300 hover:text-purple-100',
-    green: 'border-green-500/30 text-green-300 hover:text-green-100',
-    teal: 'border-teal-500/30 text-teal-300 hover:text-teal-100'
+  const themes: Theme[] = ['purple', 'green', 'teal'];
+
+  const toggleToolbar = () => {
+    setShowToolbar(!showToolbar);
+  };
+
+  const handleMenuItemClick = (id: string) => {
+    setActiveMenu(id);
+
+    if (id === 'theme') {
+      const currentThemeIndex = themes.indexOf(theme);
+      setTheme(themes[(currentThemeIndex + 1) % themes.length]);
+    } else if (id === 'break') {
+      onPomodoroOpen(); // Open Pomodoro Modal
+    } else if (id === 'refi') {
+      setShowRefi(true);
+    } else if (id === 'dao') {
+      setShowGovernance(true);
+    } else if (id === 'blockchain') {
+      setShowNetworks(true);
+    } else if (id === 'defi') {
+      setShowDefi(true);
+    } else if (id === 'docs') {
+      setShowDocs(true);
+    } else if (id === 'timezones') {
+      onTimeZonesOpen(); // Open TimeZonesModal
+    } else if (id === 'lensfeed') {
+      setShowLensFeed(true);
+    } else if (id === 'terminal') {
+      setShowGameb(true);
+    } else if (id === 'cryptoprices') {
+      setShowCryptoPrices(true);
+    } else if (id === 'ipfs') {
+      setShowIPFSModal(true);
+    }
   };
 
   const toolbarItems = [
@@ -59,66 +87,38 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, onPomodoroOpen }) =>
     { id: 'ipfs', icon: <Network size={20} />, label: 'IPFS CID Checker' }, // New item for IPFSModal
   ];
 
-  const handleItemClick = (id: string) => {
-    if (id === 'theme') {
-      const themes = ['purple', 'green', 'teal'] as const;
-      const currentThemeIndex = themes.indexOf(theme);
-      setTheme(themes[(currentThemeIndex + 1) % themes.length]);
-    } else if (id === 'break') {
-      onPomodoroOpen(); // Open Pomodoro Modal
-    } else if (id === 'refi') {
-      setShowRefi(true);
-    } else if (id === 'dao') {
-      setShowGovernance(true);
-    } else if (id === 'blockchain') {
-      setShowNetworks(true);
-    } else if (id === 'defi') {
-      setShowDefi(true);
-    } else if (id === 'docs') {
-      setShowDocs(true);
-    } else if (id === 'timezones') {
-      setShowTimeZones(true);
-    } else if (id === 'lensfeed') {
-      setShowLensFeed(true);
-    } else if (id === 'terminal') {
-      setShowGameb(true);
-    } else if (id === 'cryptoprices') {
-      setShowCryptoPrices(true);
-    } else if (id === 'ipfs') {
-      setShowIPFSModal(true);
-    }
-
-    setActiveMenu(activeMenu === id ? null : id);
-  };
-
   return (
-    <>
-      <div
-        className="fixed right-0 top-1/2 transform -translate-y-1/2 z-20"
-        onMouseEnter={() => setShowToolbar(true)}
-        onMouseLeave={() => setShowToolbar(false)}
+    <div className="fixed bottom-4 right-4 z-50">
+      <button
+        onClick={toggleToolbar}
+        className={`p-2 rounded-full bg-gray-800/50 hover:bg-gray-800/80 transition-colors duration-300`}
       >
-        <div className={`transition-transform duration-300 ${showToolbar ? 'translate-x-0' : 'translate-x-10'}`}>
-          <div className={`flex flex-col items-center gap-2 p-2 bg-gray-900/90 border-l border-y rounded-l-xl backdrop-blur-sm ${themeClasses[theme]}`}>
-            {toolbarItems.map((item) => (
-              <div key={item.id} className="relative group">
-                <button
-                  onClick={() => handleItemClick(item.id)}
-                  className={`p-2 hover:bg-gray-800/50 rounded-lg transition-colors relative ${
-                    activeMenu === item.id ? (theme === 'purple' ? 'bg-purple-900/50' : theme === 'green' ? 'bg-green-900/50' : 'bg-teal-900/50') : ''
-                  }`}
-                >
-                  {item.icon}
-                  <span className="absolute left-0 top-1/2 transform -translate-x-full -translate-y-1/2 mr-2 px-2 py-1 text-xs bg-gray-900/90 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap -ml-2">
-                    {item.label}
-                  </span>
-                </button>
-              </div>
-            ))}
-          </div>
+        <span className="sr-only">Toggle Toolbar</span>
+        ☰
+      </button>
+      {showToolbar && (
+        <div className="absolute bottom-16 right-0 flex flex-col items-end space-y-2">
+          {toolbarItems.map(item => (
+            <div key={item.id} className="relative group">
+              <button
+                onClick={() => handleMenuItemClick(item.id)}
+                className="p-2 rounded-full bg-gray-800/50 hover:bg-gray-800/80 transition-colors duration-300"
+              >
+                {item.icon}
+                <span className="absolute left-0 top-1/2 transform -translate-x-full -translate-y-1/2 mr-2 px-2 py-1 text-xs bg-gray-900/90 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap -ml-2">
+                  {item.label}
+                </span>
+              </button>
+            </div>
+          ))}
         </div>
-      </div>
-      <PomodoroModal isOpen={false} onClose={() => {}} theme={theme} onTimerUpdate={() => {}} />
+      )}
+      <PomodoroModal
+        isOpen={false}
+        onClose={() => {}}
+        theme={theme}
+        onTimerUpdate={() => {}}
+      />
       <RefiModal isOpen={showRefi} onClose={() => setShowRefi(false)} theme={theme} />
       <GovernanceModal isOpen={showGovernance} onClose={() => setShowGovernance(false)} theme={theme} />
       <Networks isOpen={showNetworks} onClose={() => setShowNetworks(false)} theme={theme} />
@@ -129,7 +129,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, onPomodoroOpen }) =>
       <GamebModal isOpen={showGameb} onClose={() => setShowGameb(false)} theme={theme} iframeUrl="https://www.example.com" />
       <CryptoPricesModal isOpen={showCryptoPrices} onClose={() => setShowCryptoPrices(false)} theme={theme} />
       <IPFSModal isOpen={showIPFSModal} onClose={() => setShowIPFSModal(false)} theme={theme} />
-    </>
+    </div>
   );
 };
 
