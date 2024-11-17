@@ -17,7 +17,6 @@ const Desktop: React.FC = () => {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [timerTimeLeft, setTimerTimeLeft] = useState(0);
 
-  // Flatten the links data into a single array
   const allLinks: Link[] = Object.values(linksData).flat();
 
   console.log('All Links:', allLinks);
@@ -77,9 +76,8 @@ const Desktop: React.FC = () => {
 
       <SearchBar search={search} setSearch={setSearch} theme={theme} />
       <ShortcutGrid shortcuts={filteredShortcuts} theme={theme} />
-      {search && <LinkGrid links={filteredLinks} theme={theme} />} {/* Conditionally render LinkGrid */}
+      {search && <LinkGrid links={filteredLinks} theme={theme} />}
 
-      {/* Pomodoro Timer Display */}
       {isTimerRunning && (
         <div className="absolute top-4 left-4 bg-gray-800/30 border hover:bg-opacity-40 transition-all duration-300 backdrop-blur-sm p-2 rounded-lg flex items-center gap-2">
           <Timer size={24} className="text-red-500" />
