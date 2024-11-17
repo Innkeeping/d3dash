@@ -16,6 +16,7 @@ const Desktop: React.FC = () => {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [timerTimeLeft, setTimerTimeLeft] = useState(0);
   const [showToolbar, setShowToolbar] = useState(false);
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
 
   const { isPomodoroModalOpen, isTimeZonesModalOpen, isCryptoPricesModalOpen, openModal, closeModal } = useModals();
 
@@ -35,7 +36,10 @@ const Desktop: React.FC = () => {
   };
 
   useKeyboardEvents({
-    onCtrlK: () => searchInputRef.current?.focus(),
+    onCtrlK: () => {
+      searchInputRef.current?.focus();
+      setFocusedIndex(null); // Reset focus index when search bar is focused
+    },
     onCtrlB: toggleToolbar,
     onEscape: () => {
       if (isCryptoPricesModalOpen) {
