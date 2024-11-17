@@ -75,12 +75,12 @@ const Desktop: React.FC = () => {
 
       <SearchBar search={search} setSearch={setSearch} theme={theme} inputRef={searchInputRef} />
       <ShortcutGrid shortcuts={filteredShortcuts} theme={theme} />
-      {search && <LinkGrid links={filteredLinks} theme={theme}/>}
+      {search && <LinkGrid links={filteredLinks} theme={theme} />}
 
       <TimerDisplay
         isTimerRunning={isTimerRunning}
         timerTimeLeft={timerTimeLeft}
-        onClick={() => openModal('isPomodoroModalOpen')} // Pass the onClick handler
+        onClick={() => openModal('isPomodoroModalOpen')}
       />
 
       <Toolbar
