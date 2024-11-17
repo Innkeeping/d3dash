@@ -5,9 +5,10 @@ import { Timer } from 'lucide-react';
 interface TimerDisplayProps {
   isTimerRunning: boolean;
   timerTimeLeft: number;
+  onClick?: () => void; // Add the onClick prop
 }
 
-const TimerDisplay: React.FC<TimerDisplayProps> = ({ isTimerRunning, timerTimeLeft }) => {
+const TimerDisplay: React.FC<TimerDisplayProps> = ({ isTimerRunning, timerTimeLeft, onClick }) => {
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -16,7 +17,10 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({ isTimerRunning, timerTimeLe
 
   return (
     isTimerRunning && (
-      <div className="absolute top-4 left-4 bg-gray-800/30 border hover:bg-opacity-40 transition-all duration-300 backdrop-blur-sm p-2 rounded-lg flex items-center gap-2">
+      <div
+        className="absolute top-4 left-4 bg-gray-800/30 border hover:bg-opacity-40 transition-all duration-300 backdrop-blur-sm p-2 rounded-lg flex items-center gap-2 cursor-pointer z-50" // Add z-50 for higher z-index
+        onClick={onClick} // Add the onClick event handler
+      >
         <Timer size={24} className="text-red-500" />
         <span className="text-white font-mono">{formatTime(timerTimeLeft)}</span>
       </div>
