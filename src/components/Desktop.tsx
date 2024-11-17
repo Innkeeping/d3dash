@@ -74,8 +74,7 @@ const Desktop: React.FC = () => {
   useEffect(() => {
     if (search.toLowerCase().includes('clock') || search.toLowerCase().includes('time zones') || search.toLowerCase().includes('utc')) {
       setIsTimeZonesModalOpen(true);
-    } else {
-      setIsTimeZonesModalOpen(false);
+      setSearch(''); // Reset the search query
     }
   }, [search]);
 
