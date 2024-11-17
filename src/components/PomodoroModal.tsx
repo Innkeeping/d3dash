@@ -55,6 +55,20 @@ const PomodoroModal: React.FC<PomodoroModalProps> = ({ isOpen, onClose, theme, o
     };
   }, [onClose]);
 
+  useEffect(() => {
+    // Add event listener for keydown to close modal on Esc
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
+
   const toggleTimer = () => setIsRunning(!isRunning);
 
   const resetTimer = () => {

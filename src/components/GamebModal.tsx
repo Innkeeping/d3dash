@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from 'react';
-import { X } from 'lucide-react';
 import { Theme } from '../types';
 
 interface GamebModalProps {
@@ -9,7 +8,7 @@ interface GamebModalProps {
   iframeUrl: string; // Add this prop to pass the URL for the iframe
 }
 
-const GamebModal: React.FC<GamebModalProps> = ({ isOpen, onClose, theme, iframeUrl }) => {
+const GamebModal: React.FC<GamebModalProps> = ({ isOpen, onClose, theme}) => {
   if (!isOpen) return null;
 
   const themeClasses = {
@@ -21,7 +20,7 @@ const GamebModal: React.FC<GamebModalProps> = ({ isOpen, onClose, theme, iframeU
   const modalRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    // Add event listener for clicks outside the modal
+
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
         onClose();

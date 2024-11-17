@@ -53,7 +53,7 @@ const GovernanceModal: React.FC<GovernanceModalProps> = ({ isOpen, onClose, them
   const modalRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    // Add event listener for clicks outside the modal
+
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
         onClose();
@@ -63,6 +63,20 @@ const GovernanceModal: React.FC<GovernanceModalProps> = ({ isOpen, onClose, them
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [onClose]);
+
+  useEffect(() => {
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
     };
   }, [onClose]);
 

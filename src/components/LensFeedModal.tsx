@@ -53,7 +53,20 @@ const LensFeedModal: React.FC<LensFeedModalProps> = ({ isOpen, onClose, theme })
     };
   }, [onClose]);
 
-  // Type guard to check if metadata is of type LensImageMetadataV3
+  useEffect(() => {
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
+
   const isImageMetadata = (metadata: LensPostMetadata): metadata is LensImageMetadataV3 => {
     return metadata.__typename === 'ImageMetadataV3';
   };

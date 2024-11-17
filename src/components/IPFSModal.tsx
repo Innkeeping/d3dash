@@ -31,13 +31,13 @@ const IPFSModal: React.FC<IPFSModalProps> = ({ isOpen, onClose, theme }) => {
   const gateways = [
     { label: 'w3s.link', value: 'https://w3s.link/ipfs/' },
     { label: 'ipfs.io', value: 'https://ipfs.io/ipfs/' },
-    // Removed dweb.link
+
   ];
 
   const modalRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    // Add event listener for clicks outside the modal
+
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
         onClose();
@@ -47,6 +47,20 @@ const IPFSModal: React.FC<IPFSModalProps> = ({ isOpen, onClose, theme }) => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [onClose]);
+
+  useEffect(() => {
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
     };
   }, [onClose]);
 
