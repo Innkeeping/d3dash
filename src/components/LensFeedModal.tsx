@@ -40,7 +40,7 @@ const LensFeedModal: React.FC<LensFeedModalProps> = ({ isOpen, onClose, theme })
   }, []);
 
   useEffect(() => {
-    // Add event listener for clicks outside the modal
+
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
         onClose();

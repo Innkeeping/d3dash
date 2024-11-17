@@ -77,7 +77,7 @@ const IPFSModal: React.FC<IPFSModalProps> = ({ isOpen, onClose, theme }) => {
       setIsLoading(true);
       const url = `${selectedGateway}${cid}`;
       window.open(url, '_blank');
-      setIsLoading(false); // Immediately close loading state since we're opening a new tab
+      setIsLoading(false);
     }
   };
 
