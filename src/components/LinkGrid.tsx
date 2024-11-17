@@ -66,7 +66,7 @@ const LinkGrid: React.FC<LinkGridProps> = ({ links, theme }) => {
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 relative z-10">
+    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 pt-6 relative z-10">
       {links.map((link, index) => {
         console.log('Link Name:', link.name);
         const icon = defaultIcons[link.name] || <Book className="text-gray-400" size={24} />;
