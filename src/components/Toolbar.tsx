@@ -11,35 +11,32 @@ import DocsModal from './DocsModal';
 import TimeZonesModal from './TimeZonesModal';
 import LensFeedModal from './LensFeedModal';
 import GamebModal from './GamebModal';
-import CryptoPricesModal from './CryptoPricesModal'; // Import CryptoPricesModal
-import IPFSModal from './IPFSModal'; // Import IPFSModal
+import CryptoPricesModal from './CryptoPricesModal';
+import IPFSModal from './IPFSModal';
 
 interface ToolbarProps {
   theme: Theme;
   setTheme: (theme: Theme) => void;
   onPomodoroOpen: () => void;
-  onTimeZonesOpen: () => void; // Add a prop to open TimeZonesModal
+  onTimeZonesOpen: () => void;
+  showToolbar: boolean;
+  toggleToolbar: () => void;
 }
 
-const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, onPomodoroOpen, onTimeZonesOpen }) => {
-  const [showToolbar, setShowToolbar] = useState(false);
+const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, onPomodoroOpen, onTimeZonesOpen, showToolbar, toggleToolbar }) => {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [showRefi, setShowRefi] = useState(false);
   const [showGovernance, setShowGovernance] = useState(false);
   const [showNetworks, setShowNetworks] = useState(false);
   const [showDefi, setShowDefi] = useState(false);
-  const [showDocs, setShowDocs] = useState(false);
   const [showTimeZones, setShowTimeZones] = useState(false);
+  const [showDocs, setShowDocs] = useState(false);
   const [showLensFeed, setShowLensFeed] = useState(false);
   const [showGameb, setShowGameb] = useState(false);
   const [showCryptoPrices, setShowCryptoPrices] = useState(false); // New state for CryptoPricesModal
   const [showIPFSModal, setShowIPFSModal] = useState(false); // New state for IPFSModal
 
   const themes: Theme[] = ['purple', 'green', 'teal'];
-
-  const toggleToolbar = () => {
-    setShowToolbar(!showToolbar);
-  };
 
   const handleMenuItemClick = (id: string) => {
     setActiveMenu(id);

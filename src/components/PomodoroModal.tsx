@@ -29,11 +29,11 @@ const PomodoroModal: React.FC<PomodoroModalProps> = ({ isOpen, onClose, theme, o
       if (interval) clearInterval(interval);
       setShowNotification(true);
       setNotificationMessage(currentMode === 'work' ? 'Work Time Over!' : 'Break Time Over!');
-      setTimeout(() => setShowNotification(false), 3000); // Hide notification after 3 seconds
-      toggleMode(); // Automatically switch mode after timer ends
+      setTimeout(() => setShowNotification(false), 3000);
+      toggleMode();
     }
 
-    // Pass the timer state to the parent component
+
     onTimerUpdate(isRunning, timeLeft);
 
     return () => {
@@ -42,7 +42,7 @@ const PomodoroModal: React.FC<PomodoroModalProps> = ({ isOpen, onClose, theme, o
   }, [isRunning, timeLeft, currentMode, onTimerUpdate]);
 
   useEffect(() => {
-    // Add event listener for clicks outside the modal
+
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
         onClose();
@@ -56,7 +56,7 @@ const PomodoroModal: React.FC<PomodoroModalProps> = ({ isOpen, onClose, theme, o
   }, [onClose]);
 
   useEffect(() => {
-    // Add event listener for keydown to close modal on Esc
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
@@ -74,14 +74,14 @@ const PomodoroModal: React.FC<PomodoroModalProps> = ({ isOpen, onClose, theme, o
   const resetTimer = () => {
     setIsRunning(false);
     setTimeLeft(currentMode === 'work' ? 25 * 60 : 5 * 60);
-    setShowNotification(false); // Hide notification on reset
+    setShowNotification(false);
   };
 
   const toggleMode = () => {
     setCurrentMode(currentMode === 'work' ? 'break' : 'work');
     setTimeLeft(currentMode === 'work' ? 5 * 60 : 25 * 60);
     setIsRunning(false);
-    setShowNotification(false); // Hide notification on mode toggle
+    setShowNotification(false);
   };
 
   const formatTime = (seconds: number) => {

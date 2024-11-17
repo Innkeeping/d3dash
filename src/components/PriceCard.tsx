@@ -1,11 +1,11 @@
 // src/PriceCard.tsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Theme } from '../types'; // Import the Theme type
+import { Theme } from '../types';
 
 interface PriceCardProps {
-  theme: Theme; // Use the Theme type
-  toggleVisibility: () => void; // Function to toggle visibility
+  theme: Theme;
+  toggleVisibility: () => void;
 }
 
 const PriceCard: React.FC<PriceCardProps> = ({ theme, toggleVisibility }) => {
@@ -49,13 +49,13 @@ const PriceCard: React.FC<PriceCardProps> = ({ theme, toggleVisibility }) => {
       }
     };
 
-    // Fetch the prices immediately on mount
+
     fetchPrices();
 
-    // Set up an interval to fetch the prices every 1 minute (60,000 milliseconds)
+
     const intervalId = setInterval(fetchPrices, 60000);
 
-    // Clean up the interval on component unmount
+
     return () => clearInterval(intervalId);
   }, []);
 

@@ -5,11 +5,11 @@ import ShortcutGrid from './ShortcutGrid';
 import LinkGrid from './LinkGrid';
 import Toolbar from './Toolbar';
 import TimeZonesModal from './TimeZonesModal';
-import CryptoPricesModal from './CryptoPricesModal'; // Import CryptoPricesModal
+import CryptoPricesModal from './CryptoPricesModal';
 import { shortcuts } from '../data/shortcuts';
 import linksData from '../data/links.json';
 import { Theme, Link, DescribedLink, NetworkLink } from '../types';
-import { Timer } from 'lucide-react'; // Import the Tomato icon
+import { Timer } from 'lucide-react';
 import PomodoroModal from './PomodoroModal';
 
 const Desktop: React.FC = () => {
@@ -19,7 +19,8 @@ const Desktop: React.FC = () => {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [timerTimeLeft, setTimerTimeLeft] = useState(0);
   const [isTimeZonesModalOpen, setIsTimeZonesModalOpen] = useState(false);
-  const [isCryptoPricesModalOpen, setIsCryptoPricesModalOpen] = useState(false); // New state for CryptoPricesModal
+  const [isCryptoPricesModalOpen, setIsCryptoPricesModalOpen] = useState(false);
+  const [showToolbar, setShowToolbar] = useState(false);
 
   const allLinks: Link[] = Object.values(linksData).flat();
 
@@ -70,12 +71,30 @@ const Desktop: React.FC = () => {
 
   const searchInputRef = useRef<HTMLInputElement | null>(null);
 
+  const toggleToolbar = () => {
+    setShowToolbar(!showToolbar);
+  };
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.ctrlKey && event.key === 'k') {
-        event.preventDefault(); // Prevent any default action for Ctrl + K
+        event.preventDefault();
         if (searchInputRef.current) {
           searchInputRef.current.focus();
+        }
+      } else if (event.ctrlKey && event.key === 'b') {
+        event.preventDefault();
+        toggleToolbar();
+      } else if (event.key === 'Escape') {
+        event.preventDefault();
+        if (isCryptoPricesModalOpen) {
+          setIsCryptoPricesModalOpen(false);
+        } else if (isTimeZonesModalOpen) {
+          setIsTimeZonesModalOpen(false);
+        } else if (isPomodoroModalOpen) {
+          setIsPomodoroModalOpen(false);
+        } else if (showToolbar) {
+          toggleToolbar();
         }
       }
     };
@@ -85,7 +104,7 @@ const Desktop: React.FC = () => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [isCryptoPricesModalOpen, isTimeZonesModalOpen, isPomodoroModalOpen, showToolbar, toggleToolbar]);
 
   useEffect(() => {
     const searchTerms = ['clock', 'time', 'utc', 'price'];
@@ -98,7 +117,7 @@ const Desktop: React.FC = () => {
       } else if (matchedTerm === 'clock' || matchedTerm === 'time' || matchedTerm === 'utc') {
         setIsTimeZonesModalOpen(true);
       }
-      setSearch(''); // Reset the search query
+      setSearch('');
     }
   }, [search]);
 
@@ -121,7 +140,9 @@ const Desktop: React.FC = () => {
         theme={theme}
         setTheme={setTheme}
         onPomodoroOpen={() => setIsPomodoroModalOpen(true)}
-        onTimeZonesOpen={() => setIsTimeZonesModalOpen(true)} // Pass the onTimeZonesOpen prop
+        onTimeZonesOpen={() => setIsTimeZonesModalOpen(true)}
+        showToolbar={showToolbar}
+        toggleToolbar={toggleToolbar}
       />
 
       <PomodoroModal

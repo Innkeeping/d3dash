@@ -67,7 +67,7 @@ const RefiModal: React.FC<RefiModalProps> = ({ isOpen, onClose, theme }) => {
   }, [onClose]);
 
   useEffect(() => {
-    // Add event listener for keydown to close modal on Esc
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
