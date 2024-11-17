@@ -9,9 +9,21 @@ interface ShortcutGridProps {
 
 const ShortcutGrid: React.FC<ShortcutGridProps> = ({ shortcuts, theme }) => {
   const themeClasses = {
-    purple: 'border-purple-500/20 hover:border-purple-500/40 text-purple-300 group-hover:text-purple-200',
-    green: 'border-green-500/20 hover:border-green-500/40 text-green-300 group-hover:text-green-200',
-    teal: 'border-teal-500/20 hover:border-teal-500/40 text-teal-300 group-hover:text-teal-200'
+    purple: {
+      border: 'border-purple-500/20 hover:border-purple-500/40',
+      text: 'text-purple-300 group-hover:text-purple-200',
+      outline: 'outline-purple-500'
+    },
+    green: {
+      border: 'border-green-500/20 hover:border-green-500/40',
+      text: 'text-green-300 group-hover:text-green-200',
+      outline: 'outline-green-500'
+    },
+    teal: {
+      border: 'border-teal-500/20 hover:border-teal-500/40',
+      text: 'text-teal-300 group-hover:text-teal-200',
+      outline: 'outline-teal-500'
+    }
   };
 
   const [focusedIndex, setFocusedIndex] = useState<number>(0);
@@ -65,8 +77,8 @@ const ShortcutGrid: React.FC<ShortcutGridProps> = ({ shortcuts, theme }) => {
           href={shortcut.url}
           target="_blank"
           rel="noopener noreferrer"
-          className={`flex flex-col items-center p-4 rounded-lg bg-gray-800/30 border hover:bg-opacity-40 transition-all duration-300 backdrop-blur-sm group ${themeClasses[theme]} ${
-            focusedIndex === index ? 'outline outline-2 outline-purple-500' : ''
+          className={`flex flex-col items-center p-4 rounded-lg bg-gray-800/30 border hover:bg-opacity-40 transition-all duration-300 backdrop-blur-sm group ${themeClasses[theme].border} ${themeClasses[theme].text} ${
+            focusedIndex === index ? `outline outline-2 ${themeClasses[theme].outline}` : ''
           }`}
           tabIndex={focusedIndex === index ? 0 : -1}
           role="gridcell"
