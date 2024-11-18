@@ -1,131 +1,120 @@
+
 [
-  {
-    "term": "Web3",
-    "description": "The third generation of the World Wide Web based on blockchain technology, enabling decentralized applications and data."
-  },
   {
     "term": "Blockchain",
     "description": "A distributed ledger technology that records transactions across many computers in such a way that the registered transactions cannot be altered retroactively."
   },
   {
-    "term": "Decentralized Finance (DeFi)",
-    "description": "A financial system built on blockchain technology that allows for financial services without the need for traditional intermediaries."
-  },
-  {
-    "term": "Smart Contract",
-    "description": "A self-executing contract with the terms of the agreement directly written into code."
-  },
-  {
-    "term": "DAO (Decentralized Autonomous Organization)",
-    "description": "An organization represented by rules encoded as a transparent, immutable program running on a blockchain."
-  },
-  {
-    "term": "Token",
-    "description": "A digital or cryptographic asset built on blockchain technology that represents a certain value or utility."
-  },
-  {
-    "term": "NFT (Non-Fungible Token)",
-    "description": "A unique digital asset that is not interchangeable with another token of the same type."
-  },
-  {
-    "term": "Ethereum",
-    "description": "A decentralized, open-source blockchain with smart contract functionality."
-  },
-  {
-    "term": "IPFS (InterPlanetary File System)",
-    "description": "A decentralized file system that makes the web faster, safer, and more open."
-  },
-  {
-    "term": "Quadratic Funding",
-    "description": "A funding mechanism that incentivizes diversity and quality in open source projects."
-  },
-  {
-    "term": "Layer 2",
-    "description": "Scaling solutions built on top of existing blockchain networks to improve performance and reduce costs."
-  },
-  {
-    "term": "ENS (Ethereum Name Service)",
-    "description": "A decentralized naming protocol for Ethereum."
-  },
-  {
-    "term": "Metaverse",
-    "description": "A virtual world or universe that users can interact with in a virtual environment."
-  },
-  {
-    "term": "Minting",
-    "description": "The process of creating a new NFT or token on a blockchain."
-  },
-  {
-    "term": "Liquidity Pool",
-    "description": "A collection of tokens that are locked in a smart contract to provide liquidity for decentralized exchanges."
-  },
-  {
-    "term": "Staking",
-    "description": "The process of locking up cryptocurrency to validate transactions and earn rewards on a blockchain."
-  },
-  {
-    "term": "Governance Token",
-    "description": "A token that grants its holders the right to participate in the governance of a decentralized project."
-  },
-  {
-    "term": "Gas",
-    "description": "A unit that measures the amount of computational effort required to execute a transaction on the Ethereum blockchain."
-  },
-  {
-    "term": "Oracle",
-    "description": "A bridge between blockchain and off-chain data sources, providing real-world data to smart contracts."
-  },
-  {
-    "term": "Cross-Chain",
-    "description": "The ability of blockchain networks to communicate and interact with each other."
-  },
-  {
-    "term": "Decentralized Identity (DID)",
-    "description": "A system that allows individuals to control their digital identities without relying on a central authority."
-  },
-  {
-    "term": "Web3 Wallet",
-    "description": "A software application that allows users to manage their cryptocurrency and interact with decentralized applications."
+    "term": "Block",
+    "description": "A unit of data containing a set of transactions that are cryptographically linked to the previous block on a blockchain."
   },
   {
     "term": "Consensus",
     "description": "The process by which blockchain networks reach agreement on the validity of transactions and the state of the blockchain."
   },
   {
-    "term": "Proof of Stake (PoS)",
-    "description": "A consensus mechanism where validators are chosen to create new blocks based on the number of coins they hold and are willing to stake."
+    "term": "Consensus Mechanism",
+    "description": "A protocol used by blockchain networks to reach agreement on the validity of transactions and the state of the blockchain."
   },
   {
-    "term": "Proof of Work (PoW)",
-    "description": "A consensus mechanism where miners solve complex mathematical puzzles to validate transactions and create new blocks."
-  },
-  {
-    "term": "Tokenomics",
-    "description": "The economic design and structure of a token, including supply, distribution, and utility."
-  },
-  {
-    "term": "Delegated Proof of Stake (DPoS)",
-    "description": "A consensus mechanism where token holders elect delegates to validate transactions and create new blocks."
-  },
-  {
-    "term": "Decentralized Storage",
-    "description": "A system for storing data across a network of decentralized nodes, ensuring data integrity and availability without a central authority."
-  },
-  {
-    "term": "Sidechain",
-    "description": "A separate blockchain that is interoperable with a main blockchain and can handle specific use cases or transactions."
-  },
-  {
-    "term": "Sharding",
-    "description": "A method of splitting a blockchain's data and transactions across multiple nodes to improve scalability."
+    "term": "Cross-Chain",
+    "description": "The ability of blockchain networks to communicate and interact with each other."
   },
   {
     "term": "Cross-Chain Bridge",
     "description": "A protocol or mechanism that allows assets and data to be transferred between different blockchain networks."
   },
   {
+    "term": "Cross-Chain Protocol",
+    "description": "A protocol that enables interoperability between different blockchain networks, allowing for the transfer of assets and data."
+  },
+  {
+    "term": "DAO (Decentralized Autonomous Organization)",
+    "description": "An organization represented by rules encoded as a transparent, immutable program running on a blockchain."
+  },
+  {
+    "term": "Decentralized Application (dApp)",
+    "description": "An application that runs on a decentralized network, typically a blockchain, without a central authority."
+  },
+  {
     "term": "Decentralized Exchange (DEX)",
     "description": "A decentralized platform for trading cryptocurrencies and tokens without a central authority."
+  },
+  {
+    "term": "Decentralized Finance (DeFi)",
+    "description": "A financial system built on blockchain technology that allows for financial services without the need for traditional intermediaries."
+  },
+  {
+    "term": "Decentralized Governance",
+    "description": "A system of governance where decisions are made through decentralized means, often involving token holders voting on proposals."
+  },
+  {
+    "term": "Decentralized Identity (DID)",
+    "description": "A system that allows individuals to control their digital identities without relying on a central authority."
+  },
+  {
+    "term": "Decentralized Marketplace",
+    "description": "A platform that allows buyers and sellers to trade goods and services directly without a central authority."
+  },
+  {
+    "term": "Decentralized Oracle",
+    "description": "A decentralized network of nodes that provides real-world data to smart contracts without relying on a single authority."
+  },
+  {
+    "term": "Decentralized Storage",
+    "description": "A system for storing data across a network of decentralized nodes, ensuring data integrity and availability without a central authority."
+  },
+  {
+    "term": "Decentralized Storage Network",
+    "description": "A network of decentralized nodes that stores data across multiple locations, ensuring data availability and security."
+  },
+  {
+    "term": "Delegated Proof of Stake (DPoS)",
+    "description": "A consensus mechanism where token holders elect delegates to validate transactions and create new blocks."
+  },
+  {
+    "term": "ENS (Ethereum Name Service)",
+    "description": "A decentralized naming protocol for Ethereum."
+  },
+  {
+    "term": "Ethereum",
+    "description": "A decentralized, open-source blockchain with smart contract functionality."
+  },
+  {
+    "term": "Gas",
+    "description": "A unit that measures the amount of computational effort required to execute a transaction on the Ethereum blockchain."
+  },
+  {
+    "term": "Gas Efficiency",
+    "description": "The optimization of smart contracts to reduce the amount of gas required for execution, thereby lowering transaction costs."
+  },
+  {
+    "term": "Gas Limit",
+    "description": "The maximum amount of gas that can be used in a single block on the Ethereum blockchain."
+  },
+  {
+    "term": "Gas Optimization",
+    "description": "The process of improving the efficiency of smart contracts to reduce gas consumption and lower transaction costs."
+  },
+  {
+    "term": "Gas Price",
+    "description": "The price paid per unit of gas to execute a transaction on the Ethereum blockchain."
+  },
+  {
+    "term": "Gas Refund",
+    "description": "A mechanism that returns unused gas to the user, reducing transaction costs."
+  },
+  {
+    "term": "Governance Fork",
+    "description": "A split in a blockchain network where the community votes on a new set of rules or changes to the protocol."
+  },
+  {
+    "term": "Governance Token",
+    "description": "A token that grants its holders the right to participate in the governance of a decentralized project."
+  },
+  {
+    "term": "Hash",
+    "description": "A unique identifier created by a cryptographic hash function, used to verify data integrity on a blockchain."
   },
   {
     "term": "Initial Coin Offering (ICO)",
@@ -136,107 +125,123 @@
     "description": "A fundraising method where a new token is sold on a decentralized exchange."
   },
   {
-    "term": "Token Standard",
-    "description": "A set of rules and protocols that define how tokens behave on a blockchain, such as ERC-20 or ERC-721."
+    "term": "IPFS (InterPlanetary File System)",
+    "description": "A decentralized file system that makes the web faster, safer, and more open."
   },
   {
     "term": "Layer 1",
     "description": "The base blockchain layer that provides the fundamental infrastructure for transactions and smart contracts."
   },
   {
-    "term": "Gas Limit",
-    "description": "The maximum amount of gas that can be used in a single block on the Ethereum blockchain."
-  },
-  {
-    "term": "Gas Price",
-    "description": "The price paid per unit of gas to execute a transaction on the Ethereum blockchain."
-  },
-  {
-    "term": "Decentralized Application (dApp)",
-    "description": "An application that runs on a decentralized network, typically a blockchain, without a central authority."
-  },
-  {
-    "term": "Hash",
-    "description": "A unique identifier created by a cryptographic hash function, used to verify data integrity on a blockchain."
-  },
-  {
-    "term": "Block",
-    "description": "A unit of data containing a set of transactions that are cryptographically linked to the previous block on a blockchain."
-  },
-  {
-    "term": "Transaction",
-    "description": "A record of a transfer of value or data on a blockchain."
-  },
-  {
-    "term": "Consensus Mechanism",
-    "description": "A protocol used by blockchain networks to reach agreement on the validity of transactions and the state of the blockchain."
-  },
-  {
-    "term": "Wallet",
-    "description": "A software application that allows users to manage their cryptocurrency and interact with decentralized applications."
-  },
-  {
-    "term": "Cross-Chain Protocol",
-    "description": "A protocol that enables interoperability between different blockchain networks, allowing for the transfer of assets and data."
+    "term": "Layer 2",
+    "description": "Scaling solutions built on top of existing blockchain networks to improve performance and reduce costs."
   },
   {
     "term": "Liquidity Mining",
     "description": "A rewards program that incentivizes users to provide liquidity to decentralized exchanges."
   },
   {
-    "term": "Governance Fork",
-    "description": "A split in a blockchain network where the community votes on a new set of rules or changes to the protocol."
+    "term": "Liquidity Pool",
+    "description": "A collection of tokens that are locked in a smart contract to provide liquidity for decentralized exchanges."
   },
   {
-    "term": "Token Locking",
-    "description": "A mechanism that locks tokens for a specified period, often used for vesting or to prevent early selling."
+    "term": "Liquidity Token",
+    "description": "The availability of tokens in a decentralized exchange to facilitate trading and reduce price volatility."
   },
   {
-    "term": "Gas Efficiency",
-    "description": "The optimization of smart contracts to reduce the amount of gas required for execution, thereby lowering transaction costs."
+    "term": "Minting",
+    "description": "The process of creating a new NFT or token on a blockchain."
   },
   {
-    "term": "Decentralized Oracle",
-    "description": "A decentralized network of nodes that provides real-world data to smart contracts without relying on a single authority."
+    "term": "Metaverse",
+    "description": "A virtual world or universe that users can interact with in a virtual environment."
   },
   {
-    "term": "Token Swap",
-    "description": "A process of exchanging one token for another on a decentralized exchange."
+    "term": "NFT (Non-Fungible Token)",
+    "description": "A unique digital asset that is not interchangeable with another token of the same type."
+  },
+  {
+    "term": "Oracle",
+    "description": "A bridge between blockchain and off-chain data sources, providing real-world data to smart contracts."
+  },
+  {
+    "term": "Proof of Stake (PoS)",
+    "description": "A consensus mechanism where validators are chosen to create new blocks based on the number of coins they hold and are willing to stake."
+  },
+  {
+    "term": "Proof of Work (PoW)",
+    "description": "A consensus mechanism where miners solve complex mathematical puzzles to validate transactions and create new blocks."
+  },
+  {
+    "term": "Quadratic Funding",
+    "description": "A funding mechanism that incentivizes diversity and quality in open source projects."
+  },
+  {
+    "term": "Sharding",
+    "description": "A method of splitting a blockchain's data and transactions across multiple nodes to improve scalability."
+  },
+  {
+    "term": "Sidechain",
+    "description": "A separate blockchain that is interoperable with a main blockchain and can handle specific use cases or transactions."
+  },
+  {
+    "term": "Smart Contract",
+    "description": "A self-executing contract with the terms of the agreement directly written into code."
   },
   {
     "term": "Smart Contract Audit",
     "description": "A security review of smart contracts to identify and fix vulnerabilities."
   },
   {
-    "term": "Decentralized Storage Network",
-    "description": "A network of decentralized nodes that stores data across multiple locations, ensuring data availability and security."
+    "term": "Staking",
+    "description": "The process of locking up cryptocurrency to validate transactions and earn rewards on a blockchain."
   },
   {
-    "term": "Token Vesting",
-    "description": "A schedule for releasing tokens to beneficiaries over time, often used in ICOs and other fundraising methods."
+    "term": "Token",
+    "description": "A digital or cryptographic asset built on blockchain technology that represents a certain value or utility."
   },
   {
-    "term": "Gas Refund",
-    "description": "A mechanism that returns unused gas to the user, reducing transaction costs."
+    "term": "Token Locking",
+    "description": "A mechanism that locks tokens for a specified period, often used for vesting or to prevent early selling."
   },
   {
-    "term": "Decentralized Governance",
-    "description": "A system of governance where decisions are made through decentralized means, often involving token holders voting on proposals."
+    "term": "Token Liquidity",
+    "description": "The availability of tokens in a decentralized exchange to facilitate trading and reduce price volatility."
+  },
+  {
+    "term": "Tokenomics",
+    "description": "The economic design and structure of a token, including supply, distribution, and utility."
+  },
+  {
+    "term": "Token Standard",
+    "description": "A set of rules and protocols that define how tokens behave on a blockchain, such as ERC-20 or ERC-721."
   },
   {
     "term": "Token Staking",
     "description": "The process of locking tokens to participate in the governance and security of a blockchain network."
   },
   {
-    "term": "Gas Optimization",
-    "description": "The process of improving the efficiency of smart contracts to reduce gas consumption and lower transaction costs."
+    "term": "Token Swap",
+    "description": "A process of exchanging one token for another on a decentralized exchange."
   },
   {
-    "term": "Decentralized Marketplace",
-    "description": "A platform that allows buyers and sellers to trade goods and services directly without a central authority."
+    "term": "Token Vesting",
+    "description": "A schedule for releasing tokens to beneficiaries over time, often used in ICOs and other fundraising methods."
   },
   {
-    "term": "Token Liquidity",
-    "description": "The availability of tokens in a decentralized exchange to facilitate trading and reduce price volatility."
+    "term": "Transaction",
+    "description": "A record of a transfer of value or data on a blockchain."
+  },
+  {
+    "term": "Web3",
+    "description": "The third generation of the World Wide Web based on blockchain technology, enabling decentralized applications and data."
+  },
+  {
+    "term": "Web3 Wallet",
+    "description": "A software application that allows users to manage their cryptocurrency and interact with decentralized applications."
+  },
+  {
+    "term": "Wallet",
+    "description": "A software application that allows users to manage their cryptocurrency and interact with decentralized applications."
   }
 ]
