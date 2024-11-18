@@ -85,7 +85,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, onPomodoroOpen, onTi
   ];
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <div className="fixed bottom-6 right-4 z-50">
       <button
         onClick={toggleToolbar}
         className={`p-2 rounded-full bg-gray-800/50 hover:bg-gray-800/80 transition-colors duration-300`}

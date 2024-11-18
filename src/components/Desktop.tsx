@@ -1,5 +1,4 @@
 // src/Desktop.tsx
-
 import React, { useState, useRef, useEffect } from 'react';
 import SearchBar from './SearchBar';
 import ShortcutGrid from './ShortcutGrid';
@@ -15,6 +14,7 @@ import Modalvate from './Modalvate';
 import LexiconModal from './LexiconModal';
 import { Book } from 'lucide-react';
 import { keyCommands, searchTerms } from '../config';
+import MusicModal from './MusicModal'; // Import the MusicModal component
 
 const Desktop: React.FC = () => {
   const [search, setSearch] = useState('');
@@ -25,6 +25,7 @@ const Desktop: React.FC = () => {
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const [isModalvateOpen, setIsModalvateOpen] = useState(false);
   const [isLexiconModalOpen, setIsLexiconModalOpen] = useState(false);
+  const [isMusicModalOpen, setIsMusicModalOpen] = useState(false); // Add this line
 
   const {
     isPomodoroModalOpen,
@@ -82,11 +83,14 @@ const Desktop: React.FC = () => {
         closeModal('isWeb3SocialModalOpen');
       } else if (isWalletsModalOpen) {
         closeModal('isWalletsModalOpen');
+      } else if (isMusicModalOpen) {
+        setIsMusicModalOpen(false); // Close MusicModal
       } else if (showToolbar) {
         toggleToolbar();
       }
     },
     onAltT: changeTheme,
+    onAltM: () => setIsMusicModalOpen(!isMusicModalOpen), // Add this line
   });
 
   useEffect(() => {
@@ -240,6 +244,12 @@ const Desktop: React.FC = () => {
       <LexiconModal
         isOpen={isLexiconModalOpen}
         onClose={closeLexiconModal}
+        theme={theme}
+      />
+
+      <MusicModal // Add the MusicModal component
+        isOpen={isMusicModalOpen}
+        onClose={() => setIsMusicModalOpen(false)}
         theme={theme}
       />
     </div>

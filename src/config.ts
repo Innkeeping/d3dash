@@ -1,10 +1,11 @@
+// src/config.ts
 export const keyCommands = {
   'Ctrl+K': 'focusSearchBar',
   'Ctrl+B': 'toggleToolbar',
   'Escape': 'closeModalsOrToolbar',
   'Alt+T': 'changeTheme',
+  'Alt+M': 'toggleMusicModal',
 };
-
 
 export const searchTerms = {
   'price': 'isCryptoPricesModalOpen',
