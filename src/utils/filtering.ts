@@ -1,7 +1,7 @@
 // src/utils/filtering.ts
 import { shortcuts } from '../data/shortcuts';
-import linksData from '../data/links.json';
-import { Link, DescribedLink, NetworkLink } from '../types';
+import { links } from '../data/links.tsx'; // Adjust the path as necessary
+import { Link, DescribedLink, NetworkLink, DescribedShortcut } from '../types';
 
 export const filterShortcuts = (search: string) => {
   return shortcuts.filter(shortcut =>
@@ -10,34 +10,19 @@ export const filterShortcuts = (search: string) => {
   );
 };
 
-export const filterLinks = (search: string, allLinks: Link[]) => {
+export const filterLinks = (search: string, allLinks: DescribedShortcut[]) => {
   const lowerSearch = search.toLowerCase();
   return allLinks.filter(link => {
     const lowerName = link.name.toLowerCase();
+    const lowerDescription = link.description.toLowerCase();
+    const lowerCategory = link.category.toLowerCase();
 
-    if ('description' in link && 'category' in link) {
-      const linkWithDescriptionAndCategory = link as DescribedLink;
-      return (
-        lowerName.includes(lowerSearch) ||
-        linkWithDescriptionAndCategory.description.toLowerCase().includes(lowerSearch) ||
-        (linkWithDescriptionAndCategory.category && linkWithDescriptionAndCategory.category.toLowerCase().includes(lowerSearch))
-      );
-    } else if ('description' in link) {
-      const linkWithDescription = link as DescribedLink;
-      return (
-        lowerName.includes(lowerSearch) ||
-        linkWithDescription.description.toLowerCase().includes(lowerSearch)
-      );
-    } else if ('category' in link) {
-      const linkWithCategory = link as NetworkLink;
-      return (
-        lowerName.includes(lowerSearch) ||
-        (linkWithCategory.category && linkWithCategory.category.toLowerCase().includes(lowerSearch))
-      );
-    } else {
-      return lowerName.includes(lowerSearch);
-    }
+    return (
+      lowerName.includes(lowerSearch) ||
+      lowerDescription.includes(lowerSearch) ||
+      lowerCategory.includes(lowerSearch)
+    );
   });
 };
 
-export const allLinks: Link[] = Object.values(linksData).flat();
+export const allLinks: DescribedShortcut[] = links;

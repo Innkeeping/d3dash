@@ -8,16 +8,22 @@ interface SearchBarProps extends InputHTMLAttributes<HTMLInputElement> {
   setSearch: (value: string) => void;
   theme: Theme;
   inputRef?: Ref<HTMLInputElement>;
+  onNavigateToLinks?: () => void; // New prop to handle navigation to links
 }
 
-const SearchBar: React.FC<SearchBarProps> = forwardRef<HTMLInputElement, SearchBarProps>(({ search, setSearch, theme, inputRef, ...rest }, ref) => {
+const SearchBar: React.FC<SearchBarProps> = forwardRef<HTMLInputElement, SearchBarProps>(({ search, setSearch, theme, inputRef, onNavigateToLinks, ...rest }, ref) => {
   const themeClasses = {
     purple: 'border-purple-500/30 focus:ring-purple-500/50 text-purple-100 placeholder-purple-300/50',
     green: 'border-green-500/30 focus:ring-green-500/50 text-green-100 placeholder-green-300/50',
     teal: 'border-teal-500/30 focus:ring-teal-500/50 text-teal-100 placeholder-teal-300/50'
   };
 
-
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      onNavigateToLinks?.(); // Call the onNavigateToLinks function
+    }
+  };
 
   return (
     <div className="relative z-10 mb-8">
@@ -31,6 +37,7 @@ const SearchBar: React.FC<SearchBarProps> = forwardRef<HTMLInputElement, SearchB
             className={`w-full pl-10 pr-4 py-2 bg-gray-900/50 border rounded-lg focus:outline-none focus:ring-2 backdrop-blur-sm ${themeClasses[theme]}`}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={handleKeyDown}
             {...rest}
           />
         </div>

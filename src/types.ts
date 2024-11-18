@@ -9,6 +9,11 @@ export interface Shortcut {
   category: string;
 }
 
+// Define a type for shortcuts with a description
+export interface DescribedShortcut extends Shortcut {
+  description: string;
+}
+
 export type Theme = 'purple' | 'green' | 'teal';
 
 // Define a type for links with a description
