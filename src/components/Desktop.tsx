@@ -18,7 +18,7 @@ const Desktop: React.FC = () => {
   const [showToolbar, setShowToolbar] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
 
-  const { isPomodoroModalOpen, isTimeZonesModalOpen, isCryptoPricesModalOpen, openModal, closeModal } = useModals();
+  const { isPomodoroModalOpen, isTimeZonesModalOpen, isCryptoPricesModalOpen, isDocsModalOpen, openModal, closeModal } = useModals();
 
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const shortcutGridRef = useRef<{ gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> } | null>(null);
@@ -37,26 +37,17 @@ const Desktop: React.FC = () => {
     setShowToolbar(!showToolbar);
   };
 
-  // Define the changeTheme function
+  const themes: ('purple' | 'green' | 'teal')[] = ['purple', 'green', 'teal'];
+
   const changeTheme = () => {
-    setTheme(prevTheme => {
-      switch (prevTheme) {
-        case 'purple':
-          return 'green';
-        case 'green':
-          return 'teal';
-        case 'teal':
-          return 'purple';
-        default:
-          return 'purple';
-      }
-    });
+    const currentThemeIndex = themes.indexOf(theme);
+    setTheme(themes[(currentThemeIndex + 1) % themes.length]);
   };
 
   useKeyboardEvents({
     onCtrlK: () => {
       searchInputRef.current?.focus();
-      setFocusedIndex(null);
+      setFocusedIndex(null); // Reset focus index when search bar is focused
     },
     onCtrlB: toggleToolbar,
     onEscape: () => {
@@ -66,23 +57,35 @@ const Desktop: React.FC = () => {
         closeModal('isTimeZonesModalOpen');
       } else if (isPomodoroModalOpen) {
         closeModal('isPomodoroModalOpen');
+      } else if (isDocsModalOpen) {
+        closeModal('isDocsModalOpen');
       } else if (showToolbar) {
         toggleToolbar();
       }
     },
-    onAltT: changeTheme, // Use the changeTheme function here
+    onAltT: changeTheme, // New handler for Alt + T
   });
 
   useEffect(() => {
-    const searchTerms = ['clock', 'time', 'utc', 'price'];
+    const searchTerms = ['clock', 'time', 'utc', 'price', 'docs'];
     const lowerSearch = search.toLowerCase();
     const matchedTerm = searchTerms.find(term => lowerSearch.includes(term));
 
     if (matchedTerm) {
-      if (matchedTerm === 'price') {
-        openModal('isCryptoPricesModalOpen');
-      } else if (matchedTerm === 'clock' || matchedTerm === 'time' || matchedTerm === 'utc') {
-        openModal('isTimeZonesModalOpen');
+      switch (matchedTerm) {
+        case 'price':
+          openModal('isCryptoPricesModalOpen');
+          break;
+        case 'clock':
+        case 'time':
+        case 'utc':
+          openModal('isTimeZonesModalOpen');
+          break;
+        case 'docs':
+          openModal('isDocsModalOpen');
+          break;
+        default:
+          break;
       }
       setSearch('');
     }
@@ -168,9 +171,11 @@ const Desktop: React.FC = () => {
         isPomodoroModalOpen={isPomodoroModalOpen}
         isTimeZonesModalOpen={isTimeZonesModalOpen}
         isCryptoPricesModalOpen={isCryptoPricesModalOpen}
+        isDocsModalOpen={isDocsModalOpen}
         onClosePomodoro={() => closeModal('isPomodoroModalOpen')}
         onCloseTimeZones={() => closeModal('isTimeZonesModalOpen')}
         onCloseCryptoPrices={() => closeModal('isCryptoPricesModalOpen')}
+        onCloseDocs={() => closeModal('isDocsModalOpen')}
         theme={theme}
         onTimerUpdate={(isRunning, timeLeft) => {
           setIsTimerRunning(isRunning);
