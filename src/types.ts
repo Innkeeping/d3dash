@@ -7,48 +7,49 @@ export interface Shortcut {
   icon: ReactNode;
   url: string;
   category: string;
+  description:string;
 }
 
-// Define a type for shortcuts with a description
+
 export interface DescribedShortcut extends Shortcut {
   description: string;
 }
 
 export type Theme = 'purple' | 'green' | 'teal';
 
-// Define a type for links with a description
+
 export interface DescribedLink {
   name: string;
   icon: string;
   url: string;
   description: string;
-  category?: string; // Make category optional
+  category?: string;
 }
 
-// Define a type for links without a description
+
 export interface NetworkLink {
   name: string;
-  icon?: string; // Make icon optional
+  icon?: string;
   url: string;
   chainId?: string;
   currency?: string;
-  category?: string; // Make category optional
+  category?: string;
 }
 
-// Union type for links
+
 export type Link = DescribedLink | NetworkLink;
 
 export type CitiesToTimeZones = {
   [key: string]: string[];
 };
 
-// Define types for the Lens API response
+
 export type LensPublicationStats = {
   reactions: number;
 };
 
 export type LensImageMetadataV3 = {
-  __typename: 'ImageMetadataV3'; // Ensure this matches the typename returned by the API
+  __typename: 'ImageMetadataV3';
   id: string;
   content: string;
   asset: {
@@ -61,8 +62,7 @@ export type LensImageMetadataV3 = {
 };
 
 export type LensTextOnlyMetadataV3 = {
-  __typename: 'TextOnlyMetadataV3'; // Ensure this matches the typename returned by the API
-  id: string;
+  __typename: 'TextOnlyMetadataV3';
   content: string;
 };
 
