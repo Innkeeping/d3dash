@@ -1,0 +1,68 @@
+
+[
+  {
+    "name": "MetaMask",
+    "description": "A cryptocurrency wallet for buying, selling, and managing digital assets.",
+    "link": "https://metamask.io/"
+  },
+  {
+    "name": "Coinbase Wallet",
+    "description": "A cryptocurrency wallet for buying, selling, and managing digital assets.",
+    "link": "https://www.coinbase.com/wallet"
+  },
+  {
+    "name": "WalletConnect",
+    "description": "An open protocol for connecting decentralized applications to mobile wallets.",
+    "link": "https://walletconnect.com/"
+  },
+  {
+    "name": "Safe",
+    "description": "A non-custodial, multi-signature wallet for Ethereum.",
+    "link": "https://gnosis-safe.io/"
+  },
+  {
+    "name": "Trust Wallet",
+    "description": "A multi-chain cryptocurrency wallet for Android and iOS.",
+    "link": "https://trustwallet.com/"
+  },
+  {
+    "name": "Ledger Live",
+    "description": "A cryptocurrency wallet that integrates with Ledger hardware wallets.",
+    "link": "https://www.ledger.com/ledger-live"
+  },
+  {
+    "name": "Trezor Wallet",
+    "description": "A cryptocurrency wallet that integrates with Trezor hardware wallets.",
+    "link": "https://trezor.io/"
+  },
+  {
+    "name": "Exodus",
+    "description": "A multi-asset cryptocurrency wallet for desktop and mobile.",
+    "link": "https://www.exodus.com/"
+  },
+  {
+    "name": "Brave Wallet",
+    "description": "A cryptocurrency wallet built into the Brave browser.",
+    "link": "https://brave.com/wallet"
+  },
+  {
+    "name": "Argent",
+    "description": "A non-custodial Ethereum wallet with a gasless user experience.",
+    "link": "https://argent.xyz/"
+  },
+  {
+    "name": "Frame",
+    "description": "A non-custodial browser wallet for Ethereum and other networks.",
+    "link": "https://frame.sh/"
+  },
+  {
+    "name": "Rainbow",
+    "description": "A mobile wallet for Ethereum and other networks.",
+    "link": "https://rainbow.me/"
+  },
+  {
+    "name": "Zerion",
+    "description": "A multi-chain cryptocurrency wallet and portfolio tracker.",
+    "link": "https://zerion.io/"
+  }
+]
