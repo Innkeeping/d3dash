@@ -11,6 +11,7 @@ import TimerDisplay from './TimerDisplay';
 import Modals from './Modals';
 import { Heart } from 'lucide-react';
 import Modalvate from './Modalvate';
+
 const Desktop: React.FC = () => {
   const [search, setSearch] = useState('');
   const [theme, setTheme] = useState<'purple' | 'green' | 'teal'>('purple');
@@ -20,7 +21,15 @@ const Desktop: React.FC = () => {
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const [isModalvateOpen, setIsModalvateOpen] = useState(false);
 
-  const { isPomodoroModalOpen, isTimeZonesModalOpen, isCryptoPricesModalOpen, isDocsModalOpen, openModal, closeModal } = useModals();
+  const {
+    isPomodoroModalOpen,
+    isTimeZonesModalOpen,
+    isCryptoPricesModalOpen,
+    isDocsModalOpen,
+    isWeb3SocialModalOpen, // Add state for Web3SocialModal
+    openModal,
+    closeModal
+  } = useModals();
 
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const shortcutGridRef = useRef<{ gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> } | null>(null);
@@ -46,6 +55,8 @@ const Desktop: React.FC = () => {
     setTheme(themes[(currentThemeIndex + 1) % themes.length]);
   };
 
+  const searchBarRef = useRef<HTMLInputElement>(null);
+
   useKeyboardEvents({
     onCtrlK: () => {
       searchInputRef.current?.focus();
@@ -69,7 +80,7 @@ const Desktop: React.FC = () => {
   });
 
   useEffect(() => {
-    const searchTerms = ['clock', 'time', 'utc', 'price', 'docs'];
+    const searchTerms = ['clock', 'time', 'utc', 'price', 'docs', 'social']; // Add 'social' to the search terms
     const lowerSearch = search.toLowerCase();
     const matchedTerm = searchTerms.find(term => lowerSearch.includes(term));
 
@@ -85,6 +96,9 @@ const Desktop: React.FC = () => {
           break;
         case 'docs':
           openModal('isDocsModalOpen');
+          break;
+        case 'social':
+          openModal('isWeb3SocialModalOpen'); // Open the Web3SocialModal
           break;
         default:
           break;
@@ -150,6 +164,7 @@ const Desktop: React.FC = () => {
         onNavigateToSearchBar={navigateToSearchBar}
         ref={shortcutGridRef}
         onLastRowDown={handleLastRowDown}
+        searchBarRef={searchBarRef}
       />
       {search && (
         <LinkGrid
@@ -182,10 +197,12 @@ const Desktop: React.FC = () => {
         isTimeZonesModalOpen={isTimeZonesModalOpen}
         isCryptoPricesModalOpen={isCryptoPricesModalOpen}
         isDocsModalOpen={isDocsModalOpen}
+        isWeb3SocialModalOpen={isWeb3SocialModalOpen} // Add prop for Web3SocialModal
         onClosePomodoro={() => closeModal('isPomodoroModalOpen')}
         onCloseTimeZones={() => closeModal('isTimeZonesModalOpen')}
         onCloseCryptoPrices={() => closeModal('isCryptoPricesModalOpen')}
         onCloseDocs={() => closeModal('isDocsModalOpen')}
+        onCloseWeb3SocialModal={() => closeModal('isWeb3SocialModalOpen')} // Add prop to close Web3SocialModal
         theme={theme}
         onTimerUpdate={(isRunning, timeLeft) => {
           setIsTimerRunning(isRunning);
@@ -193,14 +210,12 @@ const Desktop: React.FC = () => {
         }}
       />
 
-
       <button
         onClick={openModalvate}
         className="absolute bottom-6 left-4 p-2 bg-white bg-opacity-10 rounded-full text-white opacity-10 z-50 hover:opacity-100 transition-opacity"
       >
         <Heart size={24} />
       </button>
-
 
       <Modalvate isOpen={isModalvateOpen} onClose={closeModalvate} theme={theme} />
     </div>

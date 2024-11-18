@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { X } from 'lucide-react';
 import { Theme } from '../types';
 
 interface ModalvateProps {
@@ -86,9 +85,6 @@ const Modalvate: React.FC<ModalvateProps> = ({ isOpen, onClose, theme }) => {
       >
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Love from IPFS</h2>
-          <button onClick={onClose} className="p-1 hover:bg-gray-800/50 rounded-lg">
-            <X size={20} />
-          </button>
         </div>
 
         <div className="text-lg opacity-90">

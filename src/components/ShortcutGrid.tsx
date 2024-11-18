@@ -1,4 +1,3 @@
-// src/ShortcutGrid.tsx
 import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import { Shortcut, Theme } from '../types';
 
@@ -8,12 +7,13 @@ interface ShortcutGridProps {
   onNavigateToSearchBar?: () => void;
   onNavigateToLinks?: () => void;
   onLastRowDown?: () => void; // New prop to handle navigation to links if last row is focused
+  searchBarRef: React.RefObject<HTMLInputElement>; // Add ref for search bar
 }
 
 const ShortcutGrid = forwardRef<
   { gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> },
   ShortcutGridProps
->(({ shortcuts, theme, onNavigateToSearchBar, onNavigateToLinks, onLastRowDown }, ref) => {
+>(({ shortcuts, theme, onNavigateToSearchBar, onNavigateToLinks, onLastRowDown, searchBarRef }, ref) => {
   const themeClasses = {
     purple: {
       border: 'border-purple-500/20 hover:border-purple-500/40',
@@ -68,6 +68,12 @@ const ShortcutGrid = forwardRef<
         newIndex = focusedIndex - numCols;
         if (newIndex < 0) {
           onNavigateToSearchBar?.();
+          if (searchBarRef.current) {
+            searchBarRef.current.focus();
+            const end = searchBarRef.current.value.length;
+            searchBarRef.current.setSelectionRange(end, end);
+            searchBarRef.current.focus(); // Ensure focus is set again
+          }
           return;
         }
         break;

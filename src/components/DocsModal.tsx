@@ -18,8 +18,10 @@ const DocsModal: React.FC<DocsModalProps> = ({ isOpen, onClose, theme }) => {
   };
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const modalRef = useRef<HTMLDivElement | null>(null);
+  const listItemsRef = useRef<(HTMLAnchorElement | null)[]>([]);
 
   const docs = [
     {
@@ -85,7 +87,7 @@ const DocsModal: React.FC<DocsModalProps> = ({ isOpen, onClose, theme }) => {
     {
       name: 'Reown',
       icon: <Book className="text-green-400" size={24} />,
-      url: 'https://docs.reown.io/',
+      url: 'https://docs.reown.com/',
       description: 'A platform for building and managing decentralized applications.',
     },
     {
@@ -103,7 +105,7 @@ const DocsModal: React.FC<DocsModalProps> = ({ isOpen, onClose, theme }) => {
     {
       name: 'Scaffold-ETH 2',
       icon: <Book className="text-green-400" size={24} />,
-      url: 'https://github.com/scaffold-eth/scaffold-eth-2',
+      url: 'https://scaffold-eth-2-docs.vercel.app/',
       description: 'A full-stack Ethereum development scaffold to build and deploy dapps quickly.',
     },
     {
@@ -142,6 +144,24 @@ const DocsModal: React.FC<DocsModalProps> = ({ isOpen, onClose, theme }) => {
       url: 'https://docs.ethers.io/v5/',
       description: 'A JavaScript library for interacting with the Ethereum blockchain and smart contracts, providing a simple and powerful API.',
     },
+    {
+      name: 'Optimism',
+      icon: <Book className="text-green-400" size={24} />,
+      url: 'https://docs.optimism.io/builders',
+      description: 'Optimism documentation for builders.',
+    },
+    {
+      name: 'Lens',
+      icon: <Book className="text-purple-400" size={24} />,
+      url: 'https://www.lens.xyz/docs',
+      description: 'Lens documentation for developers, providing tools and resources for building on the Lens protocol.',
+    },
+    {
+      name: 'Moralis',
+      icon: <Book className="text-emerald-400" size={24} />,
+      url: 'https://docs.moralis.com/',
+      description: 'Moralis documentation for developers, offering services and tools for blockchain applications.',
+    },
   ];
 
   const filteredDocs = docs.filter((doc) =>
@@ -151,11 +171,11 @@ const DocsModal: React.FC<DocsModalProps> = ({ isOpen, onClose, theme }) => {
   useEffect(() => {
     if (isOpen && searchInputRef.current) {
       searchInputRef.current.focus();
+      setFocusedIndex(null);
     }
   }, [isOpen]);
 
   useEffect(() => {
-
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
         onClose();
@@ -169,10 +189,32 @@ const DocsModal: React.FC<DocsModalProps> = ({ isOpen, onClose, theme }) => {
   }, [onClose]);
 
   useEffect(() => {
-
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
+      } else if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        setFocusedIndex((prevIndex) =>
+          prevIndex === null || prevIndex >= filteredDocs.length - 1 ? 0 : prevIndex + 1
+        );
+      } else if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        if (focusedIndex === 0) {
+          setFocusedIndex(null);
+          searchInputRef.current?.focus();
+        } else if (focusedIndex === null) {
+          // Do nothing if already focused on the search bar
+        } else {
+          setFocusedIndex((prevIndex) =>
+            prevIndex === null || prevIndex <= 0 ? filteredDocs.length - 1 : prevIndex - 1
+          );
+        }
+      } else if (event.key === 'Enter' && focusedIndex !== null) {
+        event.preventDefault();
+        const link = listItemsRef.current[focusedIndex];
+        if (link) {
+          link.click();
+        }
       }
     };
 
@@ -180,7 +222,13 @@ const DocsModal: React.FC<DocsModalProps> = ({ isOpen, onClose, theme }) => {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [onClose]);
+  }, [filteredDocs, focusedIndex, onClose]);
+
+  useEffect(() => {
+    if (focusedIndex !== null && listItemsRef.current[focusedIndex]) {
+      listItemsRef.current[focusedIndex].focus();
+    }
+  }, [focusedIndex]);
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -207,13 +255,17 @@ const DocsModal: React.FC<DocsModalProps> = ({ isOpen, onClose, theme }) => {
         </div>
 
         <div className="space-y-4">
-          {filteredDocs.map((doc) => (
+          {filteredDocs.map((doc, index) => (
             <a
               key={doc.name}
               href={doc.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-4 p-4 rounded-lg hover:bg-gray-800/30 transition-colors"
+              className={`flex items-center gap-4 p-4 rounded-lg hover:bg-gray-800/30 transition-colors ${
+                focusedIndex === index ? 'bg-gray-800/30' : ''
+              }`}
+              ref={(el) => (listItemsRef.current[index] = el)}
+              tabIndex={0}
             >
               <div className="p-2 rounded-lg bg-gray-800/50">
                 {doc.icon}

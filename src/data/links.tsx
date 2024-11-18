@@ -3,7 +3,13 @@ import {
   PieChart, Compass, BarChart, Briefcase, CircleDollarSign,
   DollarSign, HardDrive, Network, Book, Flower2, Pill, Shrub, Orbit, Leaf,
   Vote, Users, MessageSquare,
-  Radio
+  Radio,
+  Link,
+  Camera,
+  Film,
+  Check,
+  Mail,
+  Terminal
 } from 'lucide-react'
 import { DescribedShortcut } from '../types'
 
@@ -55,4 +61,15 @@ export const links: DescribedShortcut[] = [
   { id: '57', name: '1inch', icon: <Network className="text-purple-400" size={24} />, url: 'https://1inch.exchange/', category: 'Defi', description: 'A decentralized exchange (DEX) aggregator' },
   { id: '58', name: 'Jumper.Exchange', icon: <Network className="text-purple-400" size={24} />, url: 'https://jumper.exchange/', category: 'Defi', description: 'A decentralized exchange (DEX)' },
   { id: '59', name: 'QuickSwap', icon: <Network className="text-purple-400" size={24} />, url: 'https://quickswap.exchange/', category: 'Defi', description: 'A decentralized exchange (DEX) on the Polygon network' },
+  { id: '60', name: 'Optimism', icon: <Book className="text-green-400" size={24} />, url: 'https://docs.optimism.io/builders', category: 'Docs', description: 'Optimism documentation for builders, covering various aspects of the Optimism network' },
+  { id: '61', name: 'Lens', icon: <Book className="text-purple-400" size={24} />, url: 'https://www.lens.xyz/docs', category: 'Docs', description: 'Lens documentation for developers, providing tools and resources for building on the Lens protocol' },
+  { id: '62', name: 'Moralis', icon: <Book className="text-emerald-400" size={24} />, url: 'https://docs.moralis.com/', category: 'Docs', description: 'Moralis documentation for developers, offering services and tools for blockchain applications' },
+  { id: '63', name: 'Warpcast', icon: <Link className="text-pink-400" size={24} />, url: 'https://warpcast.com/', category: 'Web3 Social', description: 'Warpcast is a decentralized social network built on the Farcaster protocol' },
+  { id: '64', name: 'Buttrfly', icon: <Camera className="text-teal-400" size={24} />, url: 'https://buttrfly.app/', category: 'Web3 Social', description: 'Buttrfly is a decentralized platform for creators to share and monetize their content' },
+  { id: '65', name: 'Bloomers', icon: <Film className="text-orange-400" size={24} />, url: 'https://bloomers.tv/', category: 'Web3 Social', description: 'Bloomers is a decentralized video platform for creators' },
+  { id: '66', name: 'Yup', icon: <Check className="text-cyan-400" size={24} />, url: 'https://yup.io/', category: 'Web3 Social', description: 'Yup is a decentralized social network for communities' },
+  { id: '67', name: 'Phaver', icon: <Mail className="text-lime-400" size={24} />, url: 'https://phaver.com/', category: 'Web3 Social', description: 'Phaver is a decentralized social network for communities' },
+  { id: '68', name: 'Hey', icon: <Terminal className="text-violet-400" size={24} />, url: 'https://hey.xyz/', category: 'Web3 Social', description: 'Hey is a decentralized social network for writers and creators' },
+  { id: '69', name: 'Tape', icon: <MessageSquare className="text-indigo-400" size={24} />, url: 'https://tape.xyz/', category: 'Web3 Social', description: 'Tape is a decentralized platform for sharing stories and content' },
+  { id: '70', name: 'Lenspeer', icon: <Users className="text-fuchsia-400" size={24} />, url: 'https://lenspeer.com/', category: 'Web3 Social', description: 'Lenspeer is a decentralized social network for communities' },
 ]
