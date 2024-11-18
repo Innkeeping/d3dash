@@ -1,5 +1,5 @@
 // src/ShortcutGrid.tsx
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import { Shortcut, Theme } from '../types';
 
 interface ShortcutGridProps {
@@ -7,7 +7,10 @@ interface ShortcutGridProps {
   theme: Theme;
 }
 
-const ShortcutGrid: React.FC<ShortcutGridProps> = ({ shortcuts, theme }) => {
+const ShortcutGrid = forwardRef<
+  { gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> },
+  ShortcutGridProps
+>(({ shortcuts, theme }, ref) => {
   const themeClasses = {
     purple: {
       border: 'border-purple-500/20 hover:border-purple-500/40',
@@ -26,35 +29,48 @@ const ShortcutGrid: React.FC<ShortcutGridProps> = ({ shortcuts, theme }) => {
     }
   };
 
-  const [focusedIndex, setFocusedIndex] = useState<number>(0);
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
+  const [arrowKeyPressed, setArrowKeyPressed] = useState<boolean>(false);
   const gridItemsRef = useRef<(HTMLAnchorElement | null)[]>([]);
+  const gridContainerRef = useRef<HTMLDivElement | null>(null);
+
+  useImperativeHandle(ref, () => ({
+    gridItemsRef
+  }));
 
   useEffect(() => {
-    if (gridItemsRef.current[focusedIndex]) {
+    // Focus the grid container on mount
+    if (gridContainerRef.current) {
+      gridContainerRef.current.focus();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (focusedIndex !== null && gridItemsRef.current[focusedIndex]) {
       gridItemsRef.current[focusedIndex].focus();
     }
   }, [focusedIndex]);
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLAnchorElement>, index: number) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     console.log('Key pressed:', event.key); // Debugging: Log the key pressed
 
     const numRows = Math.ceil(shortcuts.length / 6); // Assuming 6 columns in the largest grid
     const numCols = 6;
 
-    let newIndex = index;
+    let newIndex = focusedIndex !== null ? focusedIndex : 0;
 
     switch (event.key) {
       case 'ArrowUp':
-        newIndex = index - numCols;
+        newIndex = newIndex - numCols;
         break;
       case 'ArrowDown':
-        newIndex = index + numCols;
+        newIndex = newIndex + numCols;
         break;
       case 'ArrowLeft':
-        newIndex = index - 1;
+        newIndex = newIndex - 1;
         break;
       case 'ArrowRight':
-        newIndex = index + 1;
+        newIndex = newIndex + 1;
         break;
       default:
         return;
@@ -63,13 +79,32 @@ const ShortcutGrid: React.FC<ShortcutGridProps> = ({ shortcuts, theme }) => {
     // Ensure the new index is within bounds
     if (newIndex >= 0 && newIndex < shortcuts.length) {
       setFocusedIndex(newIndex);
+      setArrowKeyPressed(true);
     }
+  };
+
+  const handleFocus = (index: number) => {
+    setFocusedIndex(index);
+  };
+
+  const handleBlur = () => {
+    setFocusedIndex(null);
+    setArrowKeyPressed(false);
   };
 
   return (
     <div
+      ref={gridContainerRef}
       className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 relative z-10"
       role="grid"
+      tabIndex={0} // Make the grid focusable
+      onKeyDown={handleKeyDown}
+      onFocus={() => {
+        if (focusedIndex === null) {
+          setFocusedIndex(0);
+        }
+      }}
+      onBlur={handleBlur}
     >
       {shortcuts.map((shortcut, index) => (
         <a
@@ -78,13 +113,17 @@ const ShortcutGrid: React.FC<ShortcutGridProps> = ({ shortcuts, theme }) => {
           target="_blank"
           rel="noopener noreferrer"
           className={`flex flex-col items-center p-4 rounded-lg bg-gray-800/30 border hover:bg-opacity-40 transition-all duration-300 backdrop-blur-sm group ${themeClasses[theme].border} ${themeClasses[theme].text} ${
-            focusedIndex === index ? `outline outline-2 ${themeClasses[theme].outline}` : ''
+            focusedIndex === index && arrowKeyPressed ? `outline outline-2 ${themeClasses[theme].outline}` : ''
           }`}
           tabIndex={focusedIndex === index ? 0 : -1}
           role="gridcell"
           ref={(el) => (gridItemsRef.current[index] = el)}
-          onKeyDown={(event) => handleKeyDown(event, index)}
-          onClick={() => setFocusedIndex(index)}
+          onClick={() => {
+            setFocusedIndex(index);
+            setArrowKeyPressed(true);
+          }}
+          onFocus={() => handleFocus(index)}
+          onBlur={handleBlur}
         >
           <div className="transition-colors duration-300">
             {shortcut.icon}
@@ -96,6 +135,6 @@ const ShortcutGrid: React.FC<ShortcutGridProps> = ({ shortcuts, theme }) => {
       ))}
     </div>
   );
-};
+});
 
 export default ShortcutGrid;
