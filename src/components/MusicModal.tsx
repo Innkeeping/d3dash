@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { X } from 'lucide-react';
 import MusicNoteIndicator from './MusicNoteIndicator';
 import { Theme } from '../types';
 
@@ -81,19 +80,10 @@ const MusicModal: React.FC<MusicModalProps> = ({ isOpen, onClose, onOpen, theme 
   }, [onClose]);
 
   useEffect(() => {
-    if (successMessage) {
-      const timeout = setTimeout(() => {
-        setSuccessMessage('');
-      }, 3000); // Clear the success message after 3 seconds
-      return () => clearTimeout(timeout);
-    }
-  }, [successMessage]);
-
-  useEffect(() => {
     if (newItemId) {
       const timeout = setTimeout(() => {
         setNewItemId(null);
-      }, 3000); // Remove highlight after 3 seconds
+      }, 3000);
       return () => clearTimeout(timeout);
     }
   }, [newItemId]);
@@ -113,14 +103,45 @@ const MusicModal: React.FC<MusicModalProps> = ({ isOpen, onClose, onOpen, theme 
         try {
           new URL(src);
           const newEmbed = {
-            id: Date.now().toString(), // Use a unique ID
+            id: Date.now().toString(),
             src: src
           };
           setMusicEmbedLinks([...musicEmbedLinks, newEmbed]);
           setNewLink('');
           setError('');
-          setSuccessMessage('Embed link added successfully!');
+          const newCount = musicEmbedLinks.length + 1;
+
+
+          setSuccessMessage(`Embed link added successfully! You now have ${newCount} songs in the list.`);
+
+
+          const firstMessageTimeout = setTimeout(() => {
+            console.log('First message cleared, showing second message');
+            setSuccessMessage(
+              `Note: Songs will not autoplay in order. For more features, including playlists, visit <a class="text-blue-500" href="https://sound.xyz" target="_blank" rel="noopener noreferrer">sound.xyz</a>.`
+            );
+
+
+            const secondMessageTimeout = setTimeout(() => {
+              console.log('Second message cleared, showing third message');
+              setSuccessMessage(
+                `You can close this modal with ESC or clicking out, and the music will still play.`
+              );
+
+
+              const thirdMessageTimeout = setTimeout(() => {
+                console.log('Third message cleared');
+                setSuccessMessage('');
+              }, 3000);
+
+              return () => clearTimeout(thirdMessageTimeout);
+            }, 8000);
+
+            return () => clearTimeout(secondMessageTimeout);
+          }, 3000);
+
           setNewItemId(newEmbed.id);
+          return () => clearTimeout(firstMessageTimeout);
         } catch (e) {
           setError('Invalid URL. Please enter a valid embed link.');
         }
@@ -180,7 +201,7 @@ const MusicModal: React.FC<MusicModalProps> = ({ isOpen, onClose, onOpen, theme 
             </div>
           )}
 
-          <div className="mt-6">
+          <div className="mt-4">
             <form onSubmit={handleAddLink}>
               <div className="flex items-center">
                 <textarea
@@ -200,9 +221,7 @@ const MusicModal: React.FC<MusicModalProps> = ({ isOpen, onClose, onOpen, theme 
                 </div>
               )}
               {successMessage && (
-                <div className="mt-2 text-green-500 text-sm">
-                  {successMessage}
-                </div>
+                <div className="mt-2 text-green-500 text-sm" dangerouslySetInnerHTML={{ __html: successMessage }} />
               )}
             </form>
           </div>
