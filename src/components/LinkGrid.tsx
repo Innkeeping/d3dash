@@ -1,18 +1,19 @@
-// src/LinkGrid.tsx
+// src/components/LinkGrid.tsx
 import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
-import { Theme, DescribedShortcut } from '../types';
+import { DescribedShortcut, Theme } from '../types';
 
 interface LinkGridProps {
   links: DescribedShortcut[];
   theme: Theme;
   focusedIndex: number | null;
   setFocusedIndex: (index: number | null) => void;
+  onNavigateToGrid?: () => void; // New prop to handle navigation to grid
 }
 
 const LinkGrid = forwardRef<
   { gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> },
   LinkGridProps
->(({ links, theme, focusedIndex, setFocusedIndex }, ref) => {
+>(({ links, theme, focusedIndex, setFocusedIndex, onNavigateToGrid }, ref) => {
   const themeClasses = {
     purple: {
       border: 'border-purple-500/20 hover:border-purple-500/40',
@@ -44,9 +45,9 @@ const LinkGrid = forwardRef<
   }, [focusedIndex]);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLAnchorElement>, index: number) => {
-    console.log('Key pressed:', event.key); // Debugging: Log the key pressed
+    console.log('Key pressed:', event.key);
 
-    const numRows = Math.ceil(links.length / 6); // Assuming 6 columns in the largest grid
+    const numRows = Math.ceil(links.length / 6);
     const numCols = 6;
 
     let newIndex = index;
@@ -54,6 +55,10 @@ const LinkGrid = forwardRef<
     switch (event.key) {
       case 'ArrowUp':
         newIndex = index - numCols;
+        if (newIndex < 0) {
+          onNavigateToGrid?.();
+          return;
+        }
         break;
       case 'ArrowDown':
         newIndex = index + numCols;
@@ -68,16 +73,13 @@ const LinkGrid = forwardRef<
         return;
     }
 
-    // Ensure the new index is within bounds
     if (newIndex >= 0 && newIndex < links.length) {
       setFocusedIndex(newIndex);
     }
   };
 
   const handleFocus = (index: number) => {
-    if (focusedIndex === null) {
-      setFocusedIndex(index);
-    }
+    setFocusedIndex(index);
   };
 
   const handleBlur = () => {

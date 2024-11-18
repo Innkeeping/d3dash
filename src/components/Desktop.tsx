@@ -40,7 +40,7 @@ const Desktop: React.FC = () => {
   useKeyboardEvents({
     onCtrlK: () => {
       searchInputRef.current?.focus();
-      setFocusedIndex(null); // Reset focus index when search bar is focused
+      setFocusedIndex(null);
     },
     onCtrlB: toggleToolbar,
     onEscape: () => {
@@ -73,7 +73,7 @@ const Desktop: React.FC = () => {
 
   const navigateToLinks = () => {
     if (filteredLinks.length > 0) {
-      setFocusedIndex(0); // Focus the first link
+      setFocusedIndex(0);
       if (linkGridRef.current && linkGridRef.current.gridItemsRef.current) {
         const firstLink = linkGridRef.current.gridItemsRef.current[0];
         if (firstLink) {
@@ -85,7 +85,7 @@ const Desktop: React.FC = () => {
 
   const navigateToSearchBar = () => {
     searchInputRef.current?.focus();
-    setFocusedIndex(null); // Reset focus index when search bar is focused
+    setFocusedIndex(null);
   };
 
   const navigateToGrid = () => {
@@ -93,9 +93,13 @@ const Desktop: React.FC = () => {
       const firstShortcut = shortcutGridRef.current.gridItemsRef.current[0];
       if (firstShortcut) {
         firstShortcut.focus();
-        setFocusedIndex(0); // Focus the first shortcut
+        setFocusedIndex(0);
       }
     }
+  };
+
+  const handleLastRowDown = () => {
+    navigateToLinks();
   };
 
   return (
@@ -115,8 +119,18 @@ const Desktop: React.FC = () => {
         theme={theme}
         onNavigateToSearchBar={navigateToSearchBar}
         ref={shortcutGridRef}
+        onLastRowDown={handleLastRowDown}
       />
-      {search && <LinkGrid links={filteredLinks} theme={theme} ref={linkGridRef} focusedIndex={focusedIndex} setFocusedIndex={setFocusedIndex} />}
+      {search && (
+        <LinkGrid
+          links={filteredLinks}
+          theme={theme}
+          ref={linkGridRef}
+          focusedIndex={focusedIndex}
+          setFocusedIndex={setFocusedIndex}
+          onNavigateToGrid={navigateToGrid}
+        />
+      )}
 
       <TimerDisplay
         isTimerRunning={isTimerRunning}

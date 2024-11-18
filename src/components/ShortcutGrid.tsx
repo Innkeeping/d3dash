@@ -5,13 +5,15 @@ import { Shortcut, Theme } from '../types';
 interface ShortcutGridProps {
   shortcuts: Shortcut[];
   theme: Theme;
-  onNavigateToSearchBar?: () => void; // New prop to handle navigation to search bar
+  onNavigateToSearchBar?: () => void;
+  onNavigateToLinks?: () => void;
+  onLastRowDown?: () => void; // New prop to handle navigation to links if last row is focused
 }
 
 const ShortcutGrid = forwardRef<
   { gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> },
   ShortcutGridProps
->(({ shortcuts, theme, onNavigateToSearchBar }, ref) => {
+>(({ shortcuts, theme, onNavigateToSearchBar, onNavigateToLinks, onLastRowDown }, ref) => {
   const themeClasses = {
     purple: {
       border: 'border-purple-500/20 hover:border-purple-500/40',
@@ -40,7 +42,6 @@ const ShortcutGrid = forwardRef<
   }));
 
   useEffect(() => {
-    // Focus the grid container on mount
     if (gridContainerRef.current) {
       gridContainerRef.current.focus();
     }
@@ -53,11 +54,11 @@ const ShortcutGrid = forwardRef<
   }, [focusedIndex]);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    console.log('Key pressed:', event.key); // Debugging: Log the key pressed
+    console.log('Key pressed:', event.key);
 
     if (focusedIndex === null) return;
 
-    const numRows = Math.ceil(shortcuts.length / 6); // Assuming 6 columns in the largest grid
+    const numRows = Math.ceil(shortcuts.length / 6);
     const numCols = 6;
 
     let newIndex = focusedIndex;
@@ -66,13 +67,18 @@ const ShortcutGrid = forwardRef<
       case 'ArrowUp':
         newIndex = focusedIndex - numCols;
         if (newIndex < 0) {
-          // If newIndex is less than 0, navigate to the search bar
           onNavigateToSearchBar?.();
           return;
         }
         break;
       case 'ArrowDown':
         newIndex = focusedIndex + numCols;
+        if (newIndex >= shortcuts.length) {
+          if (onLastRowDown) {
+            onLastRowDown();
+            return;
+          }
+        }
         break;
       case 'ArrowLeft':
         newIndex = focusedIndex - 1;
@@ -84,7 +90,6 @@ const ShortcutGrid = forwardRef<
         return;
     }
 
-    // Ensure the new index is within bounds
     if (newIndex >= 0 && newIndex < shortcuts.length) {
       setFocusedIndex(newIndex);
       setArrowKeyPressed(true);
@@ -105,7 +110,7 @@ const ShortcutGrid = forwardRef<
       ref={gridContainerRef}
       className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 relative z-10"
       role="grid"
-      tabIndex={0} // Make the grid focusable
+      tabIndex={0}
       onKeyDown={handleKeyDown}
       onFocus={() => {
         if (focusedIndex === null) {
