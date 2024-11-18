@@ -9,7 +9,8 @@ import { useModals } from '../hooks/useModals';
 import { useKeyboardEvents } from '../hooks/useKeyboardEvents';
 import TimerDisplay from './TimerDisplay';
 import Modals from './Modals';
-
+import { Heart } from 'lucide-react';
+import Modalvate from './Modalvate';
 const Desktop: React.FC = () => {
   const [search, setSearch] = useState('');
   const [theme, setTheme] = useState<'purple' | 'green' | 'teal'>('purple');
@@ -17,6 +18,7 @@ const Desktop: React.FC = () => {
   const [timerTimeLeft, setTimerTimeLeft] = useState(0);
   const [showToolbar, setShowToolbar] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
+  const [isModalvateOpen, setIsModalvateOpen] = useState(false);
 
   const { isPomodoroModalOpen, isTimeZonesModalOpen, isCryptoPricesModalOpen, isDocsModalOpen, openModal, closeModal } = useModals();
 
@@ -47,7 +49,7 @@ const Desktop: React.FC = () => {
   useKeyboardEvents({
     onCtrlK: () => {
       searchInputRef.current?.focus();
-      setFocusedIndex(null); // Reset focus index when search bar is focused
+      setFocusedIndex(null);
     },
     onCtrlB: toggleToolbar,
     onEscape: () => {
@@ -63,7 +65,7 @@ const Desktop: React.FC = () => {
         toggleToolbar();
       }
     },
-    onAltT: changeTheme, // New handler for Alt + T
+    onAltT: changeTheme,
   });
 
   useEffect(() => {
@@ -120,6 +122,14 @@ const Desktop: React.FC = () => {
 
   const handleLastRowDown = () => {
     navigateToLinks();
+  };
+
+  const openModalvate = () => {
+    setIsModalvateOpen(true);
+  };
+
+  const closeModalvate = () => {
+    setIsModalvateOpen(false);
   };
 
   return (
@@ -182,6 +192,17 @@ const Desktop: React.FC = () => {
           setTimerTimeLeft(timeLeft);
         }}
       />
+
+
+      <button
+        onClick={openModalvate}
+        className="absolute bottom-6 left-4 p-2 bg-white bg-opacity-10 rounded-full text-white opacity-10 z-50 hover:opacity-100 transition-opacity"
+      >
+        <Heart size={24} />
+      </button>
+
+
+      <Modalvate isOpen={isModalvateOpen} onClose={closeModalvate} theme={theme} />
     </div>
   );
 };

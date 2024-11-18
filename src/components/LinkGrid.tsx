@@ -1,5 +1,5 @@
 // src/components/LinkGrid.tsx
-import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
+import React, { useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import { DescribedShortcut, Theme } from '../types';
 
 interface LinkGridProps {
@@ -7,7 +7,7 @@ interface LinkGridProps {
   theme: Theme;
   focusedIndex: number | null;
   setFocusedIndex: (index: number | null) => void;
-  onNavigateToGrid?: () => void; // New prop to handle navigation to grid
+  onNavigateToGrid?: () => void;
 }
 
 const LinkGrid = forwardRef<

@@ -7,7 +7,7 @@ interface PomodoroModalProps {
   isOpen: boolean;
   onClose: () => void;
   theme: Theme;
-  onTimerUpdate: (isRunning: boolean, timeLeft: number) => void; // New prop to pass timer state
+  onTimerUpdate: (isRunning: boolean, timeLeft: number) => void;
 }
 
 const PomodoroModal: React.FC<PomodoroModalProps> = ({ isOpen, onClose, theme, onTimerUpdate }) => {

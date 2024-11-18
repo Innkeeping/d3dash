@@ -33,8 +33,8 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, onPomodoroOpen, onTi
   const [showDocs, setShowDocs] = useState(false);
   const [showLensFeed, setShowLensFeed] = useState(false);
   const [showGameb, setShowGameb] = useState(false);
-  const [showCryptoPrices, setShowCryptoPrices] = useState(false); // New state for CryptoPricesModal
-  const [showIPFSModal, setShowIPFSModal] = useState(false); // New state for IPFSModal
+  const [showCryptoPrices, setShowCryptoPrices] = useState(false);
+  const [showIPFSModal, setShowIPFSModal] = useState(false);
 
   const themes: Theme[] = ['purple', 'green', 'teal'];
 
@@ -57,7 +57,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, onPomodoroOpen, onTi
     } else if (id === 'docs') {
       setShowDocs(true);
     } else if (id === 'timezones') {
-      onTimeZonesOpen(); // Open TimeZonesModal
+      onTimeZonesOpen();
     } else if (id === 'lensfeed') {
       setShowLensFeed(true);
     } else if (id === 'terminal') {
@@ -81,7 +81,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, onPomodoroOpen, onTi
     { id: 'timezones', icon: <Clock size={20} />, label: 'World Clock' },
     { id: 'lensfeed', icon: <Glasses size={20} />, label: 'Lens Feed' },
     { id: 'cryptoprices', icon: <DollarSign size={20} />, label: 'Token Prices' },
-    { id: 'ipfs', icon: <Network size={20} />, label: 'IPFS CID Checker' }, // New item for IPFSModal
+    { id: 'ipfs', icon: <Network size={20} />, label: 'IPFS CID Checker' },
   ];
 
   return (

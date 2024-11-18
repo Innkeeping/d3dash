@@ -54,8 +54,7 @@ const CryptoPricesModal: React.FC<CryptoPricesModalProps> = ({ isOpen, onClose, 
     const fetchCryptoPrices = async () => {
       setLoading(true);
       setError(null);
-      setLastFetchTimestamp(new Date().toISOString()); // Update timestamp immediately
-
+      setLastFetchTimestamp(new Date().toISOString());
       try {
         const response = await axios.get<any>(
           `https://api.coingecko.com/api/v3/simple/price?ids=${cryptoIds.join(',')}&vs_currencies=usd&include_24hr_change=false`
@@ -110,13 +109,13 @@ const CryptoPricesModal: React.FC<CryptoPricesModalProps> = ({ isOpen, onClose, 
       }
     };
 
-    // Fetch initial data
+
     fetchCryptoPrices();
 
-    // Set up an interval to fetch data every 5 minutes (300000 milliseconds)
+
     const intervalId = setInterval(fetchCryptoPrices, 300000);
 
-    // Cleanup interval on component unmount
+
     return () => clearInterval(intervalId);
   }, []);
 
