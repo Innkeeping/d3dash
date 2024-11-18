@@ -21,6 +21,7 @@ const Desktop: React.FC = () => {
   const { isPomodoroModalOpen, isTimeZonesModalOpen, isCryptoPricesModalOpen, openModal, closeModal } = useModals();
 
   const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const shortcutGridRef = useRef<{ gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> } | null>(null);
   const linkGridRef = useRef<{ gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> } | null>(null);
 
   const filteredShortcuts = filterShortcuts(search);
@@ -82,6 +83,21 @@ const Desktop: React.FC = () => {
     }
   };
 
+  const navigateToSearchBar = () => {
+    searchInputRef.current?.focus();
+    setFocusedIndex(null); // Reset focus index when search bar is focused
+  };
+
+  const navigateToGrid = () => {
+    if (shortcutGridRef.current && shortcutGridRef.current.gridItemsRef.current) {
+      const firstShortcut = shortcutGridRef.current.gridItemsRef.current[0];
+      if (firstShortcut) {
+        firstShortcut.focus();
+        setFocusedIndex(0); // Focus the first shortcut
+      }
+    }
+  };
+
   return (
     <div className={`relative min-h-screen ${themeClasses[theme]} p-6 overflow-hidden`}>
       <div className={`absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgaTExMC0xMCBMMTAgaDQwIE0wIDIwIEwgNDAgMjAgaTExMC0yMCBMMTAgaDQwIE0wIDMwIEwgNDAgMzAgaTExMC0zMCBMMTAgaDQwIE0zMCAwIEwgMzA0MCBMMTAgaDQwIiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-20`}></div>
@@ -92,8 +108,14 @@ const Desktop: React.FC = () => {
         theme={theme}
         inputRef={searchInputRef}
         onNavigateToLinks={navigateToLinks}
+        onNavigateToGrid={navigateToGrid}
       />
-      <ShortcutGrid shortcuts={filteredShortcuts} theme={theme} />
+      <ShortcutGrid
+        shortcuts={filteredShortcuts}
+        theme={theme}
+        onNavigateToSearchBar={navigateToSearchBar}
+        ref={shortcutGridRef}
+      />
       {search && <LinkGrid links={filteredLinks} theme={theme} ref={linkGridRef} focusedIndex={focusedIndex} setFocusedIndex={setFocusedIndex} />}
 
       <TimerDisplay

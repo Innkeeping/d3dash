@@ -5,12 +5,13 @@ import { Shortcut, Theme } from '../types';
 interface ShortcutGridProps {
   shortcuts: Shortcut[];
   theme: Theme;
+  onNavigateToSearchBar?: () => void; // New prop to handle navigation to search bar
 }
 
 const ShortcutGrid = forwardRef<
   { gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> },
   ShortcutGridProps
->(({ shortcuts, theme }, ref) => {
+>(({ shortcuts, theme, onNavigateToSearchBar }, ref) => {
   const themeClasses = {
     purple: {
       border: 'border-purple-500/20 hover:border-purple-500/40',
@@ -54,23 +55,30 @@ const ShortcutGrid = forwardRef<
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     console.log('Key pressed:', event.key); // Debugging: Log the key pressed
 
+    if (focusedIndex === null) return;
+
     const numRows = Math.ceil(shortcuts.length / 6); // Assuming 6 columns in the largest grid
     const numCols = 6;
 
-    let newIndex = focusedIndex !== null ? focusedIndex : 0;
+    let newIndex = focusedIndex;
 
     switch (event.key) {
       case 'ArrowUp':
-        newIndex = newIndex - numCols;
+        newIndex = focusedIndex - numCols;
+        if (newIndex < 0) {
+          // If newIndex is less than 0, navigate to the search bar
+          onNavigateToSearchBar?.();
+          return;
+        }
         break;
       case 'ArrowDown':
-        newIndex = newIndex + numCols;
+        newIndex = focusedIndex + numCols;
         break;
       case 'ArrowLeft':
-        newIndex = newIndex - 1;
+        newIndex = focusedIndex - 1;
         break;
       case 'ArrowRight':
-        newIndex = newIndex + 1;
+        newIndex = focusedIndex + 1;
         break;
       default:
         return;
