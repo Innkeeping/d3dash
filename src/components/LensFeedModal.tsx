@@ -40,7 +40,6 @@ const LensFeedModal: React.FC<LensFeedModalProps> = ({ isOpen, onClose, theme })
   }, []);
 
   useEffect(() => {
-
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
         onClose();
@@ -54,7 +53,6 @@ const LensFeedModal: React.FC<LensFeedModalProps> = ({ isOpen, onClose, theme })
   }, [onClose]);
 
   useEffect(() => {
-
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
@@ -90,26 +88,30 @@ const LensFeedModal: React.FC<LensFeedModalProps> = ({ isOpen, onClose, theme })
 
         {feedItems.length > 0 && (
           <div className="space-y-4">
-            {feedItems.map((item) => (
-              <div
-                key={item.metadata.id}
-                className="flex flex-col p-4 rounded-lg hover:bg-gray-800/30 transition-colors"
-              >
-                {isImageMetadata(item.metadata) && (
-                  <div className="mb-4">
-                    <img
-                      src={item.metadata.asset.image.optimized.uri}
-                      alt={`Post ${item.metadata.id}`}
-                      className="w-full h-auto rounded-lg"
-                    />
+            {feedItems.map((item) => {
+              // Use a unique key based on the content or index if id is not available
+              const key = isImageMetadata(item.metadata) ? item.metadata.id : item.metadata.content;
+              return (
+                <div
+                  key={key}
+                  className="flex flex-col p-4 rounded-lg hover:bg-gray-800/30 transition-colors"
+                >
+                  {isImageMetadata(item.metadata) && (
+                    <div className="mb-4">
+                      <img
+                        src={item.metadata.asset.image.optimized.uri}
+                        alt={`Post ${item.metadata.id}`}
+                        className="w-full h-auto rounded-lg"
+                      />
+                    </div>
+                  )}
+                  <div>
+                    <p className="text-lg font-semibold">{item.metadata.content}</p>
+                    <p className="text-sm opacity-75 mt-2">Reactions: {item.stats.reactions}</p>
                   </div>
-                )}
-                <div>
-                  <p className="text-lg font-semibold">{item.metadata.content}</p>
-                  <p className="text-sm opacity-75 mt-2">Reactions: {item.stats.reactions}</p>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 

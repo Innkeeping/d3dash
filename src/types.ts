@@ -1,4 +1,3 @@
-// src/types.ts
 import { ReactNode } from 'react';
 
 export interface Shortcut {
@@ -7,16 +6,14 @@ export interface Shortcut {
   icon: ReactNode;
   url: string;
   category: string;
-  description:string;
+  description: string;
 }
-
 
 export interface DescribedShortcut extends Shortcut {
   description: string;
 }
 
 export type Theme = 'purple' | 'green' | 'teal';
-
 
 export interface DescribedLink {
   name: string;
@@ -25,7 +22,6 @@ export interface DescribedLink {
   description: string;
   category?: string;
 }
-
 
 export interface NetworkLink {
   name: string;
@@ -36,13 +32,11 @@ export interface NetworkLink {
   category?: string;
 }
 
-
 export type Link = DescribedLink | NetworkLink;
 
 export type CitiesToTimeZones = {
   [key: string]: string[];
 };
-
 
 export type LensPublicationStats = {
   reactions: number;
