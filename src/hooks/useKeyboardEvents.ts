@@ -5,6 +5,7 @@ interface KeyboardEventHandlers {
   onCtrlK: () => void;
   onCtrlB: () => void;
   onEscape: () => void;
+  onAltT: () => void; // New handler for Alt + T
 }
 
 export const useKeyboardEvents = (handlers: KeyboardEventHandlers) => {
@@ -19,6 +20,9 @@ export const useKeyboardEvents = (handlers: KeyboardEventHandlers) => {
       } else if (event.key === 'Escape') {
         event.preventDefault();
         handlers.onEscape();
+      } else if (event.altKey && event.key === 't') {
+        event.preventDefault();
+        handlers.onAltT();
       }
     };
 

@@ -37,6 +37,22 @@ const Desktop: React.FC = () => {
     setShowToolbar(!showToolbar);
   };
 
+  // Define the changeTheme function
+  const changeTheme = () => {
+    setTheme(prevTheme => {
+      switch (prevTheme) {
+        case 'purple':
+          return 'green';
+        case 'green':
+          return 'teal';
+        case 'teal':
+          return 'purple';
+        default:
+          return 'purple';
+      }
+    });
+  };
+
   useKeyboardEvents({
     onCtrlK: () => {
       searchInputRef.current?.focus();
@@ -54,6 +70,7 @@ const Desktop: React.FC = () => {
         toggleToolbar();
       }
     },
+    onAltT: changeTheme, // Use the changeTheme function here
   });
 
   useEffect(() => {
