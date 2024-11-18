@@ -1,3 +1,5 @@
+// src/Desktop.tsx
+
 import React, { useState, useRef, useEffect } from 'react';
 import SearchBar from './SearchBar';
 import ShortcutGrid from './ShortcutGrid';
@@ -10,8 +12,9 @@ import TimerDisplay from './TimerDisplay';
 import Modals from './Modals';
 import { Heart } from 'lucide-react';
 import Modalvate from './Modalvate';
-import LexiconModal from './LexiconModal'; // Import the LexiconModal component
-import { Book } from 'lucide-react'; // Import the Book icon
+import LexiconModal from './LexiconModal';
+import { Book } from 'lucide-react';
+import { keyCommands, searchTerms } from '../config';
 
 const Desktop: React.FC = () => {
   const [search, setSearch] = useState('');
@@ -21,14 +24,15 @@ const Desktop: React.FC = () => {
   const [showToolbar, setShowToolbar] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const [isModalvateOpen, setIsModalvateOpen] = useState(false);
-  const [isLexiconModalOpen, setIsLexiconModalOpen] = useState(false); // State for LexiconModal
+  const [isLexiconModalOpen, setIsLexiconModalOpen] = useState(false);
 
   const {
     isPomodoroModalOpen,
     isTimeZonesModalOpen,
     isCryptoPricesModalOpen,
     isDocsModalOpen,
-    isWeb3SocialModalOpen, // Add state for Web3SocialModal
+    isWeb3SocialModalOpen,
+    isWalletsModalOpen,
     openModal,
     closeModal
   } = useModals();
@@ -74,6 +78,10 @@ const Desktop: React.FC = () => {
         closeModal('isPomodoroModalOpen');
       } else if (isDocsModalOpen) {
         closeModal('isDocsModalOpen');
+      } else if (isWeb3SocialModalOpen) {
+        closeModal('isWeb3SocialModalOpen');
+      } else if (isWalletsModalOpen) {
+        closeModal('isWalletsModalOpen');
       } else if (showToolbar) {
         toggleToolbar();
       }
@@ -82,33 +90,17 @@ const Desktop: React.FC = () => {
   });
 
   useEffect(() => {
-    const searchTerms = ['clock', 'time', 'utc', 'price', 'docs', 'social', 'words', 'dictionary', 'lexicon']; // Add new search terms
     const lowerSearch = search.toLowerCase();
-    const matchedTerm = searchTerms.find(term => lowerSearch.includes(term));
+    const matchedTerm = Object.keys(searchTerms).find(term => lowerSearch.includes(term));
 
     if (matchedTerm) {
-      switch (matchedTerm) {
-        case 'price':
-          openModal('isCryptoPricesModalOpen');
-          break;
-        case 'clock':
-        case 'time':
-        case 'utc':
-          openModal('isTimeZonesModalOpen');
-          break;
-        case 'docs':
-          openModal('isDocsModalOpen');
-          break;
-        case 'social':
-          openModal('isWeb3SocialModalOpen'); // Open the Web3SocialModal
-          break;
-        case 'words':
-        case 'dictionary':
-        case 'lexicon':
-          setIsLexiconModalOpen(true);
-          break;
-        default:
-          break;
+      const modalOrAction = searchTerms[matchedTerm as keyof typeof searchTerms];
+      if (modalOrAction === 'isLexiconModalOpen') {
+        setIsLexiconModalOpen(true);
+      } else if (modalOrAction === 'isWalletsModalOpen') {
+        openModal('isWalletsModalOpen');
+      } else {
+        openModal(modalOrAction);
       }
       setSearch('');
     }
@@ -221,12 +213,14 @@ const Desktop: React.FC = () => {
         isTimeZonesModalOpen={isTimeZonesModalOpen}
         isCryptoPricesModalOpen={isCryptoPricesModalOpen}
         isDocsModalOpen={isDocsModalOpen}
-        isWeb3SocialModalOpen={isWeb3SocialModalOpen} // Add prop for Web3SocialModal
+        isWeb3SocialModalOpen={isWeb3SocialModalOpen}
+        isWalletsModalOpen={isWalletsModalOpen}
         onClosePomodoro={() => closeModal('isPomodoroModalOpen')}
         onCloseTimeZones={() => closeModal('isTimeZonesModalOpen')}
         onCloseCryptoPrices={() => closeModal('isCryptoPricesModalOpen')}
         onCloseDocs={() => closeModal('isDocsModalOpen')}
-        onCloseWeb3SocialModal={() => closeModal('isWeb3SocialModalOpen')} // Add prop to close Web3SocialModal
+        onCloseWeb3SocialModal={() => closeModal('isWeb3SocialModalOpen')}
+        onCloseWalletsModal={() => closeModal('isWalletsModalOpen')} // Add prop to close WalletsModal
         theme={theme}
         onTimerUpdate={(isRunning, timeLeft) => {
           setIsTimerRunning(isRunning);

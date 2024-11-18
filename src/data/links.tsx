@@ -9,7 +9,8 @@ import {
   Film,
   Check,
   Mail,
-  Terminal
+  Terminal,
+  Wallet
 } from 'lucide-react'
 import { DescribedShortcut } from '../types'
 
@@ -72,4 +73,17 @@ export const links: DescribedShortcut[] = [
   { id: '68', name: 'Hey', icon: <Terminal className="text-violet-400" size={24} />, url: 'https://hey.xyz/', category: 'Web3 Social', description: 'Hey is a decentralized social network for writers and creators' },
   { id: '69', name: 'Tape', icon: <MessageSquare className="text-indigo-400" size={24} />, url: 'https://tape.xyz/', category: 'Web3 Social', description: 'Tape is a decentralized platform for sharing stories and content' },
   { id: '70', name: 'Lenspeer', icon: <Users className="text-fuchsia-400" size={24} />, url: 'https://lenspeer.com/', category: 'Web3 Social', description: 'Lenspeer is a decentralized social network for communities' },
+  { id: '71', name: 'MetaMask', icon: <Wallet className="text-green-400" size={24} />, url: 'https://metamask.io/', category: 'Wallets', description: 'A cryptocurrency wallet for buying, selling, and managing digital assets.' },
+  { id: '72', name: 'Coinbase Wallet', icon: <Wallet className="text-green-400" size={24} />, url: 'https://www.coinbase.com/wallet', category: 'Wallets', description: 'A cryptocurrency wallet for buying, selling, and managing digital assets.' },
+  { id: '73', name: 'WalletConnect', icon: <Wallet className="text-green-400" size={24} />, url: 'https://walletconnect.com/', category: 'Wallets', description: 'An open protocol for connecting decentralized applications to mobile wallets.' },
+  { id: '74', name: 'Safe', icon: <Wallet className="text-green-400" size={24} />, url: 'https://gnosis-safe.io/', category: 'Wallets', description: 'A non-custodial, multi-signature wallet for Ethereum.' },
+  { id: '75', name: 'Trust Wallet', icon: <Wallet className="text-green-400" size={24} />, url: 'https://trustwallet.com/', category: 'Wallets', description: 'A multi-chain cryptocurrency wallet for Android and iOS.' },
+  { id: '76', name: 'Ledger Live', icon: <Wallet className="text-green-400" size={24} />, url: 'https://www.ledger.com/ledger-live', category: 'Wallets', description: 'A cryptocurrency wallet that integrates with Ledger hardware wallets.' },
+  { id: '77', name: 'Trezor Wallet', icon: <Wallet className="text-green-400" size={24} />, url: 'https://trezor.io/', category: 'Wallets', description: 'A cryptocurrency wallet that integrates with Trezor hardware wallets.' },
+  { id: '78', name: 'Exodus', icon: <Wallet className="text-green-400" size={24} />, url: 'https://www.exodus.com/', category: 'Wallets', description: 'A multi-asset cryptocurrency wallet for desktop and mobile.' },
+  { id: '79', name: 'Brave Wallet', icon: <Wallet className="text-green-400" size={24} />, url: 'https://brave.com/wallet', category: 'Wallets', description: 'A cryptocurrency wallet built into the Brave browser.' },
+  { id: '80', name: 'Argent', icon: <Wallet className="text-green-400" size={24} />, url: 'https://argent.xyz/', category: 'Wallets', description: 'A non-custodial Ethereum wallet with a gasless user experience.' },
+  { id: '81', name: 'Frame', icon: <Wallet className="text-green-400" size={24} />, url: 'https://frame.sh/', category: 'Wallets', description: 'A non-custodial browser wallet for Ethereum and other networks.' },
+  { id: '82', name: 'Rainbow', icon: <Wallet className="text-green-400" size={24} />, url: 'https://rainbow.me/', category: 'Wallets', description: 'A mobile wallet for Ethereum and other networks.' },
+  { id: '83', name: 'Zerion', icon: <Wallet className="text-green-400" size={24} />, url: 'https://zerion.io/', category: 'Wallets', description: 'A multi-chain cryptocurrency wallet and portfolio tracker.' },
 ]

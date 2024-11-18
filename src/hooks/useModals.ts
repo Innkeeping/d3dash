@@ -6,7 +6,8 @@ interface ModalsState {
   isTimeZonesModalOpen: boolean;
   isCryptoPricesModalOpen: boolean;
   isDocsModalOpen: boolean;
-  isWeb3SocialModalOpen: boolean; // Add state for Web3SocialModal
+  isWeb3SocialModalOpen: boolean;
+  isWalletsModalOpen: boolean; // Add state for WalletsModal
 }
 
 export const useModals = () => {
@@ -15,7 +16,8 @@ export const useModals = () => {
     isTimeZonesModalOpen: false,
     isCryptoPricesModalOpen: false,
     isDocsModalOpen: false,
-    isWeb3SocialModalOpen: false, // Initialize state for Web3SocialModal
+    isWeb3SocialModalOpen: false,
+    isWalletsModalOpen: false, // Initialize state for WalletsModal
   });
 
   const openModal = (modalKey: keyof ModalsState) => {

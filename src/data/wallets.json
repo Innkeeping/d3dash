@@ -1,68 +1,93 @@
-
 [
   {
     "name": "MetaMask",
     "description": "A cryptocurrency wallet for buying, selling, and managing digital assets.",
-    "link": "https://metamask.io/"
+    "link": "https://metamask.io/",
+    "icon": "Wallet",
+    "iconClass": "text-green-400"
   },
   {
     "name": "Coinbase Wallet",
     "description": "A cryptocurrency wallet for buying, selling, and managing digital assets.",
-    "link": "https://www.coinbase.com/wallet"
+    "link": "https://www.coinbase.com/wallet",
+    "icon": "Wallet",
+    "iconClass": "text-green-400"
   },
   {
     "name": "WalletConnect",
     "description": "An open protocol for connecting decentralized applications to mobile wallets.",
-    "link": "https://walletconnect.com/"
+    "link": "https://walletconnect.com/",
+    "icon": "Wallet",
+    "iconClass": "text-green-400"
   },
   {
     "name": "Safe",
     "description": "A non-custodial, multi-signature wallet for Ethereum.",
-    "link": "https://gnosis-safe.io/"
+    "link": "https://gnosis-safe.io/",
+    "icon": "Wallet",
+    "iconClass": "text-green-400"
   },
   {
     "name": "Trust Wallet",
     "description": "A multi-chain cryptocurrency wallet for Android and iOS.",
-    "link": "https://trustwallet.com/"
+    "link": "https://trustwallet.com/",
+    "icon": "Wallet",
+    "iconClass": "text-green-400"
   },
   {
     "name": "Ledger Live",
     "description": "A cryptocurrency wallet that integrates with Ledger hardware wallets.",
-    "link": "https://www.ledger.com/ledger-live"
+    "link": "https://www.ledger.com/ledger-live",
+    "icon": "Wallet",
+    "iconClass": "text-green-400"
   },
   {
     "name": "Trezor Wallet",
     "description": "A cryptocurrency wallet that integrates with Trezor hardware wallets.",
-    "link": "https://trezor.io/"
+    "link": "https://trezor.io/",
+    "icon": "Wallet",
+    "iconClass": "text-green-400"
   },
   {
     "name": "Exodus",
     "description": "A multi-asset cryptocurrency wallet for desktop and mobile.",
-    "link": "https://www.exodus.com/"
+    "link": "https://www.exodus.com/",
+    "icon": "Wallet",
+    "iconClass": "text-green-400"
   },
   {
     "name": "Brave Wallet",
     "description": "A cryptocurrency wallet built into the Brave browser.",
-    "link": "https://brave.com/wallet"
+    "link": "https://brave.com/wallet",
+    "icon": "Wallet",
+    "iconClass": "text-green-400"
   },
   {
     "name": "Argent",
     "description": "A non-custodial Ethereum wallet with a gasless user experience.",
-    "link": "https://argent.xyz/"
+    "link": "https://argent.xyz/",
+    "icon": "Wallet",
+    "iconClass": "text-green-400"
   },
   {
     "name": "Frame",
     "description": "A non-custodial browser wallet for Ethereum and other networks.",
-    "link": "https://frame.sh/"
+    "link": "https://frame.sh/",
+    "icon": "Wallet",
+    "iconClass": "text-green-400"
   },
   {
     "name": "Rainbow",
     "description": "A mobile wallet for Ethereum and other networks.",
-    "link": "https://rainbow.me/"
+    "link": "https://rainbow.me/",
+    "icon": "Wallet",
+    "iconClass": "text-green-400"
   },
   {
     "name": "Zerion",
     "description": "A multi-chain cryptocurrency wallet and portfolio tracker.",
-    "link": "https://zerion.io/"
+    "link": "https://zerion.io/",
+    "icon": "Wallet",
+    "iconClass": "text-green-400"
   }
 ]
