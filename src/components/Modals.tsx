@@ -6,6 +6,9 @@ import CryptoPricesModal from './CryptoPricesModal';
 import DocsModal from './DocsModal';
 import Web3SocialModal from './Web3SocialModal';
 import WalletsModal from './WalletsModal';
+import LexiconModal from './LexiconModal';
+import MusicModal from './MusicModal';
+
 interface ModalsProps {
   isPomodoroModalOpen: boolean;
   isTimeZonesModalOpen: boolean;
@@ -13,12 +16,16 @@ interface ModalsProps {
   isDocsModalOpen: boolean;
   isWeb3SocialModalOpen: boolean;
   isWalletsModalOpen: boolean;
+  isLexiconModalOpen: boolean;
+  isMusicModalOpen: boolean;
   onClosePomodoro: () => void;
   onCloseTimeZones: () => void;
   onCloseCryptoPrices: () => void;
   onCloseDocs: () => void;
   onCloseWeb3SocialModal: () => void;
   onCloseWalletsModal: () => void;
+  onCloseLexiconModal: () => void;
+  onCloseMusicModal: () => void;
   theme: 'purple' | 'green' | 'teal';
   onTimerUpdate: (isRunning: boolean, timeLeft: number) => void;
 }
@@ -30,12 +37,16 @@ const Modals: React.FC<ModalsProps> = ({
   isDocsModalOpen,
   isWeb3SocialModalOpen,
   isWalletsModalOpen,
+  isLexiconModalOpen,
+  isMusicModalOpen,
   onClosePomodoro,
   onCloseTimeZones,
   onCloseCryptoPrices,
   onCloseDocs,
   onCloseWeb3SocialModal,
   onCloseWalletsModal,
+  onCloseLexiconModal,
+  onCloseMusicModal,
   theme,
   onTimerUpdate,
 }) => {
@@ -70,6 +81,17 @@ const Modals: React.FC<ModalsProps> = ({
       <WalletsModal
         isOpen={isWalletsModalOpen}
         onClose={onCloseWalletsModal}
+        theme={theme}
+      />
+      <LexiconModal
+        isOpen={isLexiconModalOpen}
+        onClose={onCloseLexiconModal}
+        theme={theme}
+      />
+      <MusicModal
+        isOpen={isMusicModalOpen}
+        onClose={onCloseMusicModal}
+        onOpen={() => {}}
         theme={theme}
       />
     </>

@@ -18,4 +18,7 @@ export const searchTerms = {
   'dictionary': 'isLexiconModalOpen',
   'lexicon': 'isLexiconModalOpen',
   'wallet': 'isWalletsModalOpen',
+  'music': 'isMusicModalOpen',
+  'sound': 'isMusicModalOpen',
+  'tunes': 'isMusicModalOpen',
 } as const;

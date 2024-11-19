@@ -7,7 +7,9 @@ interface ModalsState {
   isCryptoPricesModalOpen: boolean;
   isDocsModalOpen: boolean;
   isWeb3SocialModalOpen: boolean;
-  isWalletsModalOpen: boolean; // Add state for WalletsModal
+  isWalletsModalOpen: boolean;
+  isLexiconModalOpen: boolean;
+  isMusicModalOpen: boolean;
 }
 
 export const useModals = () => {
@@ -17,7 +19,9 @@ export const useModals = () => {
     isCryptoPricesModalOpen: false,
     isDocsModalOpen: false,
     isWeb3SocialModalOpen: false,
-    isWalletsModalOpen: false, // Initialize state for WalletsModal
+    isWalletsModalOpen: false,
+    isLexiconModalOpen: false,
+    isMusicModalOpen: false,
   });
 
   const openModal = (modalKey: keyof ModalsState) => {

@@ -12,8 +12,8 @@ import { Heart } from 'lucide-react';
 import Modalvate from './Modalvate';
 import LexiconModal from './LexiconModal';
 import { Book } from 'lucide-react';
-import { keyCommands, searchTerms } from '../config';
-import MusicModal from './MusicModal'; // Import the MusicModal component
+import { searchTerms } from '../config';
+import MusicModal from './MusicModal';
 
 const Desktop: React.FC = () => {
   const [search, setSearch] = useState('');
@@ -24,7 +24,7 @@ const Desktop: React.FC = () => {
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const [isModalvateOpen, setIsModalvateOpen] = useState(false);
   const [isLexiconModalOpen, setIsLexiconModalOpen] = useState(false);
-  const [isMusicModalOpen, setIsMusicModalOpen] = useState(false); // Add this line
+  const [isMusicModalOpen, setIsMusicModalOpen] = useState(false);
 
   const {
     isPomodoroModalOpen,
@@ -83,13 +83,13 @@ const Desktop: React.FC = () => {
       } else if (isWalletsModalOpen) {
         closeModal('isWalletsModalOpen');
       } else if (isMusicModalOpen) {
-        setIsMusicModalOpen(false); // Close MusicModal
+        setIsMusicModalOpen(false);
       } else if (showToolbar) {
         toggleToolbar();
       }
     },
     onAltT: changeTheme,
-    onAltM: () => setIsMusicModalOpen(!isMusicModalOpen), // Add this line
+    onAltM: () => setIsMusicModalOpen(!isMusicModalOpen),
   });
 
   useEffect(() => {
@@ -102,6 +102,8 @@ const Desktop: React.FC = () => {
         setIsLexiconModalOpen(true);
       } else if (modalOrAction === 'isWalletsModalOpen') {
         openModal('isWalletsModalOpen');
+      } else if (modalOrAction === 'isMusicModalOpen') {
+        setIsMusicModalOpen(true);
       } else {
         openModal(modalOrAction);
       }
@@ -156,7 +158,6 @@ const Desktop: React.FC = () => {
     setIsLexiconModalOpen(false);
   };
 
-  // Define the onOpen function
   const handleOpenMusicModal = () => {
     setIsMusicModalOpen(true);
   };
@@ -223,12 +224,16 @@ const Desktop: React.FC = () => {
         isDocsModalOpen={isDocsModalOpen}
         isWeb3SocialModalOpen={isWeb3SocialModalOpen}
         isWalletsModalOpen={isWalletsModalOpen}
+        isLexiconModalOpen={isLexiconModalOpen}
+        isMusicModalOpen={isMusicModalOpen}
+        onCloseLexiconModal={closeLexiconModal}
+        onCloseMusicModal={() => setIsMusicModalOpen(false)}
         onClosePomodoro={() => closeModal('isPomodoroModalOpen')}
         onCloseTimeZones={() => closeModal('isTimeZonesModalOpen')}
         onCloseCryptoPrices={() => closeModal('isCryptoPricesModalOpen')}
         onCloseDocs={() => closeModal('isDocsModalOpen')}
         onCloseWeb3SocialModal={() => closeModal('isWeb3SocialModalOpen')}
-        onCloseWalletsModal={() => closeModal('isWalletsModalOpen')} // Add prop to close WalletsModal
+        onCloseWalletsModal={() => closeModal('isWalletsModalOpen')}
         theme={theme}
         onTimerUpdate={(isRunning, timeLeft) => {
           setIsTimerRunning(isRunning);
@@ -251,10 +256,10 @@ const Desktop: React.FC = () => {
         theme={theme}
       />
 
-      <MusicModal // Add the MusicModal component
+      <MusicModal
         isOpen={isMusicModalOpen}
         onClose={() => setIsMusicModalOpen(false)}
-        onOpen={handleOpenMusicModal} // Pass the onOpen function
+        onOpen={handleOpenMusicModal}
         theme={theme}
       />
     </div>

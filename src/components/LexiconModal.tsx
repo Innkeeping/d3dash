@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { X, Book } from 'lucide-react';
 import { Theme } from '../types';
 import web3_lexicon from '../data/lexicon.json';
+import useClickOutside from '../hooks/useClickOutside';
 
 interface LexiconModalProps {
   isOpen: boolean;
@@ -35,32 +36,8 @@ const LexiconModal: React.FC<LexiconModalProps> = ({ isOpen, onClose, theme }) =
     }
   }, [isOpen]);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        onClose();
-      }
-    };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [onClose]);
-
-  useEffect(() => {
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [onClose]);
+  useClickOutside(modalRef, onClose);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -77,7 +54,7 @@ const LexiconModal: React.FC<LexiconModalProps> = ({ isOpen, onClose, theme }) =
           setFocusedIndex(null);
           searchInputRef.current?.focus();
         } else if (focusedIndex === null) {
-          // Do nothing if already focused on the search bar
+
         } else {
           setFocusedIndex((prevIndex) =>
             prevIndex === null || prevIndex <= 0 ? filteredTerms.length - 1 : prevIndex - 1
