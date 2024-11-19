@@ -49,6 +49,7 @@ interface MainContentProps {
   openModal: (modalKey: keyof ModalsState) => void;
   closeModal: (modalKey: keyof ModalsState) => void;
   navigateToSearchBar: () => void;
+  onNavigateToGrid: () => void;
   onTimerUpdate: (isRunning: boolean, timeLeft: number) => void;
   isModalvateOpen: boolean;
   setIsModalvateOpen: (isOpen: boolean) => void;
@@ -86,6 +87,7 @@ const MainContent: React.FC<MainContentProps> = ({
   openModal,
   closeModal,
   navigateToSearchBar,
+  onNavigateToGrid,
   onTimerUpdate,
   isModalvateOpen,
   setIsModalvateOpen,

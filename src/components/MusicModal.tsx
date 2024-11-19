@@ -1,4 +1,3 @@
-// src/components/MusicModal.tsx
 import React, { useRef, useEffect, useState } from 'react';
 import MusicNoteIndicator from './MusicNoteIndicator';
 import { Theme } from '../types';
@@ -152,6 +151,14 @@ const MusicModal: React.FC<MusicModalProps> = ({ isOpen, onClose, onOpen, theme 
       setError('Please enter a valid embed link.');
     }
   };
+
+  // Dynamically load music embed links when the modal is opened
+  useEffect(() => {
+    if (isOpen) {
+      // You can add any additional logic here if needed
+      // For example, fetching additional music links from an API
+    }
+  }, [isOpen]);
 
   return (
     <>

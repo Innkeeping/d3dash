@@ -248,6 +248,7 @@ const Desktop: React.FC = () => {
         openModal={openModal}
         closeModal={closeModal}
         navigateToSearchBar={navigateToSearchBar}
+        onNavigateToGrid={navigateToGrid}
         onTimerUpdate={(isRunning, timeLeft) => {
           setIsTimerRunning(isRunning);
           setTimerTimeLeft(timeLeft);
