@@ -14,6 +14,8 @@ import LexiconModal from './LexiconModal';
 import { Book } from 'lucide-react';
 import { searchTerms } from '../config';
 import MusicModal from './MusicModal';
+import HelpModal from './HelpModal';
+import { HelpCircle } from 'lucide-react';
 
 const Desktop: React.FC = () => {
   const [search, setSearch] = useState('');
@@ -25,6 +27,7 @@ const Desktop: React.FC = () => {
   const [isModalvateOpen, setIsModalvateOpen] = useState(false);
   const [isLexiconModalOpen, setIsLexiconModalOpen] = useState(false);
   const [isMusicModalOpen, setIsMusicModalOpen] = useState(false);
+  const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
 
   const {
     isPomodoroModalOpen,
@@ -84,12 +87,15 @@ const Desktop: React.FC = () => {
         closeModal('isWalletsModalOpen');
       } else if (isMusicModalOpen) {
         setIsMusicModalOpen(false);
+      } else if (isHelpModalOpen) {
+        setIsHelpModalOpen(false);
       } else if (showToolbar) {
         toggleToolbar();
       }
     },
     onAltT: changeTheme,
     onAltM: () => setIsMusicModalOpen(!isMusicModalOpen),
+    onAltH: () => setIsHelpModalOpen(!isHelpModalOpen),
   });
 
   useEffect(() => {
@@ -104,6 +110,8 @@ const Desktop: React.FC = () => {
         openModal('isWalletsModalOpen');
       } else if (modalOrAction === 'isMusicModalOpen') {
         setIsMusicModalOpen(true);
+      } else if (modalOrAction === 'isHelpModalOpen') {
+        setIsHelpModalOpen(true);
       } else {
         openModal(modalOrAction);
       }
@@ -163,7 +171,9 @@ const Desktop: React.FC = () => {
   };
 
   return (
-    <div className={`relative min-h-screen ${themeClasses[theme]} p-6 overflow-hidden`}>
+    <div
+      className={`relative min-h-screen ${themeClasses[theme]} p-6 overflow-hidden ${theme}`}
+    >
       <div className={`absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgaTExMC0xMCBMMTAgaDQwIE0wIDIwIEwgNDAgMjAgaTExMC0yMCBMMTAgaDQwIE0wIDMwIEwgNDAgMzAgaTExMC0zMCBMMTAgaDQwIE0zMCAwIEwgMzA0MCBMMTAgaDQwIiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-20`}></div>
 
       <div className="relative">
@@ -180,6 +190,12 @@ const Desktop: React.FC = () => {
           className="absolute top-1/2 right-0 transform -translate-y-1/2 p-2 bg-white bg-opacity-10 rounded-full text-white opacity-10 z-50 hover:opacity-100 transition-opacity"
         >
           <Book size={24} />
+        </button>
+        <button
+          onClick={() => setIsHelpModalOpen(true)}
+          className="absolute top-1/2 right-14 transform -translate-y-1/2 p-2 bg-white bg-opacity-10 rounded-full text-white opacity-10 z-50 hover:opacity-100 transition-opacity"
+        >
+          <HelpCircle size={24} />
         </button>
       </div>
 
@@ -260,6 +276,12 @@ const Desktop: React.FC = () => {
         isOpen={isMusicModalOpen}
         onClose={() => setIsMusicModalOpen(false)}
         onOpen={handleOpenMusicModal}
+        theme={theme}
+      />
+
+      <HelpModal
+        isOpen={isHelpModalOpen}
+        onClose={() => setIsHelpModalOpen(false)}
         theme={theme}
       />
     </div>

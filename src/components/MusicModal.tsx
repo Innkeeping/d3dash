@@ -1,3 +1,4 @@
+// src/components/MusicModal.tsx
 import React, { useRef, useEffect, useState } from 'react';
 import MusicNoteIndicator from './MusicNoteIndicator';
 import { Theme } from '../types';
@@ -14,6 +15,12 @@ const MusicModal: React.FC<MusicModalProps> = ({ isOpen, onClose, onOpen, theme 
     purple: 'border-purple-500/30 bg-purple-900/20',
     green: 'border-green-500/30 bg-green-900/20',
     teal: 'border-teal-500/30 bg-teal-900/20'
+  };
+
+  const buttonThemeClasses = {
+    purple: 'bg-purple-700/50 border border-purple-500 text-white',
+    green: 'bg-green-700/50 border border-green-500 text-white',
+    teal: 'bg-teal-700/50 border border-teal-500 text-white'
   };
 
   const searchInputRef = useRef<HTMLInputElement | null>(null);
@@ -111,26 +118,19 @@ const MusicModal: React.FC<MusicModalProps> = ({ isOpen, onClose, onOpen, theme 
           setError('');
           const newCount = musicEmbedLinks.length + 1;
 
-
           setSuccessMessage(`Embed link added successfully! You now have ${newCount} songs in the list.`);
 
-
           const firstMessageTimeout = setTimeout(() => {
-            console.log('First message cleared, showing second message');
             setSuccessMessage(
               `Note: Songs will not autoplay in order. For more features, including playlists, visit <a class="text-blue-500" href="https://sound.xyz" target="_blank" rel="noopener noreferrer">sound.xyz</a>.`
             );
 
-
             const secondMessageTimeout = setTimeout(() => {
-              console.log('Second message cleared, showing third message');
               setSuccessMessage(
                 `You can close this modal with ESC or clicking out, and the music will still play.`
               );
 
-
               const thirdMessageTimeout = setTimeout(() => {
-                console.log('Third message cleared');
                 setSuccessMessage('');
               }, 3000);
 
@@ -211,7 +211,10 @@ const MusicModal: React.FC<MusicModalProps> = ({ isOpen, onClose, onOpen, theme 
                   className="w-full p-3 rounded-lg border border-gray-700 bg-gray-800/50 focus:outline-none focus:border-purple-400"
                   rows={3}
                 />
-                <button type="submit" className="ml-2 p-1 bg-teal-700/50 border border-purple-700 text-white rounded-lg">
+                <button
+                  type="submit"
+                  className={`ml-2 p-1 rounded-lg ${buttonThemeClasses[theme]}`}
+                >
                   {loading ? 'Loading...' : 'Add Link'}
                 </button>
               </div>

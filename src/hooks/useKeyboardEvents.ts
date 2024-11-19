@@ -6,7 +6,8 @@ interface KeyboardEventHandlers {
   onCtrlB: () => void;
   onEscape: () => void;
   onAltT: () => void;
-  onAltM: () => void; // New handler for Alt + M
+  onAltM: () => void;
+  onAltH: () => void;
 }
 
 export const useKeyboardEvents = (handlers: KeyboardEventHandlers) => {
@@ -27,6 +28,9 @@ export const useKeyboardEvents = (handlers: KeyboardEventHandlers) => {
       } else if (event.altKey && event.key === 'm') {
         event.preventDefault();
         handlers.onAltM();
+      } else if (event.altKey && event.key === 'h') {
+        event.preventDefault();
+        handlers.onAltH();
       }
     };
 

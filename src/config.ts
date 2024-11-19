@@ -5,6 +5,7 @@ export const keyCommands = {
   'Escape': 'closeModalsOrToolbar',
   'Alt+T': 'changeTheme',
   'Alt+M': 'toggleMusicModal',
+  'Alt+H': 'toggleHelpModal',
 };
 
 export const searchTerms = {
@@ -21,4 +22,5 @@ export const searchTerms = {
   'music': 'isMusicModalOpen',
   'sound': 'isMusicModalOpen',
   'tunes': 'isMusicModalOpen',
+  'help': 'isHelpModalOpen',
 } as const;

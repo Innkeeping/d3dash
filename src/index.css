@@ -4,6 +4,9 @@
 
 :root {
   color-scheme: dark;
+  --scrollbar-track-color: rgba(31, 41, 55, 0.5);
+  --scrollbar-thumb-color: rgba(147, 51, 234, 0.5);
+  --scrollbar-thumb-hover-color: rgba(147, 51, 234, 0.7);
 }
 
 body {
@@ -18,31 +21,30 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(31, 41, 55, 0.5);
+  background: var(--scrollbar-track-color);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(147, 51, 234, 0.5);
+  background: var(--scrollbar-thumb-color);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(147, 51, 234, 0.7);
+  background: var(--scrollbar-thumb-hover-color);
 }
 
 /* Theme-specific scrollbar */
-.green ::-webkit-scrollbar-thumb {
-  background: rgba(16, 185, 129, 0.5);
+.purple {
+  --scrollbar-thumb-color: rgba(147, 51, 234, 0.5);
+  --scrollbar-thumb-hover-color: rgba(147, 51, 234, 0.7);
 }
 
-.green ::-webkit-scrollbar-thumb:hover {
-  background: rgba(16, 185, 129, 0.7);
+.green {
+  --scrollbar-thumb-color: rgba(16, 185, 129, 0.5);
+  --scrollbar-thumb-hover-color: rgba(16, 185, 129, 0.7);
 }
 
-.teal ::-webkit-scrollbar-thumb {
-  background: rgba(0, 128, 128, 0.5);
-}
-
-.teal ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0 ,128 ,128, 0.7);
+.teal {
+  --scrollbar-thumb-color: rgba(0, 128, 128, 0.5);
+  --scrollbar-thumb-hover-color: rgba(0, 128, 128, 0.7);
 }
