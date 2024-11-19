@@ -1,36 +1,40 @@
-// src/hooks/useKeyboardEvents.ts
+// hooks/useKeyboardEvents.ts
+
 import { useEffect } from 'react';
+import { KeyboardEventHandlers } from '../types';
 
-interface KeyboardEventHandlers {
-  onCtrlK: () => void;
-  onCtrlB: () => void;
-  onEscape: () => void;
-  onAltT: () => void;
-  onAltM: () => void;
-  onAltH: () => void;
-}
-
-export const useKeyboardEvents = (handlers: KeyboardEventHandlers) => {
+const useKeyboardEvents = (getHandlers: () => KeyboardEventHandlers) => {
   useEffect(() => {
+    const handlers = getHandlers();
+
     const handleKeyDown = (event: KeyboardEvent) => {
+      let shouldPreventDefault = false;
+
       if (event.ctrlKey && event.key === 'k') {
-        event.preventDefault();
-        handlers.onCtrlK();
+        handlers.onCtrlK?.();
+        shouldPreventDefault = true;
       } else if (event.ctrlKey && event.key === 'b') {
-        event.preventDefault();
-        handlers.onCtrlB();
+        handlers.onCtrlB?.();
+        shouldPreventDefault = true;
       } else if (event.key === 'Escape') {
-        event.preventDefault();
-        handlers.onEscape();
+        handlers.onEscape?.();
+        shouldPreventDefault = true;
+      } else if (event.key === 'ArrowUp') {
+        handlers.onArrowUp?.();
+        shouldPreventDefault = true;
+      } else if (event.key === 'ArrowDown') {
+        handlers.onArrowDown?.();
+        shouldPreventDefault = true;
       } else if (event.altKey && event.key === 't') {
-        event.preventDefault();
-        handlers.onAltT();
+        handlers.onAltT?.();
       } else if (event.altKey && event.key === 'm') {
-        event.preventDefault();
-        handlers.onAltM();
+        handlers.onAltM?.();
       } else if (event.altKey && event.key === 'h') {
+        handlers.onAltH?.();
+      }
+
+      if (shouldPreventDefault) {
         event.preventDefault();
-        handlers.onAltH();
       }
     };
 
@@ -39,5 +43,7 @@ export const useKeyboardEvents = (handlers: KeyboardEventHandlers) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [handlers]);
+  }, [getHandlers]);
 };
+
+export default useKeyboardEvents;

@@ -18,8 +18,10 @@ const DefiModal: React.FC<DefiModalProps> = ({ isOpen, onClose, theme }) => {
   };
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const modalRef = useRef<HTMLDivElement | null>(null);
+  const listItemsRef = useRef<(HTMLAnchorElement | null)[]>([]);
 
   const defiProjects = [
     {
@@ -91,11 +93,11 @@ const DefiModal: React.FC<DefiModalProps> = ({ isOpen, onClose, theme }) => {
   useEffect(() => {
     if (isOpen && searchInputRef.current) {
       searchInputRef.current.focus();
+      setFocusedIndex(null);
     }
   }, [isOpen]);
 
   useEffect(() => {
-
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
         onClose();
@@ -109,10 +111,32 @@ const DefiModal: React.FC<DefiModalProps> = ({ isOpen, onClose, theme }) => {
   }, [onClose]);
 
   useEffect(() => {
-
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
+      } else if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        setFocusedIndex((prevIndex) =>
+          prevIndex === null || prevIndex >= filteredDefiProjects.length - 1 ? 0 : prevIndex + 1
+        );
+      } else if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        if (focusedIndex === 0) {
+          setFocusedIndex(null);
+          searchInputRef.current?.focus();
+        } else if (focusedIndex === null) {
+          // Do nothing if already focused on the search bar
+        } else {
+          setFocusedIndex((prevIndex) =>
+            prevIndex === null || prevIndex <= 0 ? filteredDefiProjects.length - 1 : prevIndex - 1
+          );
+        }
+      } else if (event.key === 'Enter' && focusedIndex !== null) {
+        event.preventDefault();
+        const link = listItemsRef.current[focusedIndex];
+        if (link) {
+          link.click();
+        }
       }
     };
 
@@ -120,7 +144,13 @@ const DefiModal: React.FC<DefiModalProps> = ({ isOpen, onClose, theme }) => {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [onClose]);
+  }, [filteredDefiProjects, focusedIndex, onClose]);
+
+  useEffect(() => {
+    if (focusedIndex !== null && listItemsRef.current[focusedIndex]) {
+      listItemsRef.current[focusedIndex].focus();
+    }
+  }, [focusedIndex]);
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -147,13 +177,17 @@ const DefiModal: React.FC<DefiModalProps> = ({ isOpen, onClose, theme }) => {
         </div>
 
         <div className="space-y-4">
-          {filteredDefiProjects.map((project) => (
+          {filteredDefiProjects.map((project, index) => (
             <a
               key={project.name}
               href={project.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-4 p-4 rounded-lg hover:bg-gray-800/30 transition-colors"
+              className={`flex items-center gap-4 p-4 rounded-lg hover:bg-gray-800/30 transition-colors ${
+                focusedIndex === index ? 'bg-gray-800/30' : ''
+              }`}
+              ref={(el) => (listItemsRef.current[index] = el)}
+              tabIndex={0}
             >
               <div className="p-2 rounded-lg bg-gray-800/50">
                 {project.icon}

@@ -70,3 +70,28 @@ export type LensPublication = {
 export type LensExplorePublicationsResponse = {
   items: LensPublication[];
 };
+
+export interface ModalsState {
+  isPomodoroModalOpen: boolean;
+  isTimeZonesModalOpen: boolean;
+  isCryptoPricesModalOpen: boolean;
+  isDocsModalOpen: boolean;
+  isWeb3SocialModalOpen: boolean;
+  isWalletsModalOpen: boolean;
+  isLexiconModalOpen: boolean;
+  isMusicModalOpen: boolean;
+  isHelpModalOpen: boolean;
+}
+
+
+export interface KeyboardEventHandlers {
+  onCtrlK?: () => void;
+  onCtrlB?: () => void;
+  onEscape?: () => void;
+  onAltT?: () => void;
+  onAltM?: () => void;
+  onAltH?: () => void;
+  onArrowUp?: () => void;
+  onArrowDown?: () => void;
+  // Add other keyboard event handlers as needed
+}

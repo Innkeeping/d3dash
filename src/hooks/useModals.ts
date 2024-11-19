@@ -1,16 +1,6 @@
 // src/hooks/useModals.ts
 import { useState } from 'react';
-
-interface ModalsState {
-  isPomodoroModalOpen: boolean;
-  isTimeZonesModalOpen: boolean;
-  isCryptoPricesModalOpen: boolean;
-  isDocsModalOpen: boolean;
-  isWeb3SocialModalOpen: boolean;
-  isWalletsModalOpen: boolean;
-  isLexiconModalOpen: boolean;
-  isMusicModalOpen: boolean;
-}
+import { ModalsState } from '../types';
 
 export const useModals = () => {
   const [modals, setModals] = useState<ModalsState>({
@@ -22,6 +12,7 @@ export const useModals = () => {
     isWalletsModalOpen: false,
     isLexiconModalOpen: false,
     isMusicModalOpen: false,
+    isHelpModalOpen: false,
   });
 
   const openModal = (modalKey: keyof ModalsState) => {

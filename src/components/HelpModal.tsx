@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { X } from 'lucide-react';
 import { Theme } from '../types';
 import useClickOutside from '../hooks/useClickOutside';

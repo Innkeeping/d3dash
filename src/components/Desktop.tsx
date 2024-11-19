@@ -1,22 +1,12 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import SearchBar from './SearchBar';
-import ShortcutGrid from './ShortcutGrid';
-import LinkGrid from './LinkGrid';
-import Toolbar from './Toolbar';
+import MainContent from './MainContent';
 import { filterShortcuts, filterLinks, allLinks } from '../utils/filtering';
 import { useModals } from '../hooks/useModals';
-import { useKeyboardEvents } from '../hooks/useKeyboardEvents';
-import TimerDisplay from './TimerDisplay';
-import Modals from './Modals';
-import { Heart } from 'lucide-react';
-import Modalvate from './Modalvate';
-import LexiconModal from './LexiconModal';
-import { Book } from 'lucide-react';
+import useKeyboardEvents from '../hooks/useKeyboardEvents';
+import { Heart, Book, HelpCircle } from 'lucide-react';
 import { searchTerms } from '../config';
-import MusicModal from './MusicModal';
-import HelpModal from './HelpModal';
-import { HelpCircle } from 'lucide-react';
-
+import { KeyboardEventHandlers } from '../types';
 const Desktop: React.FC = () => {
   const [search, setSearch] = useState('');
   const [theme, setTheme] = useState<'purple' | 'green' | 'teal'>('purple');
@@ -43,6 +33,7 @@ const Desktop: React.FC = () => {
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const shortcutGridRef = useRef<{ gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> } | null>(null);
   const linkGridRef = useRef<{ gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> } | null>(null);
+  const searchBarRef = useRef<HTMLInputElement>(null);
 
   const filteredShortcuts = filterShortcuts(search);
   const filteredLinks = filterLinks(search, allLinks);
@@ -63,61 +54,6 @@ const Desktop: React.FC = () => {
     const currentThemeIndex = themes.indexOf(theme);
     setTheme(themes[(currentThemeIndex + 1) % themes.length]);
   };
-
-  const searchBarRef = useRef<HTMLInputElement>(null);
-
-  useKeyboardEvents({
-    onCtrlK: () => {
-      searchInputRef.current?.focus();
-      setFocusedIndex(null);
-    },
-    onCtrlB: toggleToolbar,
-    onEscape: () => {
-      if (isCryptoPricesModalOpen) {
-        closeModal('isCryptoPricesModalOpen');
-      } else if (isTimeZonesModalOpen) {
-        closeModal('isTimeZonesModalOpen');
-      } else if (isPomodoroModalOpen) {
-        closeModal('isPomodoroModalOpen');
-      } else if (isDocsModalOpen) {
-        closeModal('isDocsModalOpen');
-      } else if (isWeb3SocialModalOpen) {
-        closeModal('isWeb3SocialModalOpen');
-      } else if (isWalletsModalOpen) {
-        closeModal('isWalletsModalOpen');
-      } else if (isMusicModalOpen) {
-        setIsMusicModalOpen(false);
-      } else if (isHelpModalOpen) {
-        setIsHelpModalOpen(false);
-      } else if (showToolbar) {
-        toggleToolbar();
-      }
-    },
-    onAltT: changeTheme,
-    onAltM: () => setIsMusicModalOpen(!isMusicModalOpen),
-    onAltH: () => setIsHelpModalOpen(!isHelpModalOpen),
-  });
-
-  useEffect(() => {
-    const lowerSearch = search.toLowerCase();
-    const matchedTerm = Object.keys(searchTerms).find(term => lowerSearch.includes(term));
-
-    if (matchedTerm) {
-      const modalOrAction = searchTerms[matchedTerm as keyof typeof searchTerms];
-      if (modalOrAction === 'isLexiconModalOpen') {
-        setIsLexiconModalOpen(true);
-      } else if (modalOrAction === 'isWalletsModalOpen') {
-        openModal('isWalletsModalOpen');
-      } else if (modalOrAction === 'isMusicModalOpen') {
-        setIsMusicModalOpen(true);
-      } else if (modalOrAction === 'isHelpModalOpen') {
-        setIsHelpModalOpen(true);
-      } else {
-        openModal(modalOrAction);
-      }
-      setSearch('');
-    }
-  }, [search, openModal]);
 
   const navigateToLinks = () => {
     if (filteredLinks.length > 0) {
@@ -170,6 +106,92 @@ const Desktop: React.FC = () => {
     setIsMusicModalOpen(true);
   };
 
+  const onEscape = useCallback(() => {
+    if (isCryptoPricesModalOpen) {
+      closeModal('isCryptoPricesModalOpen');
+    } else if (isTimeZonesModalOpen) {
+      closeModal('isTimeZonesModalOpen');
+    } else if (isPomodoroModalOpen) {
+      closeModal('isPomodoroModalOpen');
+    } else if (isDocsModalOpen) {
+      closeModal('isDocsModalOpen');
+    } else if (isWeb3SocialModalOpen) {
+      closeModal('isWeb3SocialModalOpen');
+    } else if (isWalletsModalOpen) {
+      closeModal('isWalletsModalOpen');
+    } else if (isMusicModalOpen) {
+      setIsMusicModalOpen(false);
+    } else if (isHelpModalOpen) {
+      setIsHelpModalOpen(false);
+    } else if (showToolbar) {
+      toggleToolbar();
+    }
+  }, [
+    isCryptoPricesModalOpen,
+    isTimeZonesModalOpen,
+    isPomodoroModalOpen,
+    isDocsModalOpen,
+    isWeb3SocialModalOpen,
+    isWalletsModalOpen,
+    isMusicModalOpen,
+    isHelpModalOpen,
+    showToolbar,
+    closeModal,
+    setIsMusicModalOpen,
+    setIsHelpModalOpen,
+    toggleToolbar,
+  ]);
+
+  const keyboardEventHandlers: KeyboardEventHandlers = {
+    onCtrlK: () => {
+      searchInputRef.current?.focus();
+      setFocusedIndex(null);
+    },
+    onCtrlB: toggleToolbar,
+    onEscape,
+    onAltT: changeTheme,
+    onAltM: () => setIsMusicModalOpen(!isMusicModalOpen),
+    onAltH: () => setIsHelpModalOpen(!isHelpModalOpen),
+  };
+    [
+      searchInputRef,
+      setFocusedIndex,
+      toggleToolbar,
+      onEscape,
+      changeTheme,
+      setIsMusicModalOpen,
+      setIsHelpModalOpen,
+    ]
+
+
+  const getKeyboardEventHandlers = useCallback(
+    () => keyboardEventHandlers,
+    [keyboardEventHandlers]
+  );
+
+  useKeyboardEvents(getKeyboardEventHandlers);
+
+  useEffect(() => {
+    const lowerSearch = search.toLowerCase();
+    const matchedTerm = Object.keys(searchTerms).find(term => lowerSearch.includes(term));
+
+    if (matchedTerm) {
+      const modalOrAction = searchTerms[matchedTerm as keyof typeof searchTerms];
+      if (modalOrAction === 'isLexiconModalOpen') {
+        setIsLexiconModalOpen(true);
+      } else if (modalOrAction === 'isWalletsModalOpen') {
+        openModal('isWalletsModalOpen');
+      } else if (modalOrAction === 'isMusicModalOpen') {
+        setIsMusicModalOpen(true);
+      } else if (modalOrAction === 'isHelpModalOpen') {
+        setIsHelpModalOpen(true);
+      } else {
+        openModal(modalOrAction);
+      }
+      setSearch('');
+    }
+  }, [search, openModal]);
+
   return (
     <div
       className={`relative min-h-screen ${themeClasses[theme]} p-6 overflow-hidden ${theme}`}
@@ -199,41 +221,19 @@ const Desktop: React.FC = () => {
         </button>
       </div>
 
-      <ShortcutGrid
-        shortcuts={filteredShortcuts}
+      <MainContent
+        search={search}
         theme={theme}
-        onNavigateToSearchBar={navigateToSearchBar}
-        ref={shortcutGridRef}
-        onLastRowDown={handleLastRowDown}
-        searchBarRef={searchBarRef}
-      />
-      {search && (
-        <LinkGrid
-          links={filteredLinks}
-          theme={theme}
-          ref={linkGridRef}
-          focusedIndex={focusedIndex}
-          setFocusedIndex={setFocusedIndex}
-          onNavigateToGrid={navigateToGrid}
-        />
-      )}
-
-      <TimerDisplay
+        filteredShortcuts={filteredShortcuts}
+        filteredLinks={filteredLinks}
+        focusedIndex={focusedIndex}
+        setFocusedIndex={setFocusedIndex}
         isTimerRunning={isTimerRunning}
         timerTimeLeft={timerTimeLeft}
-        onClick={() => openModal('isPomodoroModalOpen')}
-      />
-
-      <Toolbar
-        theme={theme}
-        setTheme={setTheme}
-        onPomodoroOpen={() => openModal('isPomodoroModalOpen')}
-        onTimeZonesOpen={() => openModal('isTimeZonesModalOpen')}
+        setIsTimerRunning={setIsTimerRunning}
+        setTimerTimeLeft={setTimerTimeLeft}
         showToolbar={showToolbar}
         toggleToolbar={toggleToolbar}
-      />
-
-      <Modals
         isPomodoroModalOpen={isPomodoroModalOpen}
         isTimeZonesModalOpen={isTimeZonesModalOpen}
         isCryptoPricesModalOpen={isCryptoPricesModalOpen}
@@ -242,47 +242,23 @@ const Desktop: React.FC = () => {
         isWalletsModalOpen={isWalletsModalOpen}
         isLexiconModalOpen={isLexiconModalOpen}
         isMusicModalOpen={isMusicModalOpen}
-        onCloseLexiconModal={closeLexiconModal}
-        onCloseMusicModal={() => setIsMusicModalOpen(false)}
-        onClosePomodoro={() => closeModal('isPomodoroModalOpen')}
-        onCloseTimeZones={() => closeModal('isTimeZonesModalOpen')}
-        onCloseCryptoPrices={() => closeModal('isCryptoPricesModalOpen')}
-        onCloseDocs={() => closeModal('isDocsModalOpen')}
-        onCloseWeb3SocialModal={() => closeModal('isWeb3SocialModalOpen')}
-        onCloseWalletsModal={() => closeModal('isWalletsModalOpen')}
-        theme={theme}
+        isHelpModalOpen={isHelpModalOpen}
+        setIsMusicModalOpen={setIsMusicModalOpen}
+        setIsHelpModalOpen={setIsHelpModalOpen}
+        openModal={openModal}
+        closeModal={closeModal}
+        navigateToSearchBar={navigateToSearchBar}
         onTimerUpdate={(isRunning, timeLeft) => {
           setIsTimerRunning(isRunning);
           setTimerTimeLeft(timeLeft);
         }}
-      />
-
-      <button
-        onClick={openModalvate}
-        className="absolute bottom-6 left-4 p-2 bg-white bg-opacity-10 rounded-full text-white opacity-10 z-50 hover:opacity-100 transition-opacity"
-      >
-        <Heart size={24} />
-      </button>
-
-      <Modalvate isOpen={isModalvateOpen} onClose={closeModalvate} theme={theme} />
-
-      <LexiconModal
-        isOpen={isLexiconModalOpen}
-        onClose={closeLexiconModal}
-        theme={theme}
-      />
-
-      <MusicModal
-        isOpen={isMusicModalOpen}
-        onClose={() => setIsMusicModalOpen(false)}
-        onOpen={handleOpenMusicModal}
-        theme={theme}
-      />
-
-      <HelpModal
-        isOpen={isHelpModalOpen}
-        onClose={() => setIsHelpModalOpen(false)}
-        theme={theme}
+        isModalvateOpen={isModalvateOpen}
+        setIsModalvateOpen={setIsModalvateOpen}
+        closeLexiconModal={closeLexiconModal}
+        handleOpenMusicModal={handleOpenMusicModal}
+        searchBarRef={searchBarRef}
+        linkGridRef={linkGridRef}
+        shortcutGridRef={shortcutGridRef}
       />
     </div>
   );
