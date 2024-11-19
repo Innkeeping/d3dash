@@ -86,6 +86,23 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, onPomodoroOpen, onTi
 
   return (
     <div className="fixed bottom-6 right-4 z-50">
+      {showToolbar && (
+        <div className="absolute bottom-14 right-0 flex flex-col items-end space-y-2 md:flex-row md:space-y-0 md:space-x-2 md:bottom-6 md:right-14">
+          {toolbarItems.map(item => (
+            <div key={item.id} className="relative group">
+              <span className="absolute left-0 top-0 transform -translate-x-1/2 -translate-y-full px-2 py-1 text-xs bg-gray-900/90 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap -ml-2 md:left-1/2 md:-translate-x-1/2 md:translate-y-0 md:-mt-6"> {/* Adjusted here */}
+                {item.label}
+              </span>
+              <button
+                onClick={() => handleMenuItemClick(item.id)}
+                className="p-2 rounded-full bg-gray-800/50 hover:bg-gray-800/80 transition-colors duration-300"
+              >
+                {item.icon}
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
       <button
         onClick={toggleToolbar}
         className={`p-2 rounded-full bg-gray-800/50 hover:bg-gray-800/80 transition-colors duration-300`}
@@ -93,23 +110,6 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, onPomodoroOpen, onTi
         <span className="sr-only">Toggle Toolbar</span>
         ☰
       </button>
-      {showToolbar && (
-        <div className="absolute bottom-16 right-0 flex flex-col items-end space-y-2">
-          {toolbarItems.map(item => (
-            <div key={item.id} className="relative group">
-              <button
-                onClick={() => handleMenuItemClick(item.id)}
-                className="p-2 rounded-full bg-gray-800/50 hover:bg-gray-800/80 transition-colors duration-300"
-              >
-                {item.icon}
-                <span className="absolute left-0 top-1/2 transform -translate-x-full -translate-y-1/2 mr-2 px-2 py-1 text-xs bg-gray-900/90 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap -ml-2">
-                  {item.label}
-                </span>
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
       <PomodoroModal
         isOpen={false}
         onClose={() => {}}

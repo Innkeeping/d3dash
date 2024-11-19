@@ -197,6 +197,7 @@ const MusicModal: React.FC<MusicModalProps> = ({ isOpen, onClose, onOpen, theme 
                   height="260px"
                   allow="clipboard-write"
                   sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox"
+                  loading="lazy"
                 />
               </div>
             ))}
