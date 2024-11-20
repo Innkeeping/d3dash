@@ -116,7 +116,7 @@ const DocsModal: React.FC<DocsModalProps> = ({ isOpen, onClose, theme }) => {
       <div
         ref={modalRef}
         className={`w-[600px] max-h-[90vh] rounded-xl border ${themeClasses[theme]} backdrop-blur-md p-6 overflow-y-auto`}
-        key="docs-modal" // Unique key to ensure the modal is not rendered multiple times
+
       >
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Web3 Development Documentation</h2>

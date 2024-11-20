@@ -2,8 +2,6 @@
 import React from 'react';
 import PomodoroModal from './PomodoroModal';
 import TimeZonesModal from './TimeZonesModal';
-import CryptoPricesModal from './CryptoPricesModal';
-import DocsModal from './DocsModal';
 import Web3SocialModal from './Web3SocialModal';
 import WalletsModal from './WalletsModal';
 import LexiconModal from './LexiconModal';
@@ -15,8 +13,6 @@ import Modalvate from './Modalvate';
 const Modals: React.FC<ModalsProps> = ({
   isPomodoroModalOpen,
   isTimeZonesModalOpen,
-  isCryptoPricesModalOpen,
-  isDocsModalOpen,
   isWeb3SocialModalOpen,
   isWalletsModalOpen,
   isLexiconModalOpen,
@@ -48,16 +44,6 @@ const Modals: React.FC<ModalsProps> = ({
       <TimeZonesModal
         isOpen={isTimeZonesModalOpen}
         onClose={() => closeModal('isTimeZonesModalOpen')}
-        theme={theme}
-      />
-      <CryptoPricesModal
-        isOpen={isCryptoPricesModalOpen}
-        onClose={() => closeModal('isCryptoPricesModalOpen')}
-        theme={theme}
-      />
-      <DocsModal
-        isOpen={isDocsModalOpen}
-        onClose={() => closeModal('isDocsModalOpen')}
         theme={theme}
       />
       <Web3SocialModal
