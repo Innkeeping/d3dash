@@ -6,6 +6,7 @@ import useClickOutside from '../hooks/useClickOutside';
 interface HelpModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onOpen:() => void;
   theme: Theme;
 }
 
@@ -102,6 +103,59 @@ const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose, theme }) => {
               </li>
             ))}
           </ul>
+        </div>
+
+        <div className="mt-8">
+          <h3 className="text-lg font-semibold mb-2">Toolbar Shortcuts</h3>
+          <div className="bg-gray-800/30 p-4 rounded-lg">
+            <p>When the toolbar is open, you can type the corresponding number to open the respective modal:</p>
+            <ul className="mt-2 space-y-2">
+              <li className="flex items-center justify-between">
+                <span>1</span>
+                <span>Networks</span>
+              </li>
+              <li className="flex items-center justify-between">
+                <span>2</span>
+                <span>Governance</span>
+              </li>
+              <li className="flex items-center justify-between">
+                <span>3</span>
+                <span>ReFi Projects</span>
+              </li>
+              <li className="flex items-center justify-between">
+                <span>4</span>
+                <span>DeFi Tools</span>
+              </li>
+              <li className="flex items-center justify-between">
+                <span>5</span>
+                <span>Web3 Docs</span>
+              </li>
+              <li className="flex items-center justify-between">
+                <span>6</span>
+                <span>GameB Console</span>
+              </li>
+              <li className="flex items-center justify-between">
+                <span>7</span>
+                <span>Take a Break</span>
+              </li>
+              <li className="flex items-center justify-between">
+                <span>8</span>
+                <span>World Clock</span>
+              </li>
+              <li className="flex items-center justify-between">
+                <span>9</span>
+                <span>Lens Feed</span>
+              </li>
+              <li className="flex items-center justify-between">
+                <span>10</span>
+                <span>Token Prices</span>
+              </li>
+              <li className="flex items-center justify-between">
+                <span>11</span>
+                <span>IPFS CID Checker</span>
+              </li>
+            </ul>
+          </div>
         </div>
 
         <div className="mt-8 text-sm opacity-75">

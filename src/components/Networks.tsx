@@ -56,7 +56,7 @@ const Networks: React.FC<NetworksProps> = ({ isOpen, onClose, theme }) => {
     },
     {
       name: 'OP Mainnet',
-      chainId: '10 (0xa)',
+      chainId: '10 (0x0a)',
       currency: 'ETH',
       url: 'https://optimistic.etherscan.io/'
     },
@@ -80,8 +80,12 @@ const Networks: React.FC<NetworksProps> = ({ isOpen, onClose, theme }) => {
 
   useEffect(() => {
     if (isOpen && searchInputRef.current) {
-      searchInputRef.current.focus();
-      setFocusedIndex(null);
+      const timeoutId = setTimeout(() => {
+        searchInputRef.current?.focus();
+        setFocusedIndex(null);
+      }, 100);
+
+      return () => clearTimeout(timeoutId);
     }
   }, [isOpen]);
 

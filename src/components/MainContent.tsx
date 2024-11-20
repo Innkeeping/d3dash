@@ -1,64 +1,9 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import ShortcutGrid from './ShortcutGrid';
 import LinkGrid from './LinkGrid';
 import TimerDisplay from './TimerDisplay';
-import Toolbar from './Toolbar';
-import Modals from './Modals';
-import { Heart } from 'lucide-react';
-import Modalvate from './Modalvate';
-import LexiconModal from './LexiconModal';
-import MusicModal from './MusicModal';
-import HelpModal from './HelpModal';
-
-interface ModalsState {
-  isPomodoroModalOpen: boolean;
-  isTimeZonesModalOpen: boolean;
-  isCryptoPricesModalOpen: boolean;
-  isDocsModalOpen: boolean;
-  isWeb3SocialModalOpen: boolean;
-  isWalletsModalOpen: boolean;
-  isLexiconModalOpen: boolean;
-  isMusicModalOpen: boolean;
-  isHelpModalOpen: boolean;
-}
-
-interface MainContentProps {
-  search: string;
-  theme: 'purple' | 'green' | 'teal';
-  filteredShortcuts: any[];
-  filteredLinks: any[];
-  focusedIndex: number | null;
-  setFocusedIndex: (index: number | null) => void;
-  isTimerRunning: boolean;
-  timerTimeLeft: number;
-  setIsTimerRunning: (isRunning: boolean) => void;
-  setTimerTimeLeft: (timeLeft: number) => void;
-  showToolbar: boolean;
-  toggleToolbar: () => void;
-  isPomodoroModalOpen: boolean;
-  isTimeZonesModalOpen: boolean;
-  isCryptoPricesModalOpen: boolean;
-  isDocsModalOpen: boolean;
-  isWeb3SocialModalOpen: boolean;
-  isWalletsModalOpen: boolean;
-  isLexiconModalOpen: boolean;
-  isMusicModalOpen: boolean;
-  isHelpModalOpen: boolean;
-  setIsMusicModalOpen: (isOpen: boolean) => void;
-  setIsHelpModalOpen: (isOpen: boolean) => void;
-  openModal: (modalKey: keyof ModalsState) => void;
-  closeModal: (modalKey: keyof ModalsState) => void;
-  navigateToSearchBar: () => void;
-  onNavigateToGrid: () => void;
-  onTimerUpdate: (isRunning: boolean, timeLeft: number) => void;
-  isModalvateOpen: boolean;
-  setIsModalvateOpen: (isOpen: boolean) => void;
-  closeLexiconModal: () => void;
-  handleOpenMusicModal: () => void;
-  searchBarRef: React.RefObject<HTMLInputElement>;
-  linkGridRef: React.RefObject<{ gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> }>;
-  shortcutGridRef: React.RefObject<{ gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> }>;
-}
+import { Heart, Info, Book } from 'lucide-react';
+import { MainContentProps, DescribedShortcut, Link } from '../types';
 
 const MainContent: React.FC<MainContentProps> = ({
   search,
@@ -73,40 +18,75 @@ const MainContent: React.FC<MainContentProps> = ({
   setTimerTimeLeft,
   showToolbar,
   toggleToolbar,
-  isPomodoroModalOpen,
-  isTimeZonesModalOpen,
-  isCryptoPricesModalOpen,
-  isDocsModalOpen,
-  isWeb3SocialModalOpen,
-  isWalletsModalOpen,
-  isLexiconModalOpen,
-  isMusicModalOpen,
-  isHelpModalOpen,
-  setIsMusicModalOpen,
-  setIsHelpModalOpen,
-  openModal,
-  closeModal,
   navigateToSearchBar,
   onNavigateToGrid,
   onTimerUpdate,
-  isModalvateOpen,
-  setIsModalvateOpen,
-  closeLexiconModal,
-  handleOpenMusicModal,
   searchBarRef,
   linkGridRef,
   shortcutGridRef,
+  setTheme,
+  openModal,
+  closeModal,
 }) => {
   const openModalvate = () => {
-    setIsModalvateOpen(true);
+    openModal('isModalvateOpen');
   };
 
-  const closeModalvate = () => {
-    setIsModalvateOpen(false);
+  const openHelpModal = () => {
+    openModal('isHelpModalOpen');
   };
+
+  const openLexiconModal = () => {
+    openModal('isLexiconModalOpen');
+  };
+
+  // Filter filteredLinks to include only DescribedShortcut objects
+  const filteredDescribedLinks = filteredLinks.filter(
+    (link): link is DescribedShortcut => 'id' in link
+  );
 
   return (
     <>
+      {/* Info and Book buttons with responsive classes */}
+      <div className="absolute md:top-6 md:right-1/4 lg:right-1/5 xl:right-1/6 md:flex hidden justify-center md:mt-0 lg:mt-2 z-50 space-x-2">
+        <button
+          onClick={openHelpModal}
+          className="p-2 bg-white bg-opacity-10 rounded-full text-white opacity-10 hover:opacity-100 transition-opacity"
+        >
+          <Info size={24} />
+        </button>
+        <button
+          onClick={openLexiconModal}
+          className="p-2 bg-white bg-opacity-10 rounded-full text-white opacity-10 hover:opacity-100 transition-opacity"
+        >
+          <Book size={24} />
+        </button>
+      </div>
+
+      {/* Mobile version of the Info and Book buttons */}
+      <div className="md:hidden flex justify-center mt-2">
+        <button
+          onClick={openHelpModal}
+          className="p-2 bg-white bg-opacity-10 rounded-full text-white opacity-10 hover:opacity-100 transition-opacity"
+        >
+          <Info size={24} />
+        </button>
+        <button
+          onClick={openLexiconModal}
+          className="p-2 bg-white bg-opacity-10 rounded-full text-white opacity-10 hover:opacity-100 transition-opacity"
+        >
+          <Book size={24} />
+        </button>
+      </div>
+
+      {/* Heart button on both mobile and larger screens */}
+      <button
+        onClick={openModalvate}
+        className="absolute bottom-6 left-4 p-2 bg-white bg-opacity-10 rounded-full text-white opacity-10 hover:opacity-100 transition-opacity z-50"
+      >
+        <Heart size={24} />
+      </button>
+
       <ShortcutGrid
         shortcuts={filteredShortcuts}
         theme={theme}
@@ -115,14 +95,15 @@ const MainContent: React.FC<MainContentProps> = ({
         onLastRowDown={navigateToSearchBar}
         searchBarRef={searchBarRef}
       />
+
       {search && (
         <LinkGrid
-          links={filteredLinks}
+          links={filteredDescribedLinks}
           theme={theme}
           ref={linkGridRef}
           focusedIndex={focusedIndex}
           setFocusedIndex={setFocusedIndex}
-          onNavigateToGrid={navigateToSearchBar}
+          onNavigateToGrid={onNavigateToGrid}
         />
       )}
 
@@ -130,64 +111,6 @@ const MainContent: React.FC<MainContentProps> = ({
         isTimerRunning={isTimerRunning}
         timerTimeLeft={timerTimeLeft}
         onClick={() => openModal('isPomodoroModalOpen')}
-      />
-
-      <Toolbar
-        theme={theme}
-        setTheme={() => {}}
-        onPomodoroOpen={() => openModal('isPomodoroModalOpen')}
-        onTimeZonesOpen={() => openModal('isTimeZonesModalOpen')}
-        showToolbar={showToolbar}
-        toggleToolbar={toggleToolbar}
-      />
-
-      <Modals
-        isPomodoroModalOpen={isPomodoroModalOpen}
-        isTimeZonesModalOpen={isTimeZonesModalOpen}
-        isCryptoPricesModalOpen={isCryptoPricesModalOpen}
-        isDocsModalOpen={isDocsModalOpen}
-        isWeb3SocialModalOpen={isWeb3SocialModalOpen}
-        isWalletsModalOpen={isWalletsModalOpen}
-        isLexiconModalOpen={isLexiconModalOpen}
-        isMusicModalOpen={isMusicModalOpen}
-        onCloseLexiconModal={closeLexiconModal}
-        onCloseMusicModal={() => setIsMusicModalOpen(false)}
-        onClosePomodoro={() => closeModal('isPomodoroModalOpen')}
-        onCloseTimeZones={() => closeModal('isTimeZonesModalOpen')}
-        onCloseCryptoPrices={() => closeModal('isCryptoPricesModalOpen')}
-        onCloseDocs={() => closeModal('isDocsModalOpen')}
-        onCloseWeb3SocialModal={() => closeModal('isWeb3SocialModalOpen')}
-        onCloseWalletsModal={() => closeModal('isWalletsModalOpen')}
-        theme={theme}
-        onTimerUpdate={onTimerUpdate}
-      />
-
-      <button
-        onClick={openModalvate}
-        className="absolute bottom-6 left-4 p-2 bg-white bg-opacity-10 rounded-full text-white opacity-10 z-50 hover:opacity-100 transition-opacity"
-      >
-        <Heart size={24} />
-      </button>
-
-      <Modalvate isOpen={isModalvateOpen} onClose={closeModalvate} theme={theme} />
-
-      <LexiconModal
-        isOpen={isLexiconModalOpen}
-        onClose={closeLexiconModal}
-        theme={theme}
-      />
-
-      <MusicModal
-        isOpen={isMusicModalOpen}
-        onClose={() => setIsMusicModalOpen(false)}
-        onOpen={handleOpenMusicModal}
-        theme={theme}
-      />
-
-      <HelpModal
-        isOpen={isHelpModalOpen}
-        onClose={() => setIsHelpModalOpen(false)}
-        theme={theme}
       />
     </>
   );

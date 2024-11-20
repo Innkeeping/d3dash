@@ -8,27 +8,9 @@ import Web3SocialModal from './Web3SocialModal';
 import WalletsModal from './WalletsModal';
 import LexiconModal from './LexiconModal';
 import MusicModal from './MusicModal';
-
-interface ModalsProps {
-  isPomodoroModalOpen: boolean;
-  isTimeZonesModalOpen: boolean;
-  isCryptoPricesModalOpen: boolean;
-  isDocsModalOpen: boolean;
-  isWeb3SocialModalOpen: boolean;
-  isWalletsModalOpen: boolean;
-  isLexiconModalOpen: boolean;
-  isMusicModalOpen: boolean;
-  onClosePomodoro: () => void;
-  onCloseTimeZones: () => void;
-  onCloseCryptoPrices: () => void;
-  onCloseDocs: () => void;
-  onCloseWeb3SocialModal: () => void;
-  onCloseWalletsModal: () => void;
-  onCloseLexiconModal: () => void;
-  onCloseMusicModal: () => void;
-  theme: 'purple' | 'green' | 'teal';
-  onTimerUpdate: (isRunning: boolean, timeLeft: number) => void;
-}
+import HelpModal from './HelpModal';
+import { ModalsProps, Theme } from '../types';
+import Modalvate from './Modalvate';
 
 const Modals: React.FC<ModalsProps> = ({
   isPomodoroModalOpen,
@@ -39,59 +21,75 @@ const Modals: React.FC<ModalsProps> = ({
   isWalletsModalOpen,
   isLexiconModalOpen,
   isMusicModalOpen,
-  onClosePomodoro,
-  onCloseTimeZones,
-  onCloseCryptoPrices,
-  onCloseDocs,
-  onCloseWeb3SocialModal,
-  onCloseWalletsModal,
-  onCloseLexiconModal,
-  onCloseMusicModal,
+  isHelpModalOpen,
+  isModalvateOpen,
+  closeModal,
   theme,
   onTimerUpdate,
 }) => {
+
+  const handleOpenMusicModal = () => {
+    // You can add any additional logic here if needed
+    // For now, it's just a placeholder
+  };
+
+  const handleOpenHelpModal = () => {
+
+  };
+
   return (
     <>
       <PomodoroModal
         isOpen={isPomodoroModalOpen}
-        onClose={onClosePomodoro}
+        onClose={() => closeModal('isPomodoroModalOpen')}
         theme={theme}
         onTimerUpdate={onTimerUpdate}
       />
       <TimeZonesModal
         isOpen={isTimeZonesModalOpen}
-        onClose={onCloseTimeZones}
+        onClose={() => closeModal('isTimeZonesModalOpen')}
         theme={theme}
       />
       <CryptoPricesModal
         isOpen={isCryptoPricesModalOpen}
-        onClose={onCloseCryptoPrices}
+        onClose={() => closeModal('isCryptoPricesModalOpen')}
         theme={theme}
       />
       <DocsModal
         isOpen={isDocsModalOpen}
-        onClose={onCloseDocs}
+        onClose={() => closeModal('isDocsModalOpen')}
         theme={theme}
       />
       <Web3SocialModal
         isOpen={isWeb3SocialModalOpen}
-        onClose={onCloseWeb3SocialModal}
+        onClose={() => closeModal('isWeb3SocialModalOpen')}
         theme={theme}
       />
       <WalletsModal
         isOpen={isWalletsModalOpen}
-        onClose={onCloseWalletsModal}
+        onClose={() => closeModal('isWalletsModalOpen')}
         theme={theme}
       />
       <LexiconModal
         isOpen={isLexiconModalOpen}
-        onClose={onCloseLexiconModal}
+        onClose={() => closeModal('isLexiconModalOpen')}
         theme={theme}
       />
       <MusicModal
         isOpen={isMusicModalOpen}
-        onClose={onCloseMusicModal}
-        onOpen={() => {}}
+        onClose={() => closeModal('isMusicModalOpen')}
+        onOpen={handleOpenMusicModal}
+        theme={theme}
+      />
+      <HelpModal
+        isOpen={isHelpModalOpen}
+        onClose={() => closeModal('isHelpModalOpen')}
+        onOpen={handleOpenHelpModal}
+        theme={theme}
+      />
+      <Modalvate
+        isOpen={isModalvateOpen}
+        onClose={() => closeModal('isModalvateOpen')}
         theme={theme}
       />
     </>

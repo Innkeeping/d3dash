@@ -169,9 +169,16 @@ const DocsModal: React.FC<DocsModalProps> = ({ isOpen, onClose, theme }) => {
   );
 
   useEffect(() => {
-    if (isOpen && searchInputRef.current) {
-      searchInputRef.current.focus();
-      setFocusedIndex(null);
+    if (isOpen) {
+      const timeoutId = setTimeout(() => {
+        if (searchInputRef.current) {
+          searchInputRef.current.focus();
+          setFocusedIndex(null);
+        }
+      }, 100);
+
+      // Cleanup the timeout if the component unmounts or `isOpen` changes before the timeout completes
+      return () => clearTimeout(timeoutId);
     }
   }, [isOpen]);
 

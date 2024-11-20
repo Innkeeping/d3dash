@@ -1,9 +1,9 @@
 // hooks/useKeyboardEvents.ts
 
 import { useEffect } from 'react';
-import { KeyboardEventHandlers } from '../types';
+import { KeyboardEventHandlers, ModalsState } from '../types';
 
-const useKeyboardEvents = (getHandlers: () => KeyboardEventHandlers) => {
+const useKeyboardEvents = (getHandlers: () => KeyboardEventHandlers, modals: ModalsState) => {
   useEffect(() => {
     const handlers = getHandlers();
 
@@ -43,7 +43,7 @@ const useKeyboardEvents = (getHandlers: () => KeyboardEventHandlers) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [getHandlers]);
+  }, [getHandlers, modals]);
 };
 
 export default useKeyboardEvents;

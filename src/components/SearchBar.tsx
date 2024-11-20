@@ -8,8 +8,8 @@ interface SearchBarProps extends InputHTMLAttributes<HTMLInputElement> {
   setSearch: (value: string) => void;
   theme: Theme;
   inputRef?: Ref<HTMLInputElement>;
-  onNavigateToLinks?: () => void;
-  onNavigateToGrid?: () => void;
+  onNavigateToLinks?: () => void; // New prop to handle navigation to links
+  onNavigateToGrid?: () => void; // New prop to handle navigation to grid
 }
 
 const SearchBar: React.FC<SearchBarProps> = forwardRef<HTMLInputElement, SearchBarProps>(({ search, setSearch, theme, inputRef, onNavigateToLinks, onNavigateToGrid, ...rest }, ref) => {
@@ -22,11 +22,11 @@ const SearchBar: React.FC<SearchBarProps> = forwardRef<HTMLInputElement, SearchB
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'ArrowDown') {
       event.preventDefault();
-      onNavigateToLinks?.();
+      onNavigateToLinks?.(); // Call the onNavigateToLinks function
     }
     if (event.key === 'ArrowDown') {
       event.preventDefault();
-      onNavigateToGrid?.();
+      onNavigateToGrid?.(); // Call the onNavigateToGrid function
     }
   };
 

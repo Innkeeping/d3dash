@@ -5,7 +5,7 @@ interface GamebModalProps {
   isOpen: boolean;
   onClose: () => void;
   theme: Theme;
-  iframeUrl: string; // Add this prop to pass the URL for the iframe
+  iframeUrl: string;
 }
 
 const GamebModal: React.FC<GamebModalProps> = ({ isOpen, onClose, theme}) => {

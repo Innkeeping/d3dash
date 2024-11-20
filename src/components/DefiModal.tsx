@@ -91,9 +91,15 @@ const DefiModal: React.FC<DefiModalProps> = ({ isOpen, onClose, theme }) => {
   );
 
   useEffect(() => {
-    if (isOpen && searchInputRef.current) {
-      searchInputRef.current.focus();
-      setFocusedIndex(null);
+    if (isOpen) {
+      const timeoutId = setTimeout(() => {
+        if (searchInputRef.current) {
+          searchInputRef.current.focus();
+          setFocusedIndex(null);
+        }
+      }, 100);
+
+      return () => clearTimeout(timeoutId);
     }
   }, [isOpen]);
 
@@ -125,7 +131,7 @@ const DefiModal: React.FC<DefiModalProps> = ({ isOpen, onClose, theme }) => {
           setFocusedIndex(null);
           searchInputRef.current?.focus();
         } else if (focusedIndex === null) {
-          // Do nothing if already focused on the search bar
+
         } else {
           setFocusedIndex((prevIndex) =>
             prevIndex === null || prevIndex <= 0 ? filteredDefiProjects.length - 1 : prevIndex - 1

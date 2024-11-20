@@ -124,8 +124,13 @@ const CryptoPricesModal: React.FC<CryptoPricesModalProps> = ({ isOpen, onClose, 
 
   useEffect(() => {
     if (isOpen && searchInputRef.current) {
-      searchInputRef.current.focus();
-      setFocusedIndex(null);
+      setTimeout(() => {
+        const inputElement = searchInputRef.current;
+        if (inputElement) {
+          inputElement.focus();
+          setFocusedIndex(null);
+        }
+      }, 100); // 100ms delay
     }
   }, [isOpen]);
 

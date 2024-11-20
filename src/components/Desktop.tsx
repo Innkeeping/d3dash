@@ -1,42 +1,36 @@
+// src/Desktop.tsx
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import SearchBar from './SearchBar';
 import MainContent from './MainContent';
 import { filterShortcuts, filterLinks, allLinks } from '../utils/filtering';
-import { useModals } from '../hooks/useModals';
+import useModals from '../hooks/useModals';
 import useKeyboardEvents from '../hooks/useKeyboardEvents';
-import { Heart, Book, HelpCircle } from 'lucide-react';
 import { searchTerms } from '../config';
-import { KeyboardEventHandlers } from '../types';
+import { KeyboardEventHandlers, TimerUpdateHandler } from '../types';
+import Toolbar from './Toolbar';
+import Modals from './Modals';
+import { ModalsProps, DescribedShortcut, Link, ModalsState, Theme } from '../types';
+
 const Desktop: React.FC = () => {
   const [search, setSearch] = useState('');
-  const [theme, setTheme] = useState<'purple' | 'green' | 'teal'>('purple');
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [timerTimeLeft, setTimerTimeLeft] = useState(0);
   const [showToolbar, setShowToolbar] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
-  const [isModalvateOpen, setIsModalvateOpen] = useState(false);
-  const [isLexiconModalOpen, setIsLexiconModalOpen] = useState(false);
-  const [isMusicModalOpen, setIsMusicModalOpen] = useState(false);
-  const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
 
-  const {
-    isPomodoroModalOpen,
-    isTimeZonesModalOpen,
-    isCryptoPricesModalOpen,
-    isDocsModalOpen,
-    isWeb3SocialModalOpen,
-    isWalletsModalOpen,
-    openModal,
-    closeModal
-  } = useModals();
 
-  const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const modals = useModals('purple');
+
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const shortcutGridRef = useRef<{ gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> } | null>(null);
   const linkGridRef = useRef<{ gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> } | null>(null);
   const searchBarRef = useRef<HTMLInputElement>(null);
 
   const filteredShortcuts = filterShortcuts(search);
-  const filteredLinks = filterLinks(search, allLinks);
+  const filteredLinks = filterLinks(search, allLinks) as (DescribedShortcut | Link)[];
+  const filteredDescribedLinks = filteredLinks.filter(
+    (link): link is DescribedShortcut => 'id' in link
+  );
 
   const themeClasses = {
     purple: 'bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900',
@@ -46,13 +40,6 @@ const Desktop: React.FC = () => {
 
   const toggleToolbar = () => {
     setShowToolbar(!showToolbar);
-  };
-
-  const themes: ('purple' | 'green' | 'teal')[] = ['purple', 'green', 'teal'];
-
-  const changeTheme = () => {
-    const currentThemeIndex = themes.indexOf(theme);
-    setTheme(themes[(currentThemeIndex + 1) % themes.length]);
   };
 
   const navigateToLinks = () => {
@@ -87,60 +74,25 @@ const Desktop: React.FC = () => {
   };
 
   const openModalvate = () => {
-    setIsModalvateOpen(true);
-  };
-
-  const closeModalvate = () => {
-    setIsModalvateOpen(false);
+    modals.toggleModal('isModalvateOpen');
   };
 
   const openLexiconModal = () => {
-    setIsLexiconModalOpen(true);
-  };
-
-  const closeLexiconModal = () => {
-    setIsLexiconModalOpen(false);
+    modals.toggleModal('isLexiconModalOpen');
   };
 
   const handleOpenMusicModal = () => {
-    setIsMusicModalOpen(true);
+    modals.toggleModal('isMusicModalOpen');
   };
 
   const onEscape = useCallback(() => {
-    if (isCryptoPricesModalOpen) {
-      closeModal('isCryptoPricesModalOpen');
-    } else if (isTimeZonesModalOpen) {
-      closeModal('isTimeZonesModalOpen');
-    } else if (isPomodoroModalOpen) {
-      closeModal('isPomodoroModalOpen');
-    } else if (isDocsModalOpen) {
-      closeModal('isDocsModalOpen');
-    } else if (isWeb3SocialModalOpen) {
-      closeModal('isWeb3SocialModalOpen');
-    } else if (isWalletsModalOpen) {
-      closeModal('isWalletsModalOpen');
-    } else if (isMusicModalOpen) {
-      setIsMusicModalOpen(false);
-    } else if (isHelpModalOpen) {
-      setIsHelpModalOpen(false);
-    } else if (showToolbar) {
-      toggleToolbar();
-    }
-  }, [
-    isCryptoPricesModalOpen,
-    isTimeZonesModalOpen,
-    isPomodoroModalOpen,
-    isDocsModalOpen,
-    isWeb3SocialModalOpen,
-    isWalletsModalOpen,
-    isMusicModalOpen,
-    isHelpModalOpen,
-    showToolbar,
-    closeModal,
-    setIsMusicModalOpen,
-    setIsHelpModalOpen,
-    toggleToolbar,
-  ]);
+    const modalKeys = Object.keys(modals) as (keyof ModalsState)[];
+    modalKeys.forEach(key => {
+      if (key.startsWith('is') && key.endsWith('ModalOpen') && modals[key]) {
+        modals.closeModal(key);
+      }
+    });
+  }, [modals]);
 
   const keyboardEventHandlers: KeyboardEventHandlers = {
     onCtrlK: () => {
@@ -149,27 +101,17 @@ const Desktop: React.FC = () => {
     },
     onCtrlB: toggleToolbar,
     onEscape,
-    onAltT: changeTheme,
-    onAltM: () => setIsMusicModalOpen(!isMusicModalOpen),
-    onAltH: () => setIsHelpModalOpen(!isHelpModalOpen),
+    onAltT: modals.toggleTheme,
+    onAltM: handleOpenMusicModal,
+    onAltH: () => modals.toggleModal('isHelpModalOpen'),
   };
-    [
-      searchInputRef,
-      setFocusedIndex,
-      toggleToolbar,
-      onEscape,
-      changeTheme,
-      setIsMusicModalOpen,
-      setIsHelpModalOpen,
-    ]
-
 
   const getKeyboardEventHandlers = useCallback(
     () => keyboardEventHandlers,
     [keyboardEventHandlers]
   );
 
-  useKeyboardEvents(getKeyboardEventHandlers);
+  useKeyboardEvents(getKeyboardEventHandlers, modals);
 
   useEffect(() => {
     const lowerSearch = search.toLowerCase();
@@ -177,55 +119,33 @@ const Desktop: React.FC = () => {
 
     if (matchedTerm) {
       const modalOrAction = searchTerms[matchedTerm as keyof typeof searchTerms];
-      if (modalOrAction === 'isLexiconModalOpen') {
-        setIsLexiconModalOpen(true);
-      } else if (modalOrAction === 'isWalletsModalOpen') {
-        openModal('isWalletsModalOpen');
-      } else if (modalOrAction === 'isMusicModalOpen') {
-        setIsMusicModalOpen(true);
-      } else if (modalOrAction === 'isHelpModalOpen') {
-        setIsHelpModalOpen(true);
-      } else {
-        openModal(modalOrAction);
-      }
+      modals.openModal(modalOrAction);
       setSearch('');
     }
-  }, [search, openModal]);
+  }, [search, modals.openModal]);
+
+  const onTimerUpdate: TimerUpdateHandler = (isRunning, timeLeft) => {
+    setIsTimerRunning(isRunning);
+    setTimerTimeLeft(timeLeft);
+  };
 
   return (
     <div
-      className={`relative min-h-screen ${themeClasses[theme]} p-6 overflow-hidden ${theme}`}
+      className={`relative min-h-screen ${themeClasses[modals.theme]} p-6 overflow-hidden ${modals.theme}`}
     >
-      <div className={`absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgaTExMC0xMCBMMTAgaDQwIE0wIDIwIEwgNDAgMjAgaTExMC0yMCBMMTAgaDQwIE0wIDMwIEwgNDAgMzAgaTExMC0zMCBMMTAgaDQwIE0zMCAwIEwgMzA0MCBMMTAgaDQwIiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-20`}></div>
-
-      <div className="relative">
-        <SearchBar
-          search={search}
-          setSearch={setSearch}
-          theme={theme}
-          inputRef={searchInputRef}
-          onNavigateToLinks={navigateToLinks}
-          onNavigateToGrid={navigateToGrid}
-        />
-        <button
-          onClick={openLexiconModal}
-          className="absolute top-1/2 right-0 transform -translate-y-1/2 p-2 bg-white bg-opacity-10 rounded-full text-white opacity-10 z-50 hover:opacity-100 transition-opacity"
-        >
-          <Book size={24} />
-        </button>
-        <button
-          onClick={() => setIsHelpModalOpen(true)}
-          className="absolute top-1/2 right-14 transform -translate-y-1/2 p-2 bg-white bg-opacity-10 rounded-full text-white opacity-10 z-50 hover:opacity-100 transition-opacity"
-        >
-          <HelpCircle size={24} />
-        </button>
-      </div>
-
+      <SearchBar
+        search={search}
+        setSearch={setSearch}
+        theme={modals.theme}
+        inputRef={searchInputRef}
+        onNavigateToLinks={navigateToLinks}
+        onNavigateToGrid={navigateToGrid}
+      />
       <MainContent
         search={search}
-        theme={theme}
+        theme={modals.theme}
         filteredShortcuts={filteredShortcuts}
-        filteredLinks={filteredLinks}
+        filteredLinks={filteredDescribedLinks}
         focusedIndex={focusedIndex}
         setFocusedIndex={setFocusedIndex}
         isTimerRunning={isTimerRunning}
@@ -234,32 +154,31 @@ const Desktop: React.FC = () => {
         setTimerTimeLeft={setTimerTimeLeft}
         showToolbar={showToolbar}
         toggleToolbar={toggleToolbar}
-        isPomodoroModalOpen={isPomodoroModalOpen}
-        isTimeZonesModalOpen={isTimeZonesModalOpen}
-        isCryptoPricesModalOpen={isCryptoPricesModalOpen}
-        isDocsModalOpen={isDocsModalOpen}
-        isWeb3SocialModalOpen={isWeb3SocialModalOpen}
-        isWalletsModalOpen={isWalletsModalOpen}
-        isLexiconModalOpen={isLexiconModalOpen}
-        isMusicModalOpen={isMusicModalOpen}
-        isHelpModalOpen={isHelpModalOpen}
-        setIsMusicModalOpen={setIsMusicModalOpen}
-        setIsHelpModalOpen={setIsHelpModalOpen}
-        openModal={openModal}
-        closeModal={closeModal}
         navigateToSearchBar={navigateToSearchBar}
         onNavigateToGrid={navigateToGrid}
-        onTimerUpdate={(isRunning, timeLeft) => {
-          setIsTimerRunning(isRunning);
-          setTimerTimeLeft(timeLeft);
-        }}
-        isModalvateOpen={isModalvateOpen}
-        setIsModalvateOpen={setIsModalvateOpen}
-        closeLexiconModal={closeLexiconModal}
-        handleOpenMusicModal={handleOpenMusicModal}
+        onTimerUpdate={onTimerUpdate}
         searchBarRef={searchBarRef}
         linkGridRef={linkGridRef}
         shortcutGridRef={shortcutGridRef}
+        setTheme={modals.setTheme}
+        openModal={modals.openModal}
+        closeModal={modals.closeModal}
+      />
+      <Toolbar
+        theme={modals.theme}
+        setTheme={modals.setTheme}
+        onPomodoroOpen={() => modals.toggleModal('isPomodoroModalOpen')}
+        onTimeZonesOpen={() => modals.toggleModal('isTimeZonesModalOpen')}
+        showToolbar={showToolbar}
+        toggleToolbar={toggleToolbar}
+        openModal={modals.openModal}
+        closeModal={modals.closeModal}
+        modals={modals}
+      />
+      <Modals
+        {...modals}
+        theme={modals.theme}
+        onTimerUpdate={modals.onTimerUpdate}
       />
     </div>
   );

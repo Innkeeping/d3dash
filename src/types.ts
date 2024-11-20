@@ -1,4 +1,6 @@
-import { ReactNode } from 'react';
+// types.ts
+
+import { ReactNode, Dispatch, SetStateAction, RefObject } from 'react';
 
 export interface Shortcut {
   id: string;
@@ -17,7 +19,7 @@ export type Theme = 'purple' | 'green' | 'teal';
 
 export interface DescribedLink {
   name: string;
-  icon: string;
+  icon: ReactNode; // Updated to ReactNode
   url: string;
   description: string;
   category?: string;
@@ -25,7 +27,7 @@ export interface DescribedLink {
 
 export interface NetworkLink {
   name: string;
-  icon?: string;
+  icon?: ReactNode; // Updated to ReactNode
   url: string;
   chainId?: string;
   currency?: string;
@@ -81,8 +83,29 @@ export interface ModalsState {
   isLexiconModalOpen: boolean;
   isMusicModalOpen: boolean;
   isHelpModalOpen: boolean;
+  isModalvateOpen: boolean;
+  isRefiModalOpen: boolean;
+  isGovernanceModalOpen: boolean;
+  isBlockchainModalOpen: boolean;
+  isDefiModalOpen: boolean;
+  isLensfeedModalOpen: boolean;
+  isTerminalModalOpen: boolean;
+  isIpfsModalOpen: boolean;
 }
 
+export interface ModalsProps extends ModalsState {
+  theme: Theme;
+  setTheme: Dispatch<SetStateAction<Theme>>;
+  openModal: (modalKey: keyof ModalsState) => void;
+  closeModal: (modalKey: keyof ModalsState) => void;
+  toggleModal: (modalKey: keyof ModalsState) => void;
+  onTimerUpdate: (isRunning: boolean, timeLeft: number) => void;
+  toggleTheme: () => void;
+  timerTimeLeft: number;
+  setTimerTimeLeft: Dispatch<SetStateAction<number>>;
+  isTimerRunning: boolean;
+  setIsTimerRunning: Dispatch<SetStateAction<boolean>>;
+}
 
 export interface KeyboardEventHandlers {
   onCtrlK?: () => void;
@@ -93,5 +116,50 @@ export interface KeyboardEventHandlers {
   onAltH?: () => void;
   onArrowUp?: () => void;
   onArrowDown?: () => void;
-  // Add other keyboard event handlers as needed
 }
+
+export interface ToolbarProps {
+  theme: Theme;
+  setTheme: Dispatch<SetStateAction<Theme>>;
+  onPomodoroOpen: () => void;
+  onTimeZonesOpen: () => void;
+  showToolbar: boolean;
+  toggleToolbar: () => void;
+  openModal: (modalKey: keyof ModalsState) => void;
+  closeModal: (modalKey: keyof ModalsState) => void;
+}
+
+export interface MainContentProps {
+  search: string;
+  theme: Theme;
+  filteredShortcuts: Shortcut[];
+  filteredLinks: DescribedShortcut[];
+  focusedIndex: number | null;
+  setFocusedIndex: Dispatch<SetStateAction<number | null>>;
+  isTimerRunning: boolean;
+  timerTimeLeft: number;
+  setIsTimerRunning: Dispatch<SetStateAction<boolean>>;
+  setTimerTimeLeft: Dispatch<SetStateAction<number>>;
+  showToolbar: boolean;
+  toggleToolbar: () => void;
+  navigateToSearchBar: () => void;
+  onNavigateToGrid: () => void;
+  onTimerUpdate: (isRunning: boolean, timeLeft: number) => void;
+  searchBarRef: RefObject<HTMLInputElement>;
+  linkGridRef: RefObject<{ gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> }>;
+  shortcutGridRef: RefObject<{ gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> }>;
+  setTheme: Dispatch<SetStateAction<Theme>>;
+  openModal: (modalKey: keyof ModalsState) => void;
+  closeModal: (modalKey: keyof ModalsState) => void;
+}
+
+export interface SearchBarProps {
+  search: string;
+  setSearch: Dispatch<SetStateAction<string>>;
+  theme: Theme;
+  inputRef: RefObject<HTMLInputElement>;
+  onNavigateToLinks: () => void;
+  onNavigateToGrid: () => void;
+}
+
+export type TimerUpdateHandler = (isRunning: boolean, timeLeft: number) => void;

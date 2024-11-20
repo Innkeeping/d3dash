@@ -108,7 +108,7 @@ const WalletsModal: React.FC<WalletsModalProps> = ({ isOpen, onClose, theme }) =
     if (icon === 'Wallet') {
       return <Wallet className={iconClass} size={24} />;
     }
-    // Add more icons here if needed
+
     return null;
   };
 

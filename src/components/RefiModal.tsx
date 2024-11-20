@@ -66,20 +66,6 @@ const RefiModal: React.FC<RefiModalProps> = ({ isOpen, onClose, theme }) => {
     };
   }, [onClose]);
 
-  useEffect(() => {
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [onClose]);
-
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div
