@@ -31,6 +31,9 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, onPomodoroOpen, onTi
   const [firstKeyPress, setFirstKeyPress] = useState<number | null>(null);
   const [keyPressTimeout, setKeyPressTimeout] = useState<NodeJS.Timeout | null>(null);
 
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [timerTimeLeft, setTimerTimeLeft] = useState(1500); // 25 minutes in seconds
+
   const themes: Theme[] = ['purple', 'green', 'teal'];
 
   const handleMenuItemClick = (id: string) => {
@@ -51,7 +54,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, onPomodoroOpen, onTi
   };
 
   const toolbarItems = [
-    { id: 'blockchain', icon: <Network size={20} />, label: 'Networks' },
+    { id: 'networks', icon: <Network size={20} />, label: 'Networks' },
     { id: 'governance', icon: <Radio size={20} />, label: 'Governance' },
     { id: 'refi', icon: <Heart size={20} />, label: 'ReFi Projects' },
     { id: 'defi', icon: <Coins size={20} />, label: 'DeFi Tools' },
@@ -155,16 +158,23 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, onPomodoroOpen, onTi
         isOpen={modals.isPomodoroModalOpen}
         onClose={() => closeModal('isPomodoroModalOpen')}
         theme={theme}
-        onTimerUpdate={modals.onTimerUpdate}
+        onTimerUpdate={(isRunning, timeLeft) => {
+          setIsTimerRunning(isRunning);
+          setTimerTimeLeft(timeLeft);
+        }}
+        isTimerRunning={isTimerRunning}
+        timerTimeLeft={timerTimeLeft}
+        setIsTimerRunning={setIsTimerRunning}
+        setTimerTimeLeft={setTimerTimeLeft}
       />
       <RefiModal isOpen={modals.isRefiModalOpen} onClose={() => closeModal('isRefiModalOpen')} theme={theme} />
       <GovernanceModal isOpen={modals.isGovernanceModalOpen} onClose={() => closeModal('isGovernanceModalOpen')} theme={theme} />
-      <Networks isOpen={modals.isBlockchainModalOpen} onClose={() => closeModal('isBlockchainModalOpen')} theme={theme} />
+      <Networks isOpen={modals.isNetworksModalOpen} onClose={() => closeModal('isNetworksModalOpen')} theme={theme} />
       <DefiModal isOpen={modals.isDefiModalOpen} onClose={() => closeModal('isDefiModalOpen')} theme={theme} />
       <DocsModal isOpen={modals.isDocsModalOpen} onClose={() => closeModal('isDocsModalOpen')} theme={theme} />
       <TimeZonesModal isOpen={modals.isTimeZonesModalOpen} onClose={() => closeModal('isTimeZonesModalOpen')} theme={theme} />
       <LensFeedModal isOpen={modals.isLensfeedModalOpen} onClose={() => closeModal('isLensfeedModalOpen')} theme={theme} />
-      <GamebModal isOpen={modals.isTerminalModalOpen} onClose={() => closeModal('isTerminalModalOpen')} theme={theme} iframeUrl="https://www.example.com" />
+      <GamebModal isOpen={modals.isGamebModalOpen} onClose={() => closeModal('isGamebModalOpen')} theme={theme} iframeUrl="https://www.example.com" />
       <CryptoPricesModal isOpen={modals.isCryptoPricesModalOpen} onClose={() => closeModal('isCryptoPricesModalOpen')} theme={theme} />
       <IPFSModal isOpen={modals.isIpfsModalOpen} onClose={() => closeModal('isIpfsModalOpen')} theme={theme} />
     </div>

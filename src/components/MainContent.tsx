@@ -1,15 +1,13 @@
+// src/components/MainContent.tsx
 import React from 'react';
-import ShortcutGrid from './ShortcutGrid';
-import LinkGrid from './LinkGrid';
+// import CombinedGrid from './CombinedGrid';
 import TimerDisplay from './TimerDisplay';
 import { Heart, Info, Book } from 'lucide-react';
-import { MainContentProps, DescribedShortcut, Link } from '../types';
+import { MainContentProps } from '../types';
 
 const MainContent: React.FC<MainContentProps> = ({
   search,
   theme,
-  filteredShortcuts,
-  filteredLinks,
   focusedIndex,
   setFocusedIndex,
   isTimerRunning,
@@ -19,11 +17,8 @@ const MainContent: React.FC<MainContentProps> = ({
   showToolbar,
   toggleToolbar,
   navigateToSearchBar,
-  onNavigateToGrid,
   onTimerUpdate,
   searchBarRef,
-  linkGridRef,
-  shortcutGridRef,
   setTheme,
   openModal,
   closeModal,
@@ -40,13 +35,8 @@ const MainContent: React.FC<MainContentProps> = ({
     openModal('isLexiconModalOpen');
   };
 
-  const filteredDescribedLinks = filteredLinks.filter(
-    (link): link is DescribedShortcut => 'id' in link
-  );
-
   return (
     <>
-
       <div className="absolute md:top-6 md:right-1/4 lg:right-1/5 xl:right-1/6 md:flex hidden justify-center md:mt-0 lg:mt-2 z-50 space-x-2">
         <button
           onClick={openHelpModal}
@@ -78,7 +68,6 @@ const MainContent: React.FC<MainContentProps> = ({
         </button>
       </div>
 
-
       <button
         onClick={openModalvate}
         className="absolute bottom-6 left-4 p-2 bg-white bg-opacity-10 rounded-full text-white opacity-10 hover:opacity-100 transition-opacity z-50"
@@ -86,25 +75,12 @@ const MainContent: React.FC<MainContentProps> = ({
         <Heart size={24} />
       </button>
 
-      <ShortcutGrid
-        shortcuts={filteredShortcuts}
+      {/* <CombinedGrid
         theme={theme}
+        search={search} // Pass the search prop
         onNavigateToSearchBar={navigateToSearchBar}
-        ref={shortcutGridRef}
-        onLastRowDown={navigateToSearchBar}
         searchBarRef={searchBarRef}
-      />
-
-      {search && (
-        <LinkGrid
-          links={filteredDescribedLinks}
-          theme={theme}
-          ref={linkGridRef}
-          focusedIndex={focusedIndex}
-          setFocusedIndex={setFocusedIndex}
-          onNavigateToGrid={onNavigateToGrid}
-        />
-      )}
+      /> */}
 
       <TimerDisplay
         isTimerRunning={isTimerRunning}

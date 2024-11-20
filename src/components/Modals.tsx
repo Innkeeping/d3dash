@@ -7,8 +7,16 @@ import WalletsModal from './WalletsModal';
 import LexiconModal from './LexiconModal';
 import MusicModal from './MusicModal';
 import HelpModal from './HelpModal';
-import { ModalsProps, Theme } from '../types';
 import Modalvate from './Modalvate';
+import { ModalsProps } from '../types';
+// import CryptoPricesModal from './CryptoPricesModal';
+// import DocsModal from './DocsModal';
+// import RefiModal from './RefiModal';
+import GovernanceModal from './GovernanceModal';
+// import DefiModal from './DefiModal';
+import LensFeedModal from './LensFeedModal';
+import IPFSModal from './IPFSModal';
+import GamebModal from './GamebModal';
 
 const Modals: React.FC<ModalsProps> = ({
   isPomodoroModalOpen,
@@ -19,8 +27,24 @@ const Modals: React.FC<ModalsProps> = ({
   isMusicModalOpen,
   isHelpModalOpen,
   isModalvateOpen,
+  // isCryptoPricesModalOpen,
+  // isDocsModalOpen,
+  // isRefiModalOpen,
+  isGovernanceModalOpen,
+  // isDefiModalOpen,
+  isLensfeedModalOpen,
+  isGamebModalOpen,
+  isIpfsModalOpen,
   closeModal,
   theme,
+  setTheme,
+  openModal,
+  toggleModal,
+  toggleTheme,
+  timerTimeLeft,
+  setTimerTimeLeft,
+  isTimerRunning,
+  setIsTimerRunning,
   onTimerUpdate,
 }) => {
 
@@ -30,8 +54,12 @@ const Modals: React.FC<ModalsProps> = ({
   };
 
   const handleOpenHelpModal = () => {
-
+    // You can add any additional logic here if needed
+    // For now, it's just a placeholder
   };
+
+  // Define the iframeUrl for GamebModal
+  const gamebIframeUrl = 'https://innkeeping.github.io/gameB/';
 
   return (
     <>
@@ -40,6 +68,10 @@ const Modals: React.FC<ModalsProps> = ({
         onClose={() => closeModal('isPomodoroModalOpen')}
         theme={theme}
         onTimerUpdate={onTimerUpdate}
+        isTimerRunning={isTimerRunning}
+        timerTimeLeft={timerTimeLeft}
+        setIsTimerRunning={setIsTimerRunning}
+        setTimerTimeLeft={setTimerTimeLeft}
       />
       <TimeZonesModal
         isOpen={isTimeZonesModalOpen}
@@ -76,6 +108,47 @@ const Modals: React.FC<ModalsProps> = ({
       <Modalvate
         isOpen={isModalvateOpen}
         onClose={() => closeModal('isModalvateOpen')}
+        theme={theme}
+      />
+      {/* <CryptoPricesModal
+        isOpen={isCryptoPricesModalOpen}
+        onClose={() => closeModal('isCryptoPricesModalOpen')}
+        theme={theme}
+      /> */}
+      {/* <DocsModal
+        isOpen={isDocsModalOpen}
+        onClose={() => closeModal('isDocsModalOpen')}
+        theme={theme}
+      /> */}
+      {/* <RefiModal
+        isOpen={isRefiModalOpen}
+        onClose={() => closeModal('isRefiModalOpen')}
+        theme={theme}
+      /> */}
+      <GovernanceModal
+        isOpen={isGovernanceModalOpen}
+        onClose={() => closeModal('isGovernanceModalOpen')}
+        theme={theme}
+      />
+      {/* <DefiModal
+        isOpen={isDefiModalOpen}
+        onClose={() => closeModal('isDefiModalOpen')}
+        theme={theme}
+      /> */}
+      <LensFeedModal
+        isOpen={isLensfeedModalOpen}
+        onClose={() => closeModal('isLensfeedModalOpen')}
+        theme={theme}
+      />
+      <GamebModal
+        isOpen={isGamebModalOpen}
+        onClose={() => closeModal('isGamebModalOpen')}
+        theme={theme}
+        iframeUrl={gamebIframeUrl}
+      />
+      <IPFSModal
+        isOpen={isIpfsModalOpen}
+        onClose={() => closeModal('isIpfsModalOpen')}
         theme={theme}
       />
     </>

@@ -1,4 +1,3 @@
-// src/Desktop.tsx
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import SearchBar from './SearchBar';
 import MainContent from './MainContent';
@@ -10,21 +9,21 @@ import { KeyboardEventHandlers, TimerUpdateHandler } from '../types';
 import Toolbar from './Toolbar';
 import Modals from './Modals';
 import { ModalsProps, DescribedShortcut, Link, ModalsState, Theme } from '../types';
+import CombinedGrid from './CombinedGrid';
 
 const Desktop: React.FC = () => {
   const [search, setSearch] = useState('');
-  const [isTimerRunning, setIsTimerRunning] = useState(false);
-  const [timerTimeLeft, setTimerTimeLeft] = useState(0);
   const [showToolbar, setShowToolbar] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
 
-
   const modals = useModals('purple');
 
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [timerTimeLeft, setTimerTimeLeft] = useState(25 * 60); // 25 minutes in seconds
+
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const shortcutGridRef = useRef<{ gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> } | null>(null);
-  const linkGridRef = useRef<{ gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> } | null>(null);
   const searchBarRef = useRef<HTMLInputElement>(null);
+  const combinedGridRef = useRef<{ gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> } | null>(null);
 
   const filteredShortcuts = filterShortcuts(search);
   const filteredLinks = filterLinks(search, allLinks) as (DescribedShortcut | Link)[];
@@ -42,39 +41,27 @@ const Desktop: React.FC = () => {
     setShowToolbar(!showToolbar);
   };
 
-  const navigateToLinks = () => {
-    if (filteredLinks.length > 0) {
-      setFocusedIndex(0);
-      if (linkGridRef.current && linkGridRef.current.gridItemsRef.current) {
-        const firstLink = linkGridRef.current.gridItemsRef.current[0];
-        if (firstLink) {
-          firstLink.focus();
-        }
-      }
-    }
-  };
-
   const navigateToSearchBar = () => {
     searchInputRef.current?.focus();
     setFocusedIndex(null);
   };
 
   const navigateToGrid = () => {
-    if (shortcutGridRef.current && shortcutGridRef.current.gridItemsRef.current) {
-      const firstShortcut = shortcutGridRef.current.gridItemsRef.current[0];
-      if (firstShortcut) {
-        firstShortcut.focus();
+    if (combinedGridRef.current && combinedGridRef.current.gridItemsRef.current) {
+      const firstItem = combinedGridRef.current.gridItemsRef.current[0];
+      if (firstItem) {
+        firstItem.focus();
         setFocusedIndex(0);
       }
     }
   };
 
-  const handleLastRowDown = () => {
-    navigateToLinks();
-  };
-
   const openModalvate = () => {
     modals.toggleModal('isModalvateOpen');
+  };
+
+  const openHelpModal = () => {
+    modals.toggleModal('isHelpModalOpen');
   };
 
   const openLexiconModal = () => {
@@ -124,28 +111,32 @@ const Desktop: React.FC = () => {
     }
   }, [search, modals.openModal]);
 
+  useEffect(() => {
+    // Focus the search bar on page load
+    searchInputRef.current?.focus();
+    setFocusedIndex(null);
+  }, []);
+
   const onTimerUpdate: TimerUpdateHandler = (isRunning, timeLeft) => {
     setIsTimerRunning(isRunning);
     setTimerTimeLeft(timeLeft);
+    modals.onTimerUpdate(isRunning, timeLeft);
   };
 
   return (
     <div
-      className={`relative min-h-screen ${themeClasses[modals.theme]} p-6 overflow-hidden ${modals.theme}`}
+      className={`relative min-h-screen ${themeClasses[modals.theme]} text-white overflow-hidden p-8`} // Added padding here
     >
       <SearchBar
         search={search}
         setSearch={setSearch}
+        searchInputRef={searchInputRef}
         theme={modals.theme}
-        inputRef={searchInputRef}
-        onNavigateToLinks={navigateToLinks}
         onNavigateToGrid={navigateToGrid}
       />
       <MainContent
         search={search}
         theme={modals.theme}
-        filteredShortcuts={filteredShortcuts}
-        filteredLinks={filteredDescribedLinks}
         focusedIndex={focusedIndex}
         setFocusedIndex={setFocusedIndex}
         isTimerRunning={isTimerRunning}
@@ -155,13 +146,10 @@ const Desktop: React.FC = () => {
         showToolbar={showToolbar}
         toggleToolbar={toggleToolbar}
         navigateToSearchBar={navigateToSearchBar}
-        onNavigateToGrid={navigateToGrid}
         onTimerUpdate={onTimerUpdate}
         searchBarRef={searchBarRef}
-        linkGridRef={linkGridRef}
-        shortcutGridRef={shortcutGridRef}
         setTheme={modals.setTheme}
-        openModal={modals.openModal}
+        openModal={modals.toggleModal}
         closeModal={modals.closeModal}
       />
       <Toolbar
@@ -171,14 +159,23 @@ const Desktop: React.FC = () => {
         onTimeZonesOpen={() => modals.toggleModal('isTimeZonesModalOpen')}
         showToolbar={showToolbar}
         toggleToolbar={toggleToolbar}
-        openModal={modals.openModal}
+        openModal={modals.toggleModal}
         closeModal={modals.closeModal}
         modals={modals}
       />
       <Modals
         {...modals}
+        isTimerRunning={isTimerRunning}
+        timerTimeLeft={timerTimeLeft}
+        setIsTimerRunning={setIsTimerRunning}
+        setTimerTimeLeft={setTimerTimeLeft}
+      />
+      <CombinedGrid
+        ref={combinedGridRef}
         theme={modals.theme}
-        onTimerUpdate={modals.onTimerUpdate}
+        search={search}
+        onNavigateToSearchBar={navigateToSearchBar}
+        searchBarRef={searchBarRef}
       />
     </div>
   );

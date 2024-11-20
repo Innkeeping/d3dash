@@ -16,11 +16,11 @@ const useModals = (initialTheme: Theme): ModalsProps => {
   const [isWalletsModalOpen, setWalletsModalOpen] = useState(false);
   const [isRefiModalOpen, setRefiModalOpen] = useState(false);
   const [isGovernanceModalOpen, setGovernanceModalOpen] = useState(false);
-  const [isBlockchainModalOpen, setBlockchainModalOpen] = useState(false);
   const [isDefiModalOpen, setDefiModalOpen] = useState(false);
   const [isLensfeedModalOpen, setLensfeedModalOpen] = useState(false);
-  const [isTerminalModalOpen, setTerminalModalOpen] = useState(false);
   const [isIpfsModalOpen, setIpfsModalOpen] = useState(false);
+  const [isGamebModalOpen, setGamebModalOpen] = useState(false);
+  const [isNetworksModalOpen, setNetworksModalOpen] = useState(false);
   const [timerTimeLeft, setTimerTimeLeft] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
 
@@ -70,20 +70,20 @@ const useModals = (initialTheme: Theme): ModalsProps => {
       case 'isGovernanceModalOpen':
         setGovernanceModalOpen(true);
         break;
-      case 'isBlockchainModalOpen':
-        setBlockchainModalOpen(true);
-        break;
       case 'isDefiModalOpen':
         setDefiModalOpen(true);
         break;
       case 'isLensfeedModalOpen':
         setLensfeedModalOpen(true);
         break;
-      case 'isTerminalModalOpen':
-        setTerminalModalOpen(true);
-        break;
       case 'isIpfsModalOpen':
         setIpfsModalOpen(true);
+        break;
+      case 'isGamebModalOpen':
+        setGamebModalOpen(true);
+        break;
+      case 'isNetworksModalOpen':
+        setNetworksModalOpen(true);
         break;
       default:
         console.warn(`Unknown modal key: ${modalKey}`);
@@ -128,20 +128,20 @@ const useModals = (initialTheme: Theme): ModalsProps => {
       case 'isGovernanceModalOpen':
         setGovernanceModalOpen(false);
         break;
-      case 'isBlockchainModalOpen':
-        setBlockchainModalOpen(false);
-        break;
       case 'isDefiModalOpen':
         setDefiModalOpen(false);
         break;
       case 'isLensfeedModalOpen':
         setLensfeedModalOpen(false);
         break;
-      case 'isTerminalModalOpen':
-        setTerminalModalOpen(false);
-        break;
       case 'isIpfsModalOpen':
         setIpfsModalOpen(false);
+        break;
+      case 'isGamebModalOpen':
+        setGamebModalOpen(false);
+        break;
+      case 'isNetworksModalOpen':
+        setNetworksModalOpen(false);
         break;
       default:
         console.warn(`Unknown modal key: ${modalKey}`);
@@ -186,20 +186,20 @@ const useModals = (initialTheme: Theme): ModalsProps => {
       case 'isGovernanceModalOpen':
         setGovernanceModalOpen(prev => !prev);
         break;
-      case 'isBlockchainModalOpen':
-        setBlockchainModalOpen(prev => !prev);
-        break;
       case 'isDefiModalOpen':
         setDefiModalOpen(prev => !prev);
         break;
       case 'isLensfeedModalOpen':
         setLensfeedModalOpen(prev => !prev);
         break;
-      case 'isTerminalModalOpen':
-        setTerminalModalOpen(prev => !prev);
-        break;
       case 'isIpfsModalOpen':
         setIpfsModalOpen(prev => !prev);
+        break;
+      case 'isGamebModalOpen':
+        setGamebModalOpen(prev => !prev);
+        break;
+      case 'isNetworksModalOpen':
+        setNetworksModalOpen(prev => !prev);
         break;
       default:
         console.warn(`Unknown modal key: ${modalKey}`);
@@ -226,11 +226,11 @@ const useModals = (initialTheme: Theme): ModalsProps => {
     isWalletsModalOpen,
     isRefiModalOpen,
     isGovernanceModalOpen,
-    isBlockchainModalOpen,
     isDefiModalOpen,
     isLensfeedModalOpen,
-    isTerminalModalOpen,
     isIpfsModalOpen,
+    isGamebModalOpen,
+    isNetworksModalOpen,
     openModal,
     closeModal,
     toggleModal,

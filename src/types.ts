@@ -19,7 +19,7 @@ export type Theme = 'purple' | 'green' | 'teal';
 
 export interface DescribedLink {
   name: string;
-  icon: ReactNode; // Updated to ReactNode
+  icon: ReactNode;
   url: string;
   description: string;
   category?: string;
@@ -27,7 +27,7 @@ export interface DescribedLink {
 
 export interface NetworkLink {
   name: string;
-  icon?: ReactNode; // Updated to ReactNode
+  icon?: ReactNode;
   url: string;
   chainId?: string;
   currency?: string;
@@ -86,11 +86,11 @@ export interface ModalsState {
   isModalvateOpen: boolean;
   isRefiModalOpen: boolean;
   isGovernanceModalOpen: boolean;
-  isBlockchainModalOpen: boolean;
   isDefiModalOpen: boolean;
   isLensfeedModalOpen: boolean;
-  isTerminalModalOpen: boolean;
   isIpfsModalOpen: boolean;
+  isGamebModalOpen: boolean;
+  isNetworksModalOpen: boolean;
 }
 
 export interface ModalsProps extends ModalsState {
@@ -127,13 +127,12 @@ export interface ToolbarProps {
   toggleToolbar: () => void;
   openModal: (modalKey: keyof ModalsState) => void;
   closeModal: (modalKey: keyof ModalsState) => void;
+  modals: ModalsProps; // Added this line
 }
 
 export interface MainContentProps {
   search: string;
   theme: Theme;
-  filteredShortcuts: Shortcut[];
-  filteredLinks: DescribedShortcut[];
   focusedIndex: number | null;
   setFocusedIndex: Dispatch<SetStateAction<number | null>>;
   isTimerRunning: boolean;
@@ -143,22 +142,18 @@ export interface MainContentProps {
   showToolbar: boolean;
   toggleToolbar: () => void;
   navigateToSearchBar: () => void;
-  onNavigateToGrid: () => void;
   onTimerUpdate: (isRunning: boolean, timeLeft: number) => void;
   searchBarRef: RefObject<HTMLInputElement>;
-  linkGridRef: RefObject<{ gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> }>;
-  shortcutGridRef: RefObject<{ gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> }>;
   setTheme: Dispatch<SetStateAction<Theme>>;
   openModal: (modalKey: keyof ModalsState) => void;
   closeModal: (modalKey: keyof ModalsState) => void;
 }
 
-export interface SearchBarProps {
+interface SearchBarProps {
   search: string;
-  setSearch: Dispatch<SetStateAction<string>>;
-  theme: Theme;
-  inputRef: RefObject<HTMLInputElement>;
-  onNavigateToLinks: () => void;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+  searchInputRef: RefObject<HTMLInputElement>; // Added this line
+  theme: Theme; // Added this line
   onNavigateToGrid: () => void;
 }
 

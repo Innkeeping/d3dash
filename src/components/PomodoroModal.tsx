@@ -1,18 +1,30 @@
 // src/components/PomodoroModal.tsx
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Dispatch, SetStateAction } from 'react';
 import { X, Play, Pause, RotateCcw } from 'lucide-react';
 import { Theme } from '../types';
+import useClickOutside from '../hooks/useClickOutside';
 
 interface PomodoroModalProps {
   isOpen: boolean;
   onClose: () => void;
   theme: Theme;
   onTimerUpdate: (isRunning: boolean, timeLeft: number) => void;
+  isTimerRunning: boolean;
+  timerTimeLeft: number;
+  setIsTimerRunning: Dispatch<SetStateAction<boolean>>;
+  setTimerTimeLeft: Dispatch<SetStateAction<number>>;
 }
 
-const PomodoroModal: React.FC<PomodoroModalProps> = ({ isOpen, onClose, theme, onTimerUpdate }) => {
-  const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 minutes in seconds
-  const [isRunning, setIsRunning] = useState(false);
+const PomodoroModal: React.FC<PomodoroModalProps> = ({
+  isOpen,
+  onClose,
+  theme,
+  onTimerUpdate,
+  isTimerRunning,
+  timerTimeLeft,
+  setIsTimerRunning,
+  setTimerTimeLeft,
+}) => {
   const [currentMode, setCurrentMode] = useState<'work' | 'break'>('work');
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
@@ -21,11 +33,12 @@ const PomodoroModal: React.FC<PomodoroModalProps> = ({ isOpen, onClose, theme, o
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
 
-    if (isRunning && timeLeft > 0) {
+    if (isTimerRunning && timerTimeLeft > 0) {
+      console.log('Starting interval');
       interval = setInterval(() => {
-        setTimeLeft((time) => time - 1);
+        setTimerTimeLeft((time) => time - 1);
       }, 1000);
-    } else if (timeLeft === 0) {
+    } else if (timerTimeLeft === 0) {
       if (interval) clearInterval(interval);
       setShowNotification(true);
       setNotificationMessage(currentMode === 'work' ? 'Work Time Over!' : 'Break Time Over!');
@@ -33,30 +46,16 @@ const PomodoroModal: React.FC<PomodoroModalProps> = ({ isOpen, onClose, theme, o
       toggleMode();
     }
 
-
-    onTimerUpdate(isRunning, timeLeft);
+    onTimerUpdate(isTimerRunning, timerTimeLeft);
 
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isRunning, timeLeft, currentMode, onTimerUpdate]);
+  }, [isTimerRunning, timerTimeLeft, currentMode, onTimerUpdate, setTimerTimeLeft]);
+
+  useClickOutside(modalRef, onClose);
 
   useEffect(() => {
-
-    const handleClickOutside = (event: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        onClose();
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [onClose]);
-
-  useEffect(() => {
-
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
@@ -69,18 +68,24 @@ const PomodoroModal: React.FC<PomodoroModalProps> = ({ isOpen, onClose, theme, o
     };
   }, [onClose]);
 
-  const toggleTimer = () => setIsRunning(!isRunning);
+  const toggleTimer = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    setIsTimerRunning((prevIsRunning: boolean) => {
+      console.log('Toggling timer:', !prevIsRunning);
+      return !prevIsRunning;
+    });
+  };
 
   const resetTimer = () => {
-    setIsRunning(false);
-    setTimeLeft(currentMode === 'work' ? 25 * 60 : 5 * 60);
+    setIsTimerRunning(false);
+    setTimerTimeLeft(currentMode === 'work' ? 25 * 60 : 5 * 60);
     setShowNotification(false);
   };
 
   const toggleMode = () => {
     setCurrentMode(currentMode === 'work' ? 'break' : 'work');
-    setTimeLeft(currentMode === 'work' ? 5 * 60 : 25 * 60);
-    setIsRunning(false);
+    setTimerTimeLeft(currentMode === 'work' ? 5 * 60 : 25 * 60);
+    setIsTimerRunning(false);
     setShowNotification(false);
   };
 
@@ -117,13 +122,13 @@ const PomodoroModal: React.FC<PomodoroModalProps> = ({ isOpen, onClose, theme, o
         </div>
 
         <div className="text-center mb-8">
-          <div className="text-6xl font-mono mb-4">{formatTime(timeLeft)}</div>
+          <div className="text-6xl font-mono mb-4">{formatTime(timerTimeLeft)}</div>
           <div className="flex justify-center gap-4 mb-6">
             <button
               onClick={toggleTimer}
-              className={`p-3 rounded-lg hover:bg-gray-800/50 ${isRunning ? 'text-red-400' : 'text-green-400'}`}
+              className={`p-3 rounded-lg hover:bg-gray-800/50 ${isTimerRunning ? 'text-red-400' : 'text-green-400'}`}
             >
-              {isRunning ? <Pause size={24} /> : <Play size={24} />}
+              {isTimerRunning ? <Pause size={24} /> : <Play size={24} />}
             </button>
             <button
               onClick={resetTimer}
