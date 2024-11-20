@@ -1,37 +1,43 @@
 // types.ts
+import { ReactElement, Dispatch, SetStateAction, RefObject, ComponentType } from 'react';
 
-import { ReactNode, Dispatch, SetStateAction, RefObject } from 'react';
+// Define the IconProps type and export it
+export type IconProps = {
+  className?: string;
+  size?: string | number; // Allow string or number for size
+};
+
+// Define the IconComponent type and export it
+export type IconComponent = ComponentType<IconProps>;
 
 export interface Shortcut {
   id: string;
   name: string;
-  icon: ReactNode;
+  icon: IconComponent; // Use IconComponent for icon
   url: string;
   category: string;
-  description: string;
+  type: 'shortcut'; // Add type property
 }
 
-export interface DescribedShortcut extends Shortcut {
-  description: string;
-}
+export interface DescribedShortcut extends Shortcut {}
 
 export type Theme = 'purple' | 'green' | 'teal';
 
-export interface DescribedLink {
+export interface CommonLink {
+  id: string; // Add id to CommonLink
   name: string;
-  icon: ReactNode;
+  icon: IconComponent; // Use IconComponent for icon
   url: string;
   description: string;
-  category?: string;
+  category: string; // Ensure category is always a string
+  type: 'link'; // Add type property
 }
 
-export interface NetworkLink {
-  name: string;
-  icon?: ReactNode;
-  url: string;
+export interface DescribedLink extends CommonLink {}
+
+export interface NetworkLink extends CommonLink {
   chainId?: string;
   currency?: string;
-  category?: string;
 }
 
 export type Link = DescribedLink | NetworkLink;

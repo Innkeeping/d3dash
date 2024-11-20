@@ -1,0 +1,737 @@
+[
+    {
+      "id": "1",
+      "name": "GitHub",
+      "icon": "Github",
+      "url": "https://github.com",
+      "category": "dev",
+      "type": "shortcut"
+    },
+    {
+      "id": "2",
+      "name": "CodeSandbox",
+      "icon": "Boxes",
+      "url": "https://codesandbox.io",
+      "category": "dev",
+      "type": "shortcut"
+    },
+    {
+      "id": "3",
+      "name": "CodePen",
+      "icon": "Code",
+      "url": "https://codepen.io",
+      "category": "dev",
+      "type": "shortcut"
+    },
+    {
+      "id": "4",
+      "name": "Etherscan",
+      "icon": "Blocks",
+      "url": "https://etherscan.io",
+      "category": "web3",
+      "type": "shortcut"
+    },
+    {
+      "id": "5",
+      "name": "Gitcoin",
+      "icon": "Coins",
+      "url": "https://gitcoin.co",
+      "category": "web3",
+      "type": "shortcut"
+    },
+    {
+      "id": "6",
+      "name": "Karma",
+      "icon": "Gem",
+      "url": "https://gap.karmahq.xyz",
+      "category": "web3",
+      "type": "shortcut"
+    },
+    {
+      "id": "7",
+      "name": "Giveth",
+      "icon": "Heart",
+      "url": "https://giveth.io",
+      "category": "refi",
+      "type": "shortcut"
+    },
+    {
+      "id": "8",
+      "name": "Snapshot",
+      "icon": "Radio",
+      "url": "https://snapshot.org",
+      "category": "dao",
+      "type": "shortcut"
+    },
+    {
+      "id": "9",
+      "name": "Safe",
+      "icon": "Wallet",
+      "url": "https://safe.global",
+      "category": "web3",
+      "type": "shortcut"
+    },
+    {
+      "id": "10",
+      "name": "ENS",
+      "icon": "Globe",
+      "url": "https://app.ens.domains",
+      "category": "web3",
+      "type": "shortcut"
+    },
+    {
+      "id": "11",
+      "name": "Charmverse",
+      "icon": "BookOpen",
+      "url": "https://app.charmverse.io",
+      "category": "docs",
+      "type": "shortcut"
+    },
+    {
+      "id": "12",
+      "name": "Remix",
+      "icon": "Terminal",
+      "url": "https://remix.ethereum.org",
+      "category": "dev",
+      "type": "shortcut"
+    },
+    {
+      "id": "13",
+      "name": "Arbitrum One",
+      "icon": "PieChart",
+      "url": "https://arbiscan.io/",
+      "category": "Networks",
+      "description": "A layer 2 scaling solution for Ethereum",
+      "type": "link"
+    },
+    {
+      "id": "14",
+      "name": "Base",
+      "icon": "Compass",
+      "url": "https://basescan.org/",
+      "category": "Networks",
+      "description": "A high-throughput, low-cost Ethereum L2",
+      "type": "link"
+    },
+    {
+      "id": "15",
+      "name": "Celo Mainnet",
+      "icon": "BarChart",
+      "url": "https://celoscan.io/",
+      "category": "Networks",
+      "description": "A blockchain for mobile payments and financial inclusion",
+      "type": "link"
+    },
+    {
+      "id": "16",
+      "name": "Ethereum Mainnet",
+      "icon": "Briefcase",
+      "url": "https://etherscan.io/",
+      "category": "Networks",
+      "description": "The main network of the Ethereum blockchain",
+      "type": "link"
+    },
+    {
+      "id": "17",
+      "name": "Gnosis",
+      "icon": "CircleDollarSign",
+      "url": "https://gnosisscan.io/",
+      "category": "Networks",
+      "description": "A blockchain for trustless smart contracts",
+      "type": "link"
+    },
+    {
+      "id": "18",
+      "name": "OP Mainnet",
+      "icon": "DollarSign",
+      "url": "https://optimistic.etherscan.io/",
+      "category": "Networks",
+      "description": "A layer 2 scaling solution for Ethereum",
+      "type": "link"
+    },
+    {
+      "id": "19",
+      "name": "Polygon Mainnet",
+      "icon": "HardDrive",
+      "url": "https://polygonscan.com/",
+      "category": "Networks",
+      "description": "A layer 2 scaling solution for Ethereum",
+      "type": "link"
+    },
+    {
+      "id": "20",
+      "name": "Polygon zkEVM",
+      "icon": "Network",
+      "url": "https://zkevm.polygonscan.com/",
+      "category": "Networks",
+      "description": "A zk-rollup solution for Ethereum",
+      "type": "link"
+    },
+    {
+      "id": "21",
+      "name": "Alchemy",
+      "icon": "Book",
+      "url": "https://docs.alchemy.com/",
+      "category": "Docs",
+      "description": "A web3 developer platform providing powerful tools for building blockchain applications",
+      "type": "link"
+    },
+    {
+      "id": "22",
+      "name": "Chainlink",
+      "icon": "Book",
+      "url": "https://docs.chain.link/",
+      "category": "Docs",
+      "description": "A decentralized oracle network that provides real-world data to smart contracts",
+      "type": "link"
+    },
+    {
+      "id": "23",
+      "name": "Ethereum",
+      "icon": "Book",
+      "url": "https://ethereum.org/en/developers/docs/",
+      "category": "Docs",
+      "description": "Ethereum resources for developers, covering smart contracts, wallets, and more",
+      "type": "link"
+    },
+    {
+      "id": "24",
+      "name": "ENS",
+      "icon": "Book",
+      "url": "https://docs.ens.domains/",
+      "category": "Docs",
+      "description": "A decentralized naming system for cryptocurrency addresses",
+      "type": "link"
+    },
+    {
+      "id": "25",
+      "name": "Foundry",
+      "icon": "Book",
+      "url": "https://book.getfoundry.sh/",
+      "category": "Docs",
+      "description": "A fast, portable, and modular toolkit for Ethereum development",
+      "type": "link"
+    },
+    {
+      "id": "26",
+      "name": "Hardhat",
+      "icon": "Book",
+      "url": "https://hardhat.org/hardhat-runner/docs/getting-started",
+      "category": "Docs",
+      "description": "A development environment for Ethereum with local blockchain development, testing, and deployment",
+      "type": "link"
+    },
+    {
+      "id": "27",
+      "name": "Infura",
+      "icon": "Book",
+      "url": "https://docs.infura.io/",
+      "category": "Docs",
+      "description": "Blockchain infrastructure for dapps, providing access to Ethereum and other blockchains",
+      "type": "link"
+    },
+    {
+      "id": "28",
+      "name": "IPFS",
+      "icon": "Book",
+      "url": "https://docs.ipfs.tech/",
+      "category": "Docs",
+      "description": "A decentralized file system for building distributed applications",
+      "type": "link"
+    },
+    {
+      "id": "29",
+      "name": "OpenZeppelin",
+      "icon": "Book",
+      "url": "https://docs.openzeppelin.com/contracts/",
+      "category": "Docs",
+      "description": "A library of secure and community-audited smart contracts for Ethereum",
+      "type": "link"
+    },
+    {
+      "id": "30",
+      "name": "RainbowKit",
+      "icon": "Book",
+      "url": "https://www.rainbowkit.com/docs/",
+      "category": "Docs",
+      "description": "Beautiful, modular, and extensible wallet connection UIs for Ethereum dapps",
+      "type": "link"
+    },
+    {
+      "id": "31",
+      "name": "Reown",
+      "icon": "Book",
+      "url": "https://docs.reown.io/",
+      "category": "Docs",
+      "description": "A platform for building and managing decentralized applications",
+      "type": "link"
+    },
+    {
+      "id": "32",
+      "name": "Remix IDE",
+      "icon": "Book",
+      "url": "https://remix-ide.readthedocs.io/en/latest/",
+      "category": "Docs",
+      "description": "An in-browser Solidity IDE for writing, testing, and deploying smart contracts",
+      "type": "link"
+    },
+    {
+      "id": "33",
+      "name": "Solidity",
+      "icon": "Book",
+      "url": "https://docs.soliditylang.org/en/latest/",
+      "category": "Docs",
+      "description": "The programming language for writing smart contracts on Ethereum",
+      "type": "link"
+    },
+    {
+      "id": "34",
+      "name": "Scaffold-ETH 2",
+      "icon": "Book",
+      "url": "https://github.com/scaffold-eth/scaffold-eth-2",
+      "category": "Docs",
+      "description": "A full-stack Ethereum development scaffold to build and deploy dapps quickly",
+      "type": "link"
+    },
+    {
+      "id": "35",
+      "name": "The Graph",
+      "icon": "Book",
+      "url": "https://thegraph.com/docs/en/",
+      "category": "Docs",
+      "description": "A decentralized indexing protocol for building subgraphs to query blockchain data",
+      "type": "link"
+    },
+    {
+      "id": "36",
+      "name": "ThirdWeb",
+      "icon": "Book",
+      "url": "https://portal.thirdweb.com/",
+      "category": "Docs",
+      "description": "A platform for building web3 apps with the most intuitive SDK and tools",
+      "type": "link"
+    },
+    {
+      "id": "37",
+      "name": "Viem",
+      "icon": "Book",
+      "url": "https://viem.sh/",
+      "category": "Docs",
+      "description": "A lightweight, powerful, and type-safe Ethereum JavaScript library for building dapps",
+      "type": "link"
+    },
+    {
+      "id": "38",
+      "name": "Wagmi",
+      "icon": "Book",
+      "url": "https://wagmi.sh/",
+      "category": "Docs",
+      "description": "React Hooks for Ethereum that simplifies building dapps",
+      "type": "link"
+    },
+    {
+      "id": "39",
+      "name": "Web3.js",
+      "icon": "Book",
+      "url": "https://web3js.readthedocs.io/en/v1.7.0/",
+      "category": "Docs",
+      "description": "A JavaScript library for interacting with the Ethereum blockchain and smart contracts",
+      "type": "link"
+    },
+    {
+      "id": "40",
+      "name": "Ethers.js",
+      "icon": "Book",
+      "url": "https://docs.ethers.io/v5/",
+      "category": "Docs",
+      "description": "A JavaScript library for interacting with the Ethereum blockchain and smart contracts, providing a simple and powerful API",
+      "type": "link"
+    },
+    {
+      "id": "42",
+      "name": "Tally",
+      "icon": "Radio",
+      "url": "https://www.tally.xyz",
+      "category": "DAO Governance",
+      "description": "DAO governance dashboard and voting interface",
+      "type": "link"
+    },
+    {
+      "id": "43",
+      "name": "Commonwealth",
+      "icon": "Users",
+      "url": "https://commonwealth.im",
+      "category": "DAO Governance",
+      "description": "Discussion forum and governance platform for Web3 communities",
+      "type": "link"
+    },
+    {
+      "id": "44",
+      "name": "Discourse",
+      "icon": "MessageSquare",
+      "url": "https://www.discourse.org",
+      "category": "DAO Governance",
+      "description": "Community discussion and governance forum",
+      "type": "link"
+    },
+    {
+      "id": "45",
+      "name": "Gardens",
+      "icon": "Flower2",
+      "url": "https://www.gardens.fund/",
+      "category": "DAO Governance",
+      "description": "Gardens is a coordination platform",
+      "type": "link"
+    },
+    {
+      "id": "46",
+      "name": "GreenPill Network",
+      "icon": "Pill",
+      "url": "https://greenpill.network",
+      "category": "Refi",
+      "description": "Turning degens to regens.",
+      "type": "link"
+    },
+    {
+      "id": "47",
+      "name": "Let's GROW DAO",
+      "icon": "Shrub",
+      "url": "https://www.letsgrow.network/",
+      "category": "Refi",
+      "description": "On a mission to unite & GROW the Regen Movement",
+      "type": "link"
+    },
+    {
+      "id": "48",
+      "name": "ReFi DAO",
+      "icon": "Orbit",
+      "url": "https://www.refidao.com/",
+      "category": "Refi",
+      "description": "The home of the regenerative finance ecosystem.",
+      "type": "link"
+    },
+    {
+      "id": "49",
+      "name": "Klima DAO",
+      "icon": "Leaf",
+      "url": "https://www.klimadao.finance",
+      "category": "Refi",
+      "description": "Driving climate action through tokenized carbon credits",
+      "type": "link"
+    },
+    {
+      "id": "50",
+      "name": "Aave",
+      "icon": "PieChart",
+      "url": "https://aave.com",
+      "category": "Defi",
+      "description": "A decentralized lending and borrowing protocol",
+      "type": "link"
+    },
+    {
+      "id": "51",
+      "name": "Balancer",
+      "icon": "Compass",
+      "url": "https://balancer.fi",
+      "category": "Defi",
+      "description": "A decentralized exchange and automated market maker",
+      "type": "link"
+    },
+    {
+      "id": "52",
+      "name": "Compound",
+      "icon": "BarChart",
+      "url": "https://compound.finance",
+      "category": "Defi",
+      "description": "A decentralized lending protocol on Ethereum",
+      "type": "link"
+    },
+    {
+      "id": "53",
+      "name": "Curve",
+      "icon": "Briefcase",
+      "url": "https://curve.fi",
+      "category": "Defi",
+      "description": "A decentralized exchange for stablecoins",
+      "type": "link"
+    },
+    {
+      "id": "54",
+      "name": "Rari Capital",
+      "icon": "CircleDollarSign",
+      "url": "https://rari.capital",
+      "category": "Defi",
+      "description": "A decentralized lending and borrowing protocol with smart yield farming",
+      "type": "link"
+    },
+    {
+      "id": "55",
+      "name": "Uniswap",
+      "icon": "DollarSign",
+      "url": "https://uniswap.org",
+      "category": "Defi",
+      "description": "A decentralized exchange (DEX) for ERC-20 tokens",
+      "type": "link"
+    },
+    {
+      "id": "56",
+      "name": "Yearn",
+      "icon": "HardDrive",
+      "url": "https://yearn.finance",
+      "category": "Defi",
+      "description": "A suite of DeFi tools for managing decentralized assets",
+      "type": "link"
+    },
+    {
+      "id": "57",
+      "name": "1inch",
+      "icon": "Network",
+      "url": "https://1inch.exchange/",
+      "category": "Defi",
+      "description": "A decentralized exchange (DEX) aggregator",
+      "type": "link"
+    },
+    {
+      "id": "58",
+      "name": "Jumper.Exchange",
+      "icon": "Network",
+      "url": "https://jumper.exchange/",
+      "category": "Defi",
+      "description": "A decentralized exchange (DEX)",
+      "type": "link"
+    },
+    {
+      "id": "59",
+      "name": "QuickSwap",
+      "icon": "Network",
+      "url": "https://quickswap.exchange/",
+      "category": "Defi",
+      "description": "A decentralized exchange (DEX) on the Polygon network",
+      "type": "link"
+    },
+    {
+      "id": "60",
+      "name": "Optimism",
+      "icon": "Book",
+      "url": "https://docs.optimism.io/builders",
+      "category": "Docs",
+      "description": "Optimism documentation for builders, covering various aspects of the Optimism network",
+      "type": "link"
+    },
+    {
+      "id": "61",
+      "name": "Lens",
+      "icon": "Book",
+      "url": "https://www.lens.xyz/docs",
+      "category": "Docs",
+      "description": "Lens documentation for developers, providing tools and resources for building on the Lens protocol",
+      "type": "link"
+    },
+    {
+      "id": "62",
+      "name": "Moralis",
+      "icon": "Book",
+      "url": "https://docs.moralis.com/",
+      "category": "Docs",
+      "description": "Moralis documentation for developers, offering services and tools for blockchain applications",
+      "type": "link"
+    },
+    {
+      "id": "63",
+      "name": "Warpcast",
+      "icon": "Link",
+      "url": "https://warpcast.com/",
+      "category": "Web3 Social",
+      "description": "Warpcast is a decentralized social network built on the Farcaster protocol",
+      "type": "link"
+    },
+    {
+      "id": "64",
+      "name": "Buttrfly",
+      "icon": "Camera",
+      "url": "https://buttrfly.app/",
+      "category": "Web3 Social",
+      "description": "Buttrfly is a decentralized platform for creators to share and monetize their content",
+      "type": "link"
+    },
+    {
+      "id": "65",
+      "name": "Bloomers",
+      "icon": "Film",
+      "url": "https://bloomers.tv/",
+      "category": "Web3 Social",
+      "description": "Bloomers is a decentralized video platform for creators",
+      "type": "link"
+    },
+    {
+      "id": "66",
+      "name": "Yup",
+      "icon": "Check",
+      "url": "https://yup.io/",
+      "category": "Web3 Social",
+      "description": "Yup is a decentralized social network for communities",
+      "type": "link"
+    },
+    {
+      "id": "67",
+      "name": "Phaver",
+      "icon": "Mail",
+      "url": "https://phaver.com/",
+      "category": "Web3 Social",
+      "description": "Phaver is a decentralized social network for communities",
+      "type": "link"
+    },
+    {
+      "id": "68",
+      "name": "Hey",
+      "icon": "Terminal",
+      "url": "https://hey.xyz/",
+      "category": "Web3 Social",
+      "description": "Hey is a decentralized social network for writers and creators",
+      "type": "link"
+    },
+    {
+      "id": "69",
+      "name": "Tape",
+      "icon": "MessageSquare",
+      "url": "https://tape.xyz/",
+      "category": "Web3 Social",
+      "description": "Tape is a decentralized platform for sharing stories and content",
+      "type": "link"
+    },
+    {
+      "id": "70",
+      "name": "Lenspeer",
+      "icon": "Users",
+      "url": "https://lenspeer.com/",
+      "category": "Web3 Social",
+      "description": "Lenspeer is a decentralized social network for communities",
+      "type": "link"
+    },
+    {
+      "id": "71",
+      "name": "MetaMask",
+      "icon": "Wallet",
+      "url": "https://metamask.io/",
+      "category": "Wallets",
+      "description": "A cryptocurrency wallet for buying, selling, and managing digital assets.",
+      "type": "link"
+    },
+    {
+      "id": "72",
+      "name": "Coinbase Wallet",
+      "icon": "Wallet",
+      "url": "https://www.coinbase.com/wallet",
+      "category": "Wallets",
+      "description": "A cryptocurrency wallet for buying, selling, and managing digital assets.",
+      "type": "link"
+    },
+    {
+      "id": "73",
+      "name": "WalletConnect",
+      "icon": "Wallet",
+      "url": "https://walletconnect.com/",
+      "category": "Wallets",
+      "description": "An open protocol for connecting decentralized applications to mobile wallets.",
+      "type": "link"
+    },
+    {
+      "id": "74",
+      "name": "Safe",
+      "icon": "Wallet",
+      "url": "https://gnosis-safe.io/",
+      "category": "Wallets",
+      "description": "A non-custodial, multi-signature wallet for Ethereum.",
+      "type": "link"
+    },
+    {
+      "id": "75",
+      "name": "Trust Wallet",
+      "icon": "Wallet",
+      "url": "https://trustwallet.com/",
+      "category": "Wallets",
+      "description": "A multi-chain cryptocurrency wallet for Android and iOS.",
+      "type": "link"
+    },
+    {
+      "id": "76",
+      "name": "Ledger Live",
+      "icon": "Wallet",
+      "url": "https://www.ledger.com/ledger-live",
+      "category": "Wallets",
+      "description": "A cryptocurrency wallet that integrates with Ledger hardware wallets.",
+      "type": "link"
+    },
+    {
+      "id": "77",
+      "name": "Trezor Wallet",
+      "icon": "Wallet",
+      "url": "https://trezor.io/",
+      "category": "Wallets",
+      "description": "A cryptocurrency wallet that integrates with Trezor hardware wallets.",
+      "type": "link"
+    },
+    {
+      "id": "78",
+      "name": "Exodus",
+      "icon": "Wallet",
+      "url": "https://www.exodus.com/",
+      "category": "Wallets",
+      "description": "A multi-asset cryptocurrency wallet for desktop and mobile.",
+      "type": "link"
+    },
+    {
+      "id": "79",
+      "name": "Brave Wallet",
+      "icon": "Wallet",
+      "url": "https://brave.com/wallet",
+      "category": "Wallets",
+      "description": "A cryptocurrency wallet built into the Brave browser.",
+      "type": "link"
+    },
+    {
+      "id": "80",
+      "name": "Argent",
+      "icon": "Wallet",
+      "url": "https://argent.xyz/",
+      "category": "Wallets",
+      "description": "A non-custodial Ethereum wallet with a gasless user experience.",
+      "type": "link"
+    },
+    {
+      "id": "81",
+      "name": "Frame",
+      "icon": "Wallet",
+      "url": "https://frame.sh/",
+      "category": "Wallets",
+      "description": "A non-custodial browser wallet for Ethereum and other networks.",
+      "type": "link"
+    },
+    {
+      "id": "82",
+      "name": "Rainbow",
+      "icon": "Wallet",
+      "url": "https://rainbow.me/",
+      "category": "Wallets",
+      "description": "A mobile wallet for Ethereum and other networks.",
+      "type": "link"
+    },
+    {
+      "id": "83",
+      "name": "Zerion",
+      "icon": "Wallet ",
+      "url": "https://zerion.io/",
+      "category": "Wallets",
+      "description": "A multi-chain cryptocurrency wallet and portfolio tracker.",
+      "type": "link"
+    },
+    {
+      "id": "84",
+      "name": "CarbonCopy.News",
+      "icon": "Newspaper",
+      "url": "https://carboncopy.news/",
+      "category": "Refi",
+      "description": "CARBON Copy is the preeminent source of ReFi news, information, and analysis",
+      "type": "link"
+    }
+  ]

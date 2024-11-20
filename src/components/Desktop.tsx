@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import SearchBar from './SearchBar';
 import MainContent from './MainContent';
-import { filterShortcuts, filterLinks, allLinks } from '../utils/filtering';
+import { fetchShortcutsAndLinks, filterItems } from '../utils/filtering';
 import useModals from '../hooks/useModals';
 import useKeyboardEvents from '../hooks/useKeyboardEvents';
 import { searchTerms } from '../config';
-import { KeyboardEventHandlers, TimerUpdateHandler } from '../types';
+import { CommonLink, KeyboardEventHandlers, Shortcut, TimerUpdateHandler } from '../types';
 import Toolbar from './Toolbar';
 import Modals from './Modals';
 import { ModalsProps, DescribedShortcut, Link, ModalsState, Theme } from '../types';
@@ -25,11 +25,18 @@ const Desktop: React.FC = () => {
   const searchBarRef = useRef<HTMLInputElement>(null);
   const combinedGridRef = useRef<{ gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> } | null>(null);
 
-  const filteredShortcuts = filterShortcuts(search);
-  const filteredLinks = filterLinks(search, allLinks) as (DescribedShortcut | Link)[];
-  const filteredDescribedLinks = filteredLinks.filter(
-    (link): link is DescribedShortcut => 'id' in link
-  );
+  const [items, setItems] = useState<(Shortcut | CommonLink)[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchShortcutsAndLinks();
+      setItems(data);
+    };
+
+    fetchData();
+  }, []);
+
+  const filteredItems = filterItems(search, items);
 
   const themeClasses = {
     purple: 'bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900',

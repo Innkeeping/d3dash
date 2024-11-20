@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
-import { Shortcut, DescribedShortcut, Theme } from '../types';
-import { shortcuts } from '../data/shortcuts';
-import { links } from '../data/links';
+import { Shortcut, CommonLink, Theme } from '../types';
+import { fetchShortcutsAndLinks, filterItems } from '../utils/filtering';
 
 interface CombinedGridProps {
   theme: Theme;
@@ -18,20 +17,24 @@ const CombinedGrid = forwardRef<
     purple: {
       border: 'border-purple-500/20 hover:border-purple-500/40',
       text: 'text-purple-300 group-hover:text-purple-200',
-      outline: 'outline-purple-500'
+      outline: 'outline-purple-500',
+      icon: 'text-purple-400'
     },
     green: {
       border: 'border-green-500/20 hover:border-green-500/40',
       text: 'text-green-300 group-hover:text-green-200',
-      outline: 'outline-green-500'
+      outline: 'outline-green-500',
+      icon: 'text-green-400'
     },
     teal: {
       border: 'border-teal-500/20 hover:border-teal-500/40',
       text: 'text-teal-300 group-hover:text-teal-200',
-      outline: 'outline-teal-500'
+      outline: 'outline-teal-500',
+      icon: 'text-teal-400'
     }
   };
 
+  const [items, setItems] = useState<(Shortcut | CommonLink)[]>([]);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const [arrowKeyPressed, setArrowKeyPressed] = useState<boolean>(false);
   const gridItemsRef = useRef<(HTMLAnchorElement | null)[]>([]);
@@ -40,6 +43,20 @@ const CombinedGrid = forwardRef<
   useImperativeHandle(ref, () => ({
     gridItemsRef
   }));
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetchShortcutsAndLinks();
+        console.log('Fetched data:', data); // Debugging log
+        setItems(data);
+      } catch (error) {
+        console.error('Error fetching data:', error); // Debugging log
+      }
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     if (gridContainerRef.current) {
@@ -54,8 +71,6 @@ const CombinedGrid = forwardRef<
   }, [focusedIndex]);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    console.log('Key pressed:', event.key);
-
     if (focusedIndex === null) return;
 
     const numRows = Math.ceil(getDisplayedItems().length / 6);
@@ -72,7 +87,7 @@ const CombinedGrid = forwardRef<
             searchBarRef.current.focus();
             const end = searchBarRef.current.value.length;
             searchBarRef.current.setSelectionRange(end, end);
-            searchBarRef.current.focus(); // Ensure focus is set again
+            searchBarRef.current.focus();
           }
           return;
         }
@@ -105,15 +120,11 @@ const CombinedGrid = forwardRef<
     setArrowKeyPressed(false);
   };
 
-  const getDisplayedItems = (): (Shortcut | DescribedShortcut)[] => {
+  const getDisplayedItems = (): (Shortcut | CommonLink)[] => {
     if (search.trim() === '') {
-      return shortcuts;
+      return items.filter(item => item.type === 'shortcut');
     }
-    const lowerCaseQuery = search.toLowerCase();
-    return [
-      ...shortcuts,
-      ...links
-    ].filter(item => item.name.toLowerCase().includes(lowerCaseQuery));
+    return filterItems(search, items);
   };
 
   return (
@@ -121,7 +132,7 @@ const CombinedGrid = forwardRef<
       ref={gridContainerRef}
       className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 relative z-10"
       role="grid"
-      tabIndex={0} // Ensure the grid container is focusable
+      tabIndex={0}
       onKeyDown={handleKeyDown}
       onFocus={() => {
         if (focusedIndex === null) {
@@ -150,7 +161,8 @@ const CombinedGrid = forwardRef<
           onBlur={handleBlur}
         >
           <div className="transition-colors duration-300">
-            {item.icon}
+            {/* Render the icon component directly */}
+            <item.icon className={themeClasses[theme].icon} size={24} />
           </div>
           <span className="mt-2 text-sm font-medium">
             {item.name}
