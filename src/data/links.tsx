@@ -10,7 +10,8 @@ import {
   Check,
   Mail,
   Terminal,
-  Wallet
+  Wallet,
+  Newspaper
 } from 'lucide-react'
 import { DescribedShortcut } from '../types'
 
@@ -86,4 +87,5 @@ export const links: DescribedShortcut[] = [
   { id: '81', name: 'Frame', icon: <Wallet className="text-green-400" size={24} />, url: 'https://frame.sh/', category: 'Wallets', description: 'A non-custodial browser wallet for Ethereum and other networks.' },
   { id: '82', name: 'Rainbow', icon: <Wallet className="text-green-400" size={24} />, url: 'https://rainbow.me/', category: 'Wallets', description: 'A mobile wallet for Ethereum and other networks.' },
   { id: '83', name: 'Zerion', icon: <Wallet className="text-green-400" size={24} />, url: 'https://zerion.io/', category: 'Wallets', description: 'A multi-chain cryptocurrency wallet and portfolio tracker.' },
+  { id: '84', name: 'CarbonCopy.News', icon: <Newspaper className="text-teal-400" size={24} />, url: 'https://carboncopy.news/', category: 'Refi', description: 'CARBON Copy is the preeminent source of ReFi news, information, and analysis' },
 ]

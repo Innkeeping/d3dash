@@ -117,7 +117,7 @@ const Networks: React.FC<NetworksProps> = ({ isOpen, onClose, theme }) => {
           setFocusedIndex(null);
           searchInputRef.current?.focus();
         } else if (focusedIndex === null) {
-          // Do nothing if already focused on the search bar
+
         } else {
           setFocusedIndex((prevIndex) =>
             prevIndex === null || prevIndex <= 0 ? filteredChains.length - 1 : prevIndex - 1

@@ -40,14 +40,13 @@ const MainContent: React.FC<MainContentProps> = ({
     openModal('isLexiconModalOpen');
   };
 
-  // Filter filteredLinks to include only DescribedShortcut objects
   const filteredDescribedLinks = filteredLinks.filter(
     (link): link is DescribedShortcut => 'id' in link
   );
 
   return (
     <>
-      {/* Info and Book buttons with responsive classes */}
+
       <div className="absolute md:top-6 md:right-1/4 lg:right-1/5 xl:right-1/6 md:flex hidden justify-center md:mt-0 lg:mt-2 z-50 space-x-2">
         <button
           onClick={openHelpModal}
@@ -79,7 +78,7 @@ const MainContent: React.FC<MainContentProps> = ({
         </button>
       </div>
 
-      {/* Heart button on both mobile and larger screens */}
+
       <button
         onClick={openModalvate}
         className="absolute bottom-6 left-4 p-2 bg-white bg-opacity-10 rounded-full text-white opacity-10 hover:opacity-100 transition-opacity z-50"
