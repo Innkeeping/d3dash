@@ -163,11 +163,12 @@ const MusicModal: React.FC<MusicModalProps> = ({ isOpen, onClose, onOpen, theme 
   return (
     <>
       <div
-        className={`fixed inset-0 bg-black/50 flex items-center justify-center z-50 transition-opacity duration-300 ${
-          isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        className={`fixed inset-0 bg-black/50 flex items-center justify-center z-50 duration-300 transition-all ${
+          isOpen ? 'block opacity-100' : 'hidden opacity-0 pointer-events-none'
         }`}
       >
         <div
+          id="music"
           ref={modalRef}
           className={`w-[800px] max-h-[160vh] rounded-xl border ${themeClasses[theme]} backdrop-blur-md p-2 overflow-y-auto transition-transform duration-300 ${
             isOpen ? 'translate-y-0' : 'translate-y-full'

@@ -1,22 +1,20 @@
 // types.ts
 import { ReactElement, Dispatch, SetStateAction, RefObject, ComponentType } from 'react';
 
-// Define the IconProps type and export it
 export type IconProps = {
   className?: string;
-  size?: string | number; // Allow string or number for size
+  size?: string | number;
 };
 
-// Define the IconComponent type and export it
 export type IconComponent = ComponentType<IconProps>;
 
 export interface Shortcut {
   id: string;
   name: string;
-  icon: IconComponent; // Use IconComponent for icon
+  icon: IconComponent;
   url: string;
   category: string;
-  type: 'shortcut'; // Add type property
+  type: 'shortcut';
 }
 
 export interface DescribedShortcut extends Shortcut {}
@@ -24,13 +22,13 @@ export interface DescribedShortcut extends Shortcut {}
 export type Theme = 'purple' | 'green' | 'teal';
 
 export interface CommonLink {
-  id: string; // Add id to CommonLink
+  id: string;
   name: string;
-  icon: IconComponent; // Use IconComponent for icon
+  icon: IconComponent;
   url: string;
   description: string;
-  category: string; // Ensure category is always a string
-  type: 'link'; // Add type property
+  category: string;
+  type: 'link';
 }
 
 export interface DescribedLink extends CommonLink {}
@@ -80,37 +78,42 @@ export type LensExplorePublicationsResponse = {
 };
 
 export interface ModalsState {
-  isPomodoroModalOpen: boolean;
-  isTimeZonesModalOpen: boolean;
-  isCryptoPricesModalOpen: boolean;
-  isDocsModalOpen: boolean;
-  isWeb3SocialModalOpen: boolean;
-  isWalletsModalOpen: boolean;
-  isLexiconModalOpen: boolean;
-  isMusicModalOpen: boolean;
-  isHelpModalOpen: boolean;
+  isTimeZonesOpen: boolean;
+  isWeb3SocialOpen: boolean;
+  isWalletsOpen: boolean;
+  isLexiconOpen: boolean;
+  isMusicOpen: boolean;
+  isHelpOpen: boolean;
   isModalvateOpen: boolean;
-  isRefiModalOpen: boolean;
-  isGovernanceModalOpen: boolean;
-  isDefiModalOpen: boolean;
-  isLensfeedModalOpen: boolean;
-  isIpfsModalOpen: boolean;
-  isGamebModalOpen: boolean;
-  isNetworksModalOpen: boolean;
+  isPricesOpen: boolean;
+  isGovOpen: boolean;
+  isDocsOpen: boolean;
+  isLensfeedOpen: boolean;
+  isGamebOpen: boolean;
+  isIpfsOpen: boolean;
+  isDefiOpen: boolean;
+  isRefiOpen: boolean;
+  isNetworksOpen: boolean;
+  isLensOpen: boolean;
+  closeModal: (modalKey: keyof ModalsState) => void;
+  theme: Theme;
 }
 
-export interface ModalsProps extends ModalsState {
+export type TimerUpdateHandler = (isRunning: boolean, timeLeft: number) => void;
+
+export interface ModalsProps {
   theme: Theme;
   setTheme: Dispatch<SetStateAction<Theme>>;
   openModal: (modalKey: keyof ModalsState) => void;
   closeModal: (modalKey: keyof ModalsState) => void;
   toggleModal: (modalKey: keyof ModalsState) => void;
-  onTimerUpdate: (isRunning: boolean, timeLeft: number) => void;
   toggleTheme: () => void;
+  onTimerUpdate: TimerUpdateHandler;
   timerTimeLeft: number;
   setTimerTimeLeft: Dispatch<SetStateAction<number>>;
   isTimerRunning: boolean;
   setIsTimerRunning: Dispatch<SetStateAction<boolean>>;
+  isOpen: ModalsState;
 }
 
 export interface KeyboardEventHandlers {
@@ -133,34 +136,45 @@ export interface ToolbarProps {
   toggleToolbar: () => void;
   openModal: (modalKey: keyof ModalsState) => void;
   closeModal: (modalKey: keyof ModalsState) => void;
-  modals: ModalsProps; // Added this line
-}
-
-export interface MainContentProps {
-  search: string;
-  theme: Theme;
-  focusedIndex: number | null;
-  setFocusedIndex: Dispatch<SetStateAction<number | null>>;
-  isTimerRunning: boolean;
+  toggleModal: (modalKey: keyof ModalsState) => void;
+  toggleTheme: () => void;
+  isOpen: ModalsState; // Include isOpen here
   timerTimeLeft: number;
-  setIsTimerRunning: Dispatch<SetStateAction<boolean>>;
   setTimerTimeLeft: Dispatch<SetStateAction<number>>;
-  showToolbar: boolean;
-  toggleToolbar: () => void;
-  navigateToSearchBar: () => void;
-  onTimerUpdate: (isRunning: boolean, timeLeft: number) => void;
-  searchBarRef: RefObject<HTMLInputElement>;
-  setTheme: Dispatch<SetStateAction<Theme>>;
-  openModal: (modalKey: keyof ModalsState) => void;
-  closeModal: (modalKey: keyof ModalsState) => void;
+  isTimerRunning: boolean;
+  setIsTimerRunning: Dispatch<SetStateAction<boolean>>;
 }
 
 interface SearchBarProps {
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
-  searchInputRef: RefObject<HTMLInputElement>; // Added this line
-  theme: Theme; // Added this line
+  searchInputRef: RefObject<HTMLInputElement>;
+  theme: Theme;
   onNavigateToGrid: () => void;
 }
 
-export type TimerUpdateHandler = (isRunning: boolean, timeLeft: number) => void;
+// Define a common interface for modal props
+export interface CommonModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  theme: Theme;
+}
+
+// Define specific props for each modal component
+export interface TimeZonesModalProps extends CommonModalProps {}
+
+export interface MusicModalProps extends CommonModalProps {
+  onOpen: () => void;
+}
+
+export interface GamebModalProps extends CommonModalProps {}
+
+// Add other modal props interfaces as needed
+
+// Define a union type for modal props
+export type ModalProps =
+  | TimeZonesModalProps
+  | MusicModalProps
+  | GamebModalProps
+  | // Add other modal props interfaces here
+  CommonModalProps; // Fallback for other modals

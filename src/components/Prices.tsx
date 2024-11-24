@@ -3,7 +3,7 @@ import axios from 'axios';
 import { X } from 'lucide-react';
 import { Theme } from '../types';
 
-interface CryptoPricesModalProps {
+interface PricesProps {
   isOpen: boolean;
   onClose: () => void;
   theme: Theme;
@@ -16,7 +16,7 @@ interface Crypto {
   current_price: number;
 }
 
-const CryptoPricesModal: React.FC<CryptoPricesModalProps> = ({ isOpen, onClose, theme }) => {
+const Prices: React.FC<PricesProps> = ({ isOpen, onClose, theme }) => {
   if (!isOpen) return null;
 
   const themeClasses = {
@@ -285,4 +285,4 @@ const CryptoPricesModal: React.FC<CryptoPricesModalProps> = ({ isOpen, onClose, 
   );
 };
 
-export default CryptoPricesModal;
+export default Prices;

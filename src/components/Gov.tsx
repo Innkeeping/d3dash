@@ -2,13 +2,13 @@ import React, { useRef, useEffect } from 'react';
 import { X, Radio, Vote, Users, MessageSquare, Flower2 } from 'lucide-react';
 import { Theme } from '../types';
 
-interface GovernanceModalProps {
+interface GovProps {
   isOpen: boolean;
   onClose: () => void;
   theme: Theme;
 }
 
-const GovernanceModal: React.FC<GovernanceModalProps> = ({ isOpen, onClose, theme }) => {
+const Gov: React.FC<GovProps> = ({ isOpen, onClose, theme }) => {
   if (!isOpen) return null;
 
   const themeClasses = {
@@ -53,7 +53,6 @@ const GovernanceModal: React.FC<GovernanceModalProps> = ({ isOpen, onClose, them
   const modalRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
         onClose();
@@ -67,7 +66,6 @@ const GovernanceModal: React.FC<GovernanceModalProps> = ({ isOpen, onClose, them
   }, [onClose]);
 
   useEffect(() => {
-
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
@@ -121,4 +119,4 @@ const GovernanceModal: React.FC<GovernanceModalProps> = ({ isOpen, onClose, them
   );
 };
 
-export default GovernanceModal;
+export default Gov;

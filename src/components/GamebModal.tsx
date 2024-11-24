@@ -1,3 +1,4 @@
+// GamebModal.tsx
 import React, { useRef, useEffect } from 'react';
 import { Theme } from '../types';
 
@@ -5,10 +6,9 @@ interface GamebModalProps {
   isOpen: boolean;
   onClose: () => void;
   theme: Theme;
-  iframeUrl: string;
 }
 
-const GamebModal: React.FC<GamebModalProps> = ({ isOpen, onClose, theme}) => {
+const GamebModal: React.FC<GamebModalProps> = ({ isOpen, onClose, theme }) => {
   if (!isOpen) return null;
 
   const themeClasses = {
@@ -20,7 +20,6 @@ const GamebModal: React.FC<GamebModalProps> = ({ isOpen, onClose, theme}) => {
   const modalRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
         onClose();
@@ -39,16 +38,9 @@ const GamebModal: React.FC<GamebModalProps> = ({ isOpen, onClose, theme}) => {
         ref={modalRef}
         className={`w-[900px] h-full rounded-xl border ${themeClasses[theme]} backdrop-blur-md p-6`}
       >
-        {/* <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold"></h2>
-          <button onClick={onClose} className="p-1 hover:bg-gray-800/50 rounded-lg">
-            <X size={20} />
-          </button>
-        </div> */}
-
         <div className="w-full h-full">
           <iframe
-            src='https://innkeeping.github.io/gameB/'
+            src="https://innkeeping.github.io/gameB/"
             className="w-full h-full border-0"
             title="Gameb Content"
           ></iframe>

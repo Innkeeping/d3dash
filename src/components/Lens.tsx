@@ -1,16 +1,16 @@
-// src/components/LensFeedModal.tsx
+// src/components/Lens.tsx
 import React, { useState, useRef, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { Theme, LensPublication, LensImageMetadataV3, LensPostMetadata } from '../types';
 import { fetchUserFeed } from '../utils/fetchUserFeed';
 
-interface LensFeedModalProps {
+interface LensProps {
   isOpen: boolean;
   onClose: () => void;
   theme: Theme;
 }
 
-const LensFeedModal: React.FC<LensFeedModalProps> = ({ isOpen, onClose, theme }) => {
+const Lens: React.FC<LensProps> = ({ isOpen, onClose, theme }) => {
   if (!isOpen) return null;
 
   const themeClasses = {
@@ -129,4 +129,4 @@ const LensFeedModal: React.FC<LensFeedModalProps> = ({ isOpen, onClose, theme })
   );
 };
 
-export default LensFeedModal;
+export default Lens;

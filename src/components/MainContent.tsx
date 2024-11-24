@@ -85,7 +85,7 @@ const MainContent: React.FC<MainContentProps> = ({
       <TimerDisplay
         isTimerRunning={isTimerRunning}
         timerTimeLeft={timerTimeLeft}
-        onClick={() => openModal('isPomodoroModalOpen')}
+        onClick={() => openModal('pomodoroModal')}
       />
     </>
   );

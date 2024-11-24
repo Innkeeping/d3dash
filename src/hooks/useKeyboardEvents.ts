@@ -1,9 +1,11 @@
-// hooks/useKeyboardEvents.ts
-
 import { useEffect } from 'react';
 import { KeyboardEventHandlers, ModalsState } from '../types';
 
-const useKeyboardEvents = (getHandlers: () => KeyboardEventHandlers, modals: ModalsState) => {
+const useKeyboardEvents = (
+  getHandlers: () => KeyboardEventHandlers,
+  modals: ModalsState,
+  searchInputRef: React.RefObject<HTMLInputElement>
+) => {
   useEffect(() => {
     const handlers = getHandlers();
 
@@ -14,7 +16,9 @@ const useKeyboardEvents = (getHandlers: () => KeyboardEventHandlers, modals: Mod
         handlers.onCtrlK?.();
         shouldPreventDefault = true;
       } else if (event.ctrlKey && event.key === 'b') {
-        handlers.onCtrlB?.();
+        if (searchInputRef.current && searchInputRef.current === document.activeElement) {
+          handlers.onCtrlB?.();
+        }
         shouldPreventDefault = true;
       } else if (event.key === 'Escape') {
         handlers.onEscape?.();
@@ -43,7 +47,7 @@ const useKeyboardEvents = (getHandlers: () => KeyboardEventHandlers, modals: Mod
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [getHandlers, modals]);
+  }, [getHandlers, modals, searchInputRef]);
 };
 
 export default useKeyboardEvents;

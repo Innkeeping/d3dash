@@ -1,18 +1,24 @@
 // src/Toolbar.tsx
 import React, { useState, useEffect } from 'react';
-import { Network, Radio, Heart, Coins, Book, Terminal, Palette, Coffee, Clock, Glasses, DollarSign } from 'lucide-react';
+import { Network, Radio, Heart, Coins, Book, Terminal, Palette, Coffee, Clock, Glasses, DollarSign, MessageCircle, Music, HelpCircle, Folder, Circle } from 'lucide-react';
 import { Theme, ModalsState, ModalsProps } from '../types';
 import PomodoroModal from './PomodoroModal';
 import RefiModal from './RefiModal';
-import GovernanceModal from './GovernanceModal';
 import Networks from './Networks';
-import DefiModal from './DefiModal';
-import DocsModal from './DocsModal';
+import Defi from './Defi';
+import Docs from './Docs';
 import TimeZonesModal from './TimeZonesModal';
-import LensFeedModal from './LensFeedModal';
+import Lens from './Lens';
 import GamebModal from './GamebModal';
-import CryptoPricesModal from './CryptoPricesModal';
+import Prices from './Prices';
 import IPFSModal from './IPFSModal';
+import Web3SocialModal from './Web3SocialModal';
+import WalletsModal from './WalletsModal';
+import LexiconModal from './LexiconModal';
+import MusicModal from './MusicModal';
+import Help from './Help';
+import Modalvate from './Modalvate';
+import Gov from './Gov';
 
 interface ToolbarProps {
   theme: Theme;
@@ -31,9 +37,6 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, onPomodoroOpen, onTi
   const [firstKeyPress, setFirstKeyPress] = useState<number | null>(null);
   const [keyPressTimeout, setKeyPressTimeout] = useState<NodeJS.Timeout | null>(null);
 
-  const [isTimerRunning, setIsTimerRunning] = useState(false);
-  const [timerTimeLeft, setTimerTimeLeft] = useState(1500); // 25 minutes in seconds
-
   const themes: Theme[] = ['purple', 'green', 'teal'];
 
   const handleMenuItemClick = (id: string) => {
@@ -47,24 +50,35 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, onPomodoroOpen, onTi
     } else if (id === 'timezones') {
       onTimeZonesOpen();
     } else {
-      const modalKey = `is${id.charAt(0).toUpperCase() + id.slice(1)}ModalOpen` as keyof ModalsState;
+      const modalKey = `is${id.charAt(0).toUpperCase() + id.slice(1)}Open` as keyof ModalsState;
       console.log(`Opening modal with key: ${modalKey}`); // Debug statement
-      openModal(modalKey);
+      if (modals.isOpen[modalKey] !== undefined) {
+        openModal(modalKey);
+      } else {
+        console.error(`Modal key ${modalKey} not found in modals state`);
+        console.log(`Available modal keys:`, Object.keys(modals.isOpen));
+      }
     }
   };
 
   const toolbarItems = [
     { id: 'networks', icon: <Network size={20} />, label: 'Networks' },
-    { id: 'governance', icon: <Radio size={20} />, label: 'Governance' },
+    { id: 'gov', icon: <Radio size={20} />, label: 'Governance' },
     { id: 'refi', icon: <Heart size={20} />, label: 'ReFi Projects' },
     { id: 'defi', icon: <Coins size={20} />, label: 'DeFi Tools' },
     { id: 'docs', icon: <Book size={20} />, label: 'Web3 Docs' },
-    { id: 'terminal', icon: <Terminal size={20} />, label: 'GameB Console' },
+    { id: 'gameb', icon: <Terminal size={20} />, label: 'GameB Console' },
     { id: 'break', icon: <Coffee size={20} />, label: 'Take a Break' },
     { id: 'timezones', icon: <Clock size={20} />, label: 'World Clock' },
-    { id: 'lensfeed', icon: <Glasses size={20} />, label: 'Lens Feed' },
-    { id: 'cryptoPrices', icon: <DollarSign size={20} />, label: 'Token Prices' },
+    { id: 'lens', icon: <Glasses size={20} />, label: 'Lens Feed' },
+    { id: 'prices', icon: <DollarSign size={20} />, label: 'Token Prices' },
     { id: 'ipfs', icon: <Network size={20} />, label: 'IPFS CID Checker' },
+    { id: 'web3social', icon: <MessageCircle size={20} />, label: 'Web3 Social' },
+    { id: 'wallets', icon: <Folder size={20} />, label: 'Wallets' },
+    { id: 'lexicon', icon: <Book size={20} />, label: 'Lexicon' },
+    { id: 'music', icon: <Music size={20} />, label: 'Music' },
+    { id: 'help', icon: <HelpCircle size={20} />, label: 'Help' },
+    { id: 'modalvate', icon: <Circle size={20} />, label: 'Modalvate' },
     { id: 'theme', icon: <Palette size={20} />, label: 'Theme' },
   ];
 
@@ -155,28 +169,36 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, onPomodoroOpen, onTi
         ☰
       </button>
       <PomodoroModal
-        isOpen={modals.isPomodoroModalOpen}
+        isOpen={modals.isOpen.isPomodoroModalOpen || false}
         onClose={() => closeModal('isPomodoroModalOpen')}
         theme={theme}
-        onTimerUpdate={(isRunning, timeLeft) => {
-          setIsTimerRunning(isRunning);
-          setTimerTimeLeft(timeLeft);
-        }}
-        isTimerRunning={isTimerRunning}
-        timerTimeLeft={timerTimeLeft}
-        setIsTimerRunning={setIsTimerRunning}
-        setTimerTimeLeft={setTimerTimeLeft}
+        onTimerUpdate={modals.onTimerUpdate}
+        isTimerRunning={modals.isTimerRunning}
+        timerTimeLeft={modals.timerTimeLeft}
+        setIsTimerRunning={modals.setIsTimerRunning}
+        setTimerTimeLeft={modals.setTimerTimeLeft}
       />
-      <RefiModal isOpen={modals.isRefiModalOpen} onClose={() => closeModal('isRefiModalOpen')} theme={theme} />
-      <GovernanceModal isOpen={modals.isGovernanceModalOpen} onClose={() => closeModal('isGovernanceModalOpen')} theme={theme} />
-      <Networks isOpen={modals.isNetworksModalOpen} onClose={() => closeModal('isNetworksModalOpen')} theme={theme} />
-      <DefiModal isOpen={modals.isDefiModalOpen} onClose={() => closeModal('isDefiModalOpen')} theme={theme} />
-      <DocsModal isOpen={modals.isDocsModalOpen} onClose={() => closeModal('isDocsModalOpen')} theme={theme} />
-      <TimeZonesModal isOpen={modals.isTimeZonesModalOpen} onClose={() => closeModal('isTimeZonesModalOpen')} theme={theme} />
-      <LensFeedModal isOpen={modals.isLensfeedModalOpen} onClose={() => closeModal('isLensfeedModalOpen')} theme={theme} />
-      <GamebModal isOpen={modals.isGamebModalOpen} onClose={() => closeModal('isGamebModalOpen')} theme={theme} iframeUrl="https://www.example.com" />
-      <CryptoPricesModal isOpen={modals.isCryptoPricesModalOpen} onClose={() => closeModal('isCryptoPricesModalOpen')} theme={theme} />
-      <IPFSModal isOpen={modals.isIpfsModalOpen} onClose={() => closeModal('isIpfsModalOpen')} theme={theme} />
+      <RefiModal isOpen={modals.isOpen.isRefiOpen} onClose={() => closeModal('isRefiOpen')} theme={theme} />
+      <Gov isOpen={modals.isOpen.isGovOpen} onClose={() => closeModal('isGovOpen')} theme={theme} />
+      <Networks isOpen={modals.isOpen.isNetworksOpen} onClose={() => closeModal('isNetworksOpen')} theme={theme} />
+      <Defi isOpen={modals.isOpen.isDefiOpen} onClose={() => closeModal('isDefiOpen')} theme={theme} />
+      <Docs isOpen={modals.isOpen.isDocsOpen} onClose={() => closeModal('isDocsOpen')} theme={theme} />
+      <TimeZonesModal isOpen={modals.isOpen.isTimeZonesOpen} onClose={() => closeModal('isTimeZonesOpen')} theme={theme} />
+      <Lens isOpen={modals.isOpen.isLensOpen} onClose={() => closeModal('isLensOpen')} theme={theme} />
+      <GamebModal isOpen={modals.isOpen.isGamebOpen} onClose={() => closeModal('isGamebOpen')} theme={theme} iframeUrl="https://innkeeping.github.io/gameB/" />
+      <Prices isOpen={modals.isOpen.isPricesOpen} onClose={() => closeModal('isPricesOpen')} theme={theme} />
+      <IPFSModal isOpen={modals.isOpen.isIpfsOpen} onClose={() => closeModal('isIpfsOpen')} theme={theme} />
+      <Web3SocialModal isOpen={modals.isOpen.isWeb3SocialOpen} onClose={() => closeModal('isWeb3SocialOpen')} theme={theme} />
+      <WalletsModal isOpen={modals.isOpen.isWalletsOpen} onClose={() => closeModal('isWalletsOpen')} theme={theme} />
+      <LexiconModal isOpen={modals.isOpen.isLexiconOpen} onClose={() => closeModal('isLexiconOpen')} theme={theme} />
+      <MusicModal
+        isOpen={modals.isOpen.isMusicOpen}
+        onClose={() => closeModal('isMusicOpen')}
+        theme={theme}
+        onOpen={() => console.log('MusicModal opened')} // Provide the onOpen prop
+      />
+      <Help isOpen={modals.isOpen.isHelpOpen} onClose={() => closeModal('isHelpOpen')} theme={theme} />
+      <Modalvate isOpen={modals.isOpen.isModalvateOpen} onClose={() => closeModal('isModalvateOpen')} theme={theme} />
     </div>
   );
 };

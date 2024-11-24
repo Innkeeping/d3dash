@@ -1,6 +1,6 @@
+// Desktop.tsx
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import SearchBar from './SearchBar';
-import MainContent from './MainContent';
 import { fetchShortcutsAndLinks, filterItems } from '../utils/filtering';
 import useModals from '../hooks/useModals';
 import useKeyboardEvents from '../hooks/useKeyboardEvents';
@@ -8,8 +8,10 @@ import { searchTerms } from '../config';
 import { CommonLink, KeyboardEventHandlers, Shortcut, TimerUpdateHandler } from '../types';
 import Toolbar from './Toolbar';
 import Modals from './Modals';
-import { ModalsProps, DescribedShortcut, Link, ModalsState, Theme } from '../types';
+import { ModalsProps, Theme } from '../types';
 import CombinedGrid from './CombinedGrid';
+import { Heart, Info, Book } from 'lucide-react';
+import TimerDisplay from './TimerDisplay'; // Assuming you have a TimerDisplay component
 
 const Desktop: React.FC = () => {
   const [search, setSearch] = useState('');
@@ -24,6 +26,7 @@ const Desktop: React.FC = () => {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchBarRef = useRef<HTMLInputElement>(null);
   const combinedGridRef = useRef<{ gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> } | null>(null);
+  const toolbarRef = useRef<HTMLDivElement>(null);
 
   const [items, setItems] = useState<(Shortcut | CommonLink)[]>([]);
 
@@ -46,6 +49,12 @@ const Desktop: React.FC = () => {
 
   const toggleToolbar = () => {
     setShowToolbar(!showToolbar);
+    if (searchInputRef.current) {
+      searchInputRef.current.blur();
+    }
+    if (toolbarRef.current) {
+      toolbarRef.current.focus();
+    }
   };
 
   const navigateToSearchBar = () => {
@@ -68,21 +77,21 @@ const Desktop: React.FC = () => {
   };
 
   const openHelpModal = () => {
-    modals.toggleModal('isHelpModalOpen');
+    modals.toggleModal('isHelpOpen');
   };
 
   const openLexiconModal = () => {
-    modals.toggleModal('isLexiconModalOpen');
+    modals.toggleModal('isLexiconOpen');
   };
 
   const handleOpenMusicModal = () => {
-    modals.toggleModal('isMusicModalOpen');
+    modals.toggleModal('isMusicOpen');
   };
 
   const onEscape = useCallback(() => {
-    const modalKeys = Object.keys(modals) as (keyof ModalsState)[];
+    const modalKeys = Object.keys(modals) as (keyof ModalsProps['isOpen'])[];
     modalKeys.forEach(key => {
-      if (key.startsWith('is') && key.endsWith('ModalOpen') && modals[key]) {
+      if (key.startsWith('is') && key.endsWith('ModalOpen') && modals.isOpen[key]) {
         modals.closeModal(key);
       }
     });
@@ -97,7 +106,7 @@ const Desktop: React.FC = () => {
     onEscape,
     onAltT: modals.toggleTheme,
     onAltM: handleOpenMusicModal,
-    onAltH: () => modals.toggleModal('isHelpModalOpen'),
+    onAltH: () => modals.toggleModal('isHelpOpen'),
   };
 
   const getKeyboardEventHandlers = useCallback(
@@ -105,7 +114,7 @@ const Desktop: React.FC = () => {
     [keyboardEventHandlers]
   );
 
-  useKeyboardEvents(getKeyboardEventHandlers, modals);
+  useKeyboardEvents(getKeyboardEventHandlers, modals, searchInputRef);
 
   useEffect(() => {
     const lowerSearch = search.toLowerCase();
@@ -141,48 +150,82 @@ const Desktop: React.FC = () => {
         theme={modals.theme}
         onNavigateToGrid={navigateToGrid}
       />
-      <MainContent
-        search={search}
-        theme={modals.theme}
-        focusedIndex={focusedIndex}
-        setFocusedIndex={setFocusedIndex}
-        isTimerRunning={isTimerRunning}
-        timerTimeLeft={timerTimeLeft}
-        setIsTimerRunning={setIsTimerRunning}
-        setTimerTimeLeft={setTimerTimeLeft}
-        showToolbar={showToolbar}
-        toggleToolbar={toggleToolbar}
-        navigateToSearchBar={navigateToSearchBar}
-        onTimerUpdate={onTimerUpdate}
-        searchBarRef={searchBarRef}
-        setTheme={modals.setTheme}
-        openModal={modals.toggleModal}
-        closeModal={modals.closeModal}
-      />
-      <Toolbar
-        theme={modals.theme}
-        setTheme={modals.setTheme}
-        onPomodoroOpen={() => modals.toggleModal('isPomodoroModalOpen')}
-        onTimeZonesOpen={() => modals.toggleModal('isTimeZonesModalOpen')}
-        showToolbar={showToolbar}
-        toggleToolbar={toggleToolbar}
-        openModal={modals.toggleModal}
-        closeModal={modals.closeModal}
-        modals={modals}
-      />
-      <Modals
-        {...modals}
-        isTimerRunning={isTimerRunning}
-        timerTimeLeft={timerTimeLeft}
-        setIsTimerRunning={setIsTimerRunning}
-        setTimerTimeLeft={setTimerTimeLeft}
-      />
+      <div className="absolute md:top-6 md:right-1/4 lg:right-1/5 xl:right-1/6 md:flex hidden justify-center md:mt-0 lg:mt-2 z-50 space-x-2">
+        <button
+          onClick={openHelpModal}
+          className="p-2 bg-white bg-opacity-10 rounded-full text-white opacity-10 hover:opacity-100 transition-opacity"
+        >
+          <Info size={24} />
+        </button>
+        <button
+          onClick={openLexiconModal}
+          className="p-2 bg-white bg-opacity-10 rounded-full text-white opacity-10 hover:opacity-100 transition-opacity"
+        >
+          <Book size={24} />
+        </button>
+      </div>
+
+      {/* Mobile version of the Info and Book buttons */}
+      <div className="md:hidden flex justify-center mt-2">
+        <button
+          onClick={openHelpModal}
+          className="p-2 bg-white bg-opacity-10 rounded-full text-white opacity-10 hover:opacity-100 transition-opacity"
+        >
+          <Info size={24} />
+        </button>
+        <button
+          onClick={openLexiconModal}
+          className="p-2 bg-white bg-opacity-10 rounded-full text-white opacity-10 hover:opacity-100 transition-opacity"
+        >
+          <Book size={24} />
+        </button>
+      </div>
+
+      <button
+        onClick={openModalvate}
+        className="absolute bottom-6 left-4 p-2 bg-white bg-opacity-10 rounded-full text-white opacity-10 hover:opacity-100 transition-opacity z-50"
+      >
+        <Heart size={24} />
+      </button>
+
       <CombinedGrid
         ref={combinedGridRef}
         theme={modals.theme}
         search={search}
         onNavigateToSearchBar={navigateToSearchBar}
         searchBarRef={searchBarRef}
+      />
+
+      <TimerDisplay
+        isTimerRunning={isTimerRunning}
+        timerTimeLeft={timerTimeLeft}
+        onClick={() => modals.toggleModal('pomodoroModal')}
+      />
+
+      <Toolbar
+        ref={toolbarRef}
+        theme={modals.theme}
+        setTheme={modals.setTheme}
+        onTimeZonesOpen={() => modals.toggleModal('isTimeZonesOpen')}
+        showToolbar={showToolbar}
+        toggleToolbar={toggleToolbar}
+        openModal={modals.openModal}
+        closeModal={modals.closeModal}
+        toggleModal={modals.toggleModal}
+        toggleTheme={modals.toggleTheme}
+        isOpen={modals.isOpen}
+        timerTimeLeft={timerTimeLeft}
+        setTimerTimeLeft={setTimerTimeLeft}
+        isTimerRunning={isTimerRunning}
+        setIsTimerRunning={setIsTimerRunning}
+      />
+
+      <Modals
+        {...modals}
+        isTimerRunning={isTimerRunning}
+        timerTimeLeft={timerTimeLeft}
+        setIsTimerRunning={setIsTimerRunning}
+        setTimerTimeLeft={setTimerTimeLeft}
       />
     </div>
   );

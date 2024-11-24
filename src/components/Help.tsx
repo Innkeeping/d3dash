@@ -3,14 +3,13 @@ import { X } from 'lucide-react';
 import { Theme } from '../types';
 import useClickOutside from '../hooks/useClickOutside';
 
-interface HelpModalProps {
+interface HelpProps {
   isOpen: boolean;
   onClose: () => void;
-  onOpen:() => void;
   theme: Theme;
 }
 
-const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose, theme }) => {
+const Help: React.FC<HelpProps> = ({ isOpen, onClose, theme }) => {
   if (!isOpen) return null;
 
   const themeClasses = {
@@ -166,4 +165,4 @@ const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose, theme }) => {
   );
 };
 
-export default HelpModal;
+export default Help;
