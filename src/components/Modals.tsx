@@ -16,6 +16,7 @@ import Refi from './Refi';
 import Networks from './Networks';
 import Pomodoro from './Pomodoro';
 import { ModalsProps, Theme, CommonModalProps, MusicProps, GameBProps, PomodoroProps, ModalProps } from '../types';
+import Docs from './Docs';
 
 const Modals: React.FC<ModalsProps> = ({
   theme,
@@ -46,7 +47,7 @@ const Modals: React.FC<ModalsProps> = ({
     isDocsOpen,
     isLensOpen,
     isGameBOpen,
-    isIpfsoOpen,
+    isIpfsOpen,
     isDefiOpen,
     isRefiOpen,
     isNetworksOpen,
@@ -64,10 +65,11 @@ const Modals: React.FC<ModalsProps> = ({
     { component: Prices, props: { isOpen: isPricesOpen, onClose: () => closeModal('isPricesOpen'), theme } },
     { component: Gov, props: { isOpen: isGovOpen, onClose: () => closeModal('isGovOpen'), theme } },
     { component: Lens, props: { isOpen: isLensOpen, onClose: () => closeModal('isLensOpen'), theme } },
-    { component: IPFS, props: { isOpen: isIpfsoOpen, onClose: () => closeModal('isIpfsoOpen'), theme } },
+    { component: IPFS, props: { isOpen: isIpfsOpen, onClose: () => closeModal('isIpfsOpen'), theme } },
     { component: Defi, props: { isOpen: isDefiOpen, onClose: () => closeModal('isDefiOpen'), theme } },
     { component: Refi, props: { isOpen: isRefiOpen, onClose: () => closeModal('isRefiOpen'), theme } },
     { component: Networks, props: { isOpen: isNetworksOpen, onClose: () => closeModal('isNetworksOpen'), theme } },
+    { component: Docs, props: { isOpen: isDocsOpen, onClose: () => closeModal('isDocsOpen'), theme}},
   ];
 
   // Handle MusicModal separately

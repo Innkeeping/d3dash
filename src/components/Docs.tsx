@@ -1,13 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { X, Book } from 'lucide-react';
-import { Theme } from '../types';
+import { Theme } from '../types'; // Import the Theme type
+import { DocsProps } from '../types'; // Import the DocsProps type
 import docsData from '../data/docs.json'; // Import the JSON file
-
-interface DocsProps {
-  isOpen: boolean;
-  onClose: () => void;
-  theme: Theme;
-}
 
 const Docs: React.FC<DocsProps> = ({ isOpen, onClose, theme }) => {
   if (!isOpen) return null;

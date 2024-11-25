@@ -16,7 +16,7 @@ const useModals = (initialTheme: Theme): ModalsState => {
     isDocsOpen: false,
     isLensOpen: false,
     isGameBOpen: false,
-    isIpfsoOpen: false,
+    isIpfsOpen: false,
     isDefiOpen: false,
     isRefiOpen: false,
     isNetworksOpen: false,

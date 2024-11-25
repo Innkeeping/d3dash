@@ -32,18 +32,18 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, showToolbar, toggleT
     { id: 'refi', icon: <Heart size={20} />, label: 'ReFi Projects' },
     { id: 'defi', icon: <Coins size={20} />, label: 'DeFi Tools' },
     { id: 'docs', icon: <Book size={20} />, label: 'Web3 Docs' },
-    { id: 'gameb', icon: <Terminal size={20} />, label: 'GameB Console' },
-    { id: 'break', icon: <Coffee size={20} />, label: 'Take a Break' },
-    { id: 'wclock', icon: <Clock size={20} />, label: 'World Clock' },
+    { id: 'gameB', icon: <Terminal size={20} />, label: 'GameB Console' },
+    { id: 'wClock', icon: <Clock size={20} />, label: 'World Clock' },
     { id: 'lens', icon: <Glasses size={20} />, label: 'Lens Feed' },
     { id: 'prices', icon: <DollarSign size={20} />, label: 'Token Prices' },
     { id: 'ipfs', icon: <Network size={20} />, label: 'IPFS CID Checker' },
-    { id: 'social', icon: <MessageCircle size={20} />, label: 'Web3 Social' },
-    { id: 'wallets', icon: <Folder size={20} />, label: 'Wallets' },
-    { id: 'lexicon', icon: <Book size={20} />, label: 'Lexicon' },
-    { id: 'music', icon: <Music size={20} />, label: 'Music' },
-    { id: 'help', icon: <HelpCircle size={20} />, label: 'Help' },
-    { id: 'modalvate', icon: <Circle size={20} />, label: 'Modalvate' },
+    // { id: 'social', icon: <MessageCircle size={20} />, label: 'Web3 Social' },
+    // { id: 'wallets', icon: <Folder size={20} />, label: 'Wallets' },
+    // { id: 'lexicon', icon: <Book size={20} />, label: 'Lexicon' },
+    // { id: 'music', icon: <Music size={20} />, label: 'Music' },
+    // { id: 'help', icon: <HelpCircle size={20} />, label: 'Help' },
+    // { id: 'modalvate', icon: <Circle size={20} />, label: 'Modalvate' },
+    { id: 'break', icon: <Coffee size={20} />, label: 'Take a Break' },
     { id: 'theme', icon: <Palette size={20} />, label: 'Theme' },
   ];
 
@@ -113,7 +113,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, showToolbar, toggleT
         <div className="absolute bottom-14 right-0 flex flex-col items-end space-y-2 md:flex-row md:space-y-0 md:space-x-2 md:bottom-6 md:right-14">
           {toolbarItems.map(item => (
             <div key={item.id} className="relative group">
-              <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 -translate-y-full px-2 py-1 text-xs bg-gray-900/90 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap -ml-2 md:left-1/2 md:-translate-x-1/2 md:translate-y-0 md:-mt-6">
+              <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 -translate-y-full px-2 py-1 text-xs bg-gray-900/90 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap -ml-2 md:left-1/2 md:-translate-x-1/2 md:translate-y-6 md:-mt-6">
                 {item.label}
               </span>
               <button
