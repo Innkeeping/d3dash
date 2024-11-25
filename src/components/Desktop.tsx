@@ -4,7 +4,7 @@ import { fetchShortcutsAndLinks, filterItems } from '../utils/filtering';
 import useModals from '../hooks/useModals';
 import useKeyboardEvents from '../hooks/useKeyboardEvents';
 import { searchTerms } from '../config';
-import { CommonLink, KeyboardEventHandlers, Shortcut, TimerUpdateHandler, ModalsProps } from '../types';
+import { CommonLink, KeyboardEventHandlers, Shortcut, TimerUpdateHandler, ModalsState } from '../types';
 import Toolbar from './Toolbar';
 import Modals from './Modals';
 import { Theme } from '../types';
@@ -17,7 +17,8 @@ const Desktop: React.FC = () => {
   const [showToolbar, setShowToolbar] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
 
-  const modals = useModals('purple');
+  // Ensure useModals returns ModalsState
+  const modals: ModalsState = useModals('purple');
 
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchBarRef = useRef<HTMLInputElement>(null);
@@ -85,7 +86,7 @@ const Desktop: React.FC = () => {
   };
 
   const onEscape = useCallback(() => {
-    const modalKeys = Object.keys(modals.isOpen) as (keyof ModalsProps['isOpen'])[];
+    const modalKeys = Object.keys(modals.isOpen) as (keyof ModalsState['isOpen'])[];
     modalKeys.forEach(key => {
       if (key.startsWith('is') && key.endsWith('Open') && modals.isOpen[key]) {
         modals.closeModal(key);
@@ -195,7 +196,6 @@ const Desktop: React.FC = () => {
       <Toolbar
         theme={modals.theme}
         setTheme={modals.setTheme}
-        onWClockOpen={() => modals.toggleModal('isWClockOpen')}
         showToolbar={showToolbar}
         toggleToolbar={toggleToolbar}
         openModal={modals.openModal}
@@ -222,6 +222,7 @@ const Desktop: React.FC = () => {
         isTimerRunning={modals.isTimerRunning}
         setIsTimerRunning={modals.setIsTimerRunning}
         isOpen={modals.isOpen}
+        startTimer={modals.startTimer} // Added startTimer to Modals component
       />
     </div>
   );

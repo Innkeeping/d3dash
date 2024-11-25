@@ -1,9 +1,9 @@
-import { useState, useCallback } from 'react';
-import { ModalsState, Theme, ModalsProps, TimerUpdateHandler } from '../types';
+import { useState, useCallback, useEffect } from 'react';
+import { ModalsState, Theme, TimerUpdateHandler } from '../types';
 
-const useModals = (initialTheme: Theme): ModalsProps => {
+const useModals = (initialTheme: Theme): ModalsState => {
   const [theme, setTheme] = useState<Theme>(initialTheme);
-  const [isOpen, setIsOpen] = useState<ModalsState>({
+  const [isOpen, setIsOpen] = useState<ModalsState['isOpen']>({
     isWClockOpen: false,
     isSocialOpen: false,
     isWalletsOpen: false,
@@ -26,15 +26,15 @@ const useModals = (initialTheme: Theme): ModalsProps => {
   const [timerTimeLeft, setTimerTimeLeft] = useState<number>(25 * 60); // 25 minutes in seconds
   const [isTimerRunning, setIsTimerRunning] = useState<boolean>(false);
 
-  const openModal = useCallback((modalKey: keyof ModalsState) => {
+  const openModal = useCallback((modalKey: keyof ModalsState['isOpen']) => {
     setIsOpen(prev => ({ ...prev, [modalKey]: true }));
   }, []);
 
-  const closeModal = useCallback((modalKey: keyof ModalsState) => {
+  const closeModal = useCallback((modalKey: keyof ModalsState['isOpen']) => {
     setIsOpen(prev => ({ ...prev, [modalKey]: false }));
   }, []);
 
-  const toggleModal = useCallback((modalKey: keyof ModalsState) => {
+  const toggleModal = useCallback((modalKey: keyof ModalsState['isOpen']) => {
     setIsOpen(prev => ({ ...prev, [modalKey]: !prev[modalKey] }));
   }, []);
 
@@ -42,10 +42,36 @@ const useModals = (initialTheme: Theme): ModalsProps => {
     setTheme(prev => (prev === 'purple' ? 'green' : prev === 'green' ? 'teal' : 'purple'));
   }, []);
 
-  const onTimerUpdate = useCallback((isRunning: boolean, timeLeft: number) => {
-    setIsTimerRunning(isRunning);
-    setTimerTimeLeft(timeLeft);
+  const onTimerUpdate = useCallback<TimerUpdateHandler>((isRunning: boolean, timeLeft: number) => {
+    if (isRunning) {
+      if (timeLeft > 0) {
+        setTimerTimeLeft(timeLeft - 1);
+      } else {
+        setIsTimerRunning(false);
+      }
+    }
   }, []);
+
+  const startTimer = useCallback(() => {
+    if (isTimerRunning) return;
+    setIsTimerRunning(true);
+  }, [isTimerRunning]);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout | undefined;
+
+    if (isTimerRunning) {
+      interval = setInterval(() => {
+        onTimerUpdate(isTimerRunning, timerTimeLeft);
+      }, 1000);
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [timerTimeLeft, isTimerRunning, onTimerUpdate]);
 
   return {
     theme,
@@ -60,6 +86,7 @@ const useModals = (initialTheme: Theme): ModalsProps => {
     isTimerRunning,
     setIsTimerRunning,
     isOpen,
+    startTimer,
   };
 };
 

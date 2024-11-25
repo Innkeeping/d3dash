@@ -1,225 +1,93 @@
-import { ReactElement, Dispatch, SetStateAction, RefObject, ComponentType } from 'react';
+import { useState, useCallback, useEffect } from 'react';
+import { ModalsState, Theme, TimerUpdateHandler } from '../types';
 
-export type IconProps = {
-  className?: string;
-  size?: string | number;
-};
+const useModals = (initialTheme: Theme): ModalsState => {
+  const [theme, setTheme] = useState<Theme>(initialTheme);
+  const [isOpen, setIsOpen] = useState<ModalsState['isOpen']>({
+    isWClockOpen: false,
+    isSocialOpen: false,
+    isWalletsOpen: false,
+    isLexiconOpen: false,
+    isMusicOpen: false,
+    isHelpOpen: false,
+    isModalvateOpen: false,
+    isPricesOpen: false,
+    isGovOpen: false,
+    isDocsOpen: false,
+    isLensOpen: false,
+    isGameBOpen: false,
+    isIpfsoOpen: false,
+    isDefiOpen: false,
+    isRefiOpen: false,
+    isNetworksOpen: false,
+    isPomodoroOpen: false,
+  });
 
-export type IconComponent = ComponentType<IconProps>;
+  const [timerTimeLeft, setTimerTimeLeft] = useState<number>(25 * 60); // 25 minutes in seconds
+  const [isTimerRunning, setIsTimerRunning] = useState<boolean>(false);
 
-export interface Shortcut {
-  id: string;
-  name: string;
-  icon: IconComponent;
-  url: string;
-  category: string;
-  type: 'shortcut';
-}
+  const openModal = useCallback((modalKey: keyof ModalsState['isOpen']) => {
+    setIsOpen(prev => ({ ...prev, [modalKey]: true }));
+  }, []);
 
-export interface DescribedShortcut extends Shortcut {}
+  const closeModal = useCallback((modalKey: keyof ModalsState['isOpen']) => {
+    setIsOpen(prev => ({ ...prev, [modalKey]: false }));
+  }, []);
 
-export type Theme = 'purple' | 'green' | 'teal';
+  const toggleModal = useCallback((modalKey: keyof ModalsState['isOpen']) => {
+    setIsOpen(prev => ({ ...prev, [modalKey]: !prev[modalKey] }));
+  }, []);
 
-export interface CommonLink {
-  id: string;
-  name: string;
-  icon: IconComponent;
-  url: string;
-  description: string;
-  category: string;
-  type: 'link';
-}
+  const toggleTheme = useCallback(() => {
+    setTheme(prev => (prev === 'purple' ? 'green' : prev === 'green' ? 'teal' : 'purple'));
+  }, []);
 
-export interface DescribedLink extends CommonLink {}
+  const onTimerUpdate = useCallback<TimerUpdateHandler>((isRunning: boolean, timeLeft: number) => {
+    if (isRunning) {
+      if (timeLeft > 0) {
+        setTimerTimeLeft(timeLeft - 1);
+      } else {
+        setIsTimerRunning(false);
+      }
+    }
+  }, []);
 
-export interface NetworkLink extends CommonLink {
-  chainId?: string;
-  currency?: string;
-}
+  const startTimer = useCallback(() => {
+    if (isTimerRunning) return;
+    setIsTimerRunning(true);
+  }, [isTimerRunning]);
 
-export type Link = DescribedLink | NetworkLink;
+  useEffect(() => {
+    let interval: NodeJS.Timeout | undefined;
 
-export type CitiesToTimeZones = {
-  [key: string]: string[];
-};
+    if (isTimerRunning) {
+      interval = setInterval(() => {
+        onTimerUpdate(isTimerRunning, timerTimeLeft);
+      }, 1000);
+    }
 
-export type LensPublicationStats = {
-  reactions: number;
-};
-
-export type LensImageMetadataV3 = {
-  __typename: 'ImageMetadataV3';
-  id: string;
-  content: string;
-  asset: {
-    image: {
-      optimized: {
-        uri: string;
-      };
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
     };
+  }, [timerTimeLeft, isTimerRunning, onTimerUpdate]);
+
+  return {
+    theme,
+    setTheme,
+    openModal,
+    closeModal,
+    toggleModal,
+    toggleTheme,
+    onTimerUpdate,
+    timerTimeLeft,
+    setTimerTimeLeft,
+    isTimerRunning,
+    setIsTimerRunning,
+    isOpen,
+    startTimer,
   };
 };
 
-export type LensTextOnlyMetadataV3 = {
-  __typename: 'TextOnlyMetadataV3';
-  content: string;
-};
-
-export type LensPostMetadata = LensImageMetadataV3 | LensTextOnlyMetadataV3;
-
-export type LensPublication = {
-  stats: LensPublicationStats;
-  metadata: LensPostMetadata;
-};
-
-export type LensExplorePublicationsResponse = {
-  items: LensPublication[];
-};
-
-export interface ModalsState {
-  isWClockOpen: boolean;
-  isSocialOpen: boolean;
-  isWalletsOpen: boolean;
-  isLexiconOpen: boolean;
-  isMusicOpen: boolean;
-  isHelpOpen: boolean;
-  isModalvateOpen: boolean;
-  isPricesOpen: boolean;
-  isGovOpen: boolean;
-  isDocsOpen: boolean;
-  isLensOpen: boolean;
-  isGameBOpen: boolean;
-  isIpfsoOpen: boolean;
-  isDefiOpen: boolean;
-  isRefiOpen: boolean;
-  isNetworksOpen: boolean;
-  isPomodoroOpen: boolean;
-}
-
-export type TimerUpdateHandler = (isRunning: boolean, timeLeft: number) => void;
-
-
-export interface ModalsProps {
-  theme: Theme;
-  setTheme: Dispatch<SetStateAction<Theme>>;
-  openModal: (modalKey: keyof ModalsState) => void;
-  closeModal: (modalKey: keyof ModalsState) => void;
-  toggleModal: (modalKey: keyof ModalsState) => void;
-  toggleTheme: () => void;
-  onTimerUpdate: TimerUpdateHandler;
-  timerTimeLeft: number;
-  setTimerTimeLeft: Dispatch<SetStateAction<number>>;
-  isTimerRunning: boolean;
-  setIsTimerRunning: Dispatch<SetStateAction<boolean>>;
-  isOpen: ModalsState; // isOpen is of type ModalsState
-}
-
-export interface KeyboardEventHandlers {
-  onCtrlK?: () => void;
-  onCtrlB?: () => void;
-  onEscape?: () => void;
-  onAltT?: () => void;
-  onAltM?: () => void;
-  onAltH?: () => void;
-  onArrowUp?: () => void;
-  onArrowDown?: () => void;
-}
-
-export interface ToolbarProps {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
-  onWClockOpen: () => void;
-  showToolbar: boolean;
-  toggleToolbar: () => void;
-  openModal: (modalKey: keyof ModalsState) => void;
-  closeModal: (modalKey: keyof ModalsState) => void;
-  toggleModal: (modalKey: keyof ModalsState) => void;
-  toggleTheme: () => void;
-  isOpen: ModalsState;
-  timerTimeLeft: number;
-  setTimerTimeLeft: (timeLeft: number) => void;
-  isTimerRunning: boolean;
-  setIsTimerRunning: (isRunning: boolean) => void;
-}
-
-interface SearchBarProps {
-  search: string;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
-  searchInputRef: RefObject<HTMLInputElement>;
-  theme: Theme;
-  onNavigateToGrid: () => void;
-}
-
-// Define a common interface for modal props
-export interface CommonModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  theme: Theme;
-}
-
-// Define specific props for each modal component
-export interface WClockProps extends CommonModalProps {}
-
-export interface SocialProps extends CommonModalProps {}
-
-export interface MusicProps extends CommonModalProps {
-  onOpen: () => void;
-}
-
-export interface LexiconProps extends CommonModalProps {}
-
-export type PomodoroProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  theme: Theme;
-  onTimerUpdate: TimerUpdateHandler;
-  timerTimeLeft: number;
-  setTimerTimeLeft: Dispatch<SetStateAction<number>>;
-  isTimerRunning: boolean;
-  setIsTimerRunning: Dispatch<SetStateAction<boolean>>;
-};
-
-export interface WalletsProps extends CommonModalProps {}
-
-export interface PricesProps extends CommonModalProps {}
-
-export interface GovProps extends CommonModalProps {}
-
-export interface LensProps extends CommonModalProps {}
-
-export interface IPFSProps extends CommonModalProps {}
-
-export interface GameBProps extends CommonModalProps {}
-
-export interface DefiProps extends CommonModalProps {}
-
-export interface RefiProps extends CommonModalProps {}
-
-export interface NetworksProps extends CommonModalProps {}
-
-export interface ModalvateProps extends CommonModalProps {}
-
-export interface HelpProps extends CommonModalProps {}
-
-export interface DocsProps extends CommonModalProps {}
-
-// Define a union type for modal props
-export type ModalProps =
-  | WClockProps
-  | SocialProps
-  | MusicProps
-  | LexiconProps
-  | PomodoroProps
-  | WalletsProps
-  | PricesProps
-  | GovProps
-  | LensProps
-  | IPFSProps
-  | GameBProps
-  | DefiProps
-  | RefiProps
-  | NetworksProps
-  | ModalvateProps
-  | HelpProps
-  | DocsProps
-  | CommonModalProps;
+export default useModals;

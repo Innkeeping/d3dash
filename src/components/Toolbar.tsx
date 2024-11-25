@@ -1,21 +1,8 @@
-// src/Toolbar.tsx
-
 import React, { useEffect, useState } from 'react';
 import { Network, Radio, Heart, Coins, Book, Terminal, Palette, Coffee, Clock, Glasses, DollarSign, MessageCircle, Music, HelpCircle, Folder, Circle } from 'lucide-react';
-import { Theme, ModalsState, ModalsProps } from '../types';
+import { ToolbarProps, Theme, ModalsState } from '../types';
 
-interface ToolbarProps {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
-  showToolbar: boolean;
-  toggleToolbar: () => void;
-  openModal: (modalKey: keyof ModalsState) => void;
-  closeModal: (modalKey: keyof ModalsState) => void;
-  toggleModal: (modalKey: keyof ModalsState) => void;
-  toggleTheme: () => void;
-}
-
-const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, showToolbar, toggleToolbar, openModal, closeModal, toggleModal, toggleTheme }) => {
+const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, showToolbar, toggleToolbar, openModal, closeModal, toggleModal, toggleTheme, isOpen }) => {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [firstKeyPress, setFirstKeyPress] = useState<number | null>(null);
   const [keyPressTimeout, setKeyPressTimeout] = useState<NodeJS.Timeout | null>(null);
@@ -33,7 +20,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, showToolbar, toggleT
     } else if (id === 'timezones') {
       openModal('isWClockOpen'); // Open World Clock Modal
     } else {
-      const modalKey = `is${id.charAt(0).toUpperCase() + id.slice(1)}Open` as keyof ModalsState;
+      const modalKey = `is${id.charAt(0).toUpperCase() + id.slice(1)}Open` as keyof ModalsState['isOpen'];
       console.log(`Opening modal with key: ${modalKey}`); // Debug statement
       openModal(modalKey);
     }
@@ -47,11 +34,11 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, showToolbar, toggleT
     { id: 'docs', icon: <Book size={20} />, label: 'Web3 Docs' },
     { id: 'gameb', icon: <Terminal size={20} />, label: 'GameB Console' },
     { id: 'break', icon: <Coffee size={20} />, label: 'Take a Break' },
-    { id: 'timezones', icon: <Clock size={20} />, label: 'World Clock' },
+    { id: 'wclock', icon: <Clock size={20} />, label: 'World Clock' },
     { id: 'lens', icon: <Glasses size={20} />, label: 'Lens Feed' },
     { id: 'prices', icon: <DollarSign size={20} />, label: 'Token Prices' },
     { id: 'ipfs', icon: <Network size={20} />, label: 'IPFS CID Checker' },
-    { id: 'web3social', icon: <MessageCircle size={20} />, label: 'Web3 Social' },
+    { id: 'social', icon: <MessageCircle size={20} />, label: 'Web3 Social' },
     { id: 'wallets', icon: <Folder size={20} />, label: 'Wallets' },
     { id: 'lexicon', icon: <Book size={20} />, label: 'Lexicon' },
     { id: 'music', icon: <Music size={20} />, label: 'Music' },
@@ -126,7 +113,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, showToolbar, toggleT
         <div className="absolute bottom-14 right-0 flex flex-col items-end space-y-2 md:flex-row md:space-y-0 md:space-x-2 md:bottom-6 md:right-14">
           {toolbarItems.map(item => (
             <div key={item.id} className="relative group">
-              <span className="absolute left-0 top-0 transform -translate-x-1/2 -translate-y-full px-2 py-1 text-xs bg-gray-900/90 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap -ml-2 md:left-1/2 md:-translate-x-1/2 md:translate-y-0 md:-mt-6">
+              <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 -translate-y-full px-2 py-1 text-xs bg-gray-900/90 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap -ml-2 md:left-1/2 md:-translate-x-1/2 md:translate-y-0 md:-mt-6">
                 {item.label}
               </span>
               <button

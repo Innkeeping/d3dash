@@ -1,21 +1,21 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction, RefObject } from 'react';
 import WClock from './WClock';
 import Social from './Social';
 import Wallets from './Wallets';
 import Lexicon from './Lexicon';
 import Music from './Music';
-import Help from './Help'; // Corrected import
+import Help from './Help';
 import Modalvate from './Modalvate';
-import { ModalsProps, Theme, CommonModalProps, MusicProps, GameBProps, PomodoroProps, ModalProps } from '../types'; // Import necessary types
-import Prices from './Prices'; // Updated import
-import Gov from './Gov'; // Updated import
-import Lens from './Lens'; // Updated import
+import Prices from './Prices';
+import Gov from './Gov';
+import Lens from './Lens';
 import IPFS from './IPFS';
 import GameB from './GameB';
-import Defi from './Defi'; // Updated import
-import Refi from './Refi'; // Updated import
-import Networks from './Networks'; // Assuming you have a Networks component
-import Pomodoro from './Pomodoro'; // Assuming you have a Pomodoro component
+import Defi from './Defi';
+import Refi from './Refi';
+import Networks from './Networks';
+import Pomodoro from './Pomodoro';
+import { ModalsProps, Theme, CommonModalProps, MusicProps, GameBProps, PomodoroProps, ModalProps } from '../types';
 
 const Modals: React.FC<ModalsProps> = ({
   theme,
@@ -29,7 +29,8 @@ const Modals: React.FC<ModalsProps> = ({
   setTimerTimeLeft,
   isTimerRunning,
   setIsTimerRunning,
-  isOpen, // isOpen is of type ModalsState
+  isOpen,
+  startTimer, // Added startTimer to props
 }) => {
   // Destructure isOpen to get individual modal states
   const {
@@ -67,7 +68,6 @@ const Modals: React.FC<ModalsProps> = ({
     { component: Defi, props: { isOpen: isDefiOpen, onClose: () => closeModal('isDefiOpen'), theme } },
     { component: Refi, props: { isOpen: isRefiOpen, onClose: () => closeModal('isRefiOpen'), theme } },
     { component: Networks, props: { isOpen: isNetworksOpen, onClose: () => closeModal('isNetworksOpen'), theme } },
-    // Remove Pomodoro from here
   ];
 
   // Handle MusicModal separately
@@ -95,6 +95,7 @@ const Modals: React.FC<ModalsProps> = ({
     setTimerTimeLeft,
     isTimerRunning,
     setIsTimerRunning,
+    startTimer, // Added startTimer to pomodoroProps
   };
 
   return (
