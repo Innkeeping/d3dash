@@ -1,4 +1,3 @@
-// types.ts
 import { ReactElement, Dispatch, SetStateAction, RefObject, ComponentType } from 'react';
 
 export type IconProps = {
@@ -78,8 +77,8 @@ export type LensExplorePublicationsResponse = {
 };
 
 export interface ModalsState {
-  isTimeZonesOpen: boolean;
-  isWeb3SocialOpen: boolean;
+  isWClockOpen: boolean;
+  isSocialOpen: boolean;
   isWalletsOpen: boolean;
   isLexiconOpen: boolean;
   isMusicOpen: boolean;
@@ -88,18 +87,17 @@ export interface ModalsState {
   isPricesOpen: boolean;
   isGovOpen: boolean;
   isDocsOpen: boolean;
-  isLensfeedOpen: boolean;
-  isGamebOpen: boolean;
-  isIpfsOpen: boolean;
+  isLensOpen: boolean;
+  isGameBOpen: boolean;
+  isIpfsoOpen: boolean;
   isDefiOpen: boolean;
   isRefiOpen: boolean;
   isNetworksOpen: boolean;
-  isLensOpen: boolean;
-  closeModal: (modalKey: keyof ModalsState) => void;
-  theme: Theme;
+  isPomodoroOpen: boolean;
 }
 
 export type TimerUpdateHandler = (isRunning: boolean, timeLeft: number) => void;
+
 
 export interface ModalsProps {
   theme: Theme;
@@ -113,7 +111,7 @@ export interface ModalsProps {
   setTimerTimeLeft: Dispatch<SetStateAction<number>>;
   isTimerRunning: boolean;
   setIsTimerRunning: Dispatch<SetStateAction<boolean>>;
-  isOpen: ModalsState;
+  isOpen: ModalsState; // isOpen is of type ModalsState
 }
 
 export interface KeyboardEventHandlers {
@@ -129,20 +127,19 @@ export interface KeyboardEventHandlers {
 
 export interface ToolbarProps {
   theme: Theme;
-  setTheme: Dispatch<SetStateAction<Theme>>;
-  onPomodoroOpen: () => void;
-  onTimeZonesOpen: () => void;
+  setTheme: (theme: Theme) => void;
+  onWClockOpen: () => void;
   showToolbar: boolean;
   toggleToolbar: () => void;
   openModal: (modalKey: keyof ModalsState) => void;
   closeModal: (modalKey: keyof ModalsState) => void;
   toggleModal: (modalKey: keyof ModalsState) => void;
   toggleTheme: () => void;
-  isOpen: ModalsState; // Include isOpen here
+  isOpen: ModalsState;
   timerTimeLeft: number;
-  setTimerTimeLeft: Dispatch<SetStateAction<number>>;
+  setTimerTimeLeft: (timeLeft: number) => void;
   isTimerRunning: boolean;
-  setIsTimerRunning: Dispatch<SetStateAction<boolean>>;
+  setIsTimerRunning: (isRunning: boolean) => void;
 }
 
 interface SearchBarProps {
@@ -161,20 +158,68 @@ export interface CommonModalProps {
 }
 
 // Define specific props for each modal component
-export interface TimeZonesModalProps extends CommonModalProps {}
+export interface WClockProps extends CommonModalProps {}
 
-export interface MusicModalProps extends CommonModalProps {
+export interface SocialProps extends CommonModalProps {}
+
+export interface MusicProps extends CommonModalProps {
   onOpen: () => void;
 }
 
-export interface GamebModalProps extends CommonModalProps {}
+export interface LexiconProps extends CommonModalProps {}
 
-// Add other modal props interfaces as needed
+export type PomodoroProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  theme: Theme;
+  onTimerUpdate: TimerUpdateHandler;
+  timerTimeLeft: number;
+  setTimerTimeLeft: Dispatch<SetStateAction<number>>;
+  isTimerRunning: boolean;
+  setIsTimerRunning: Dispatch<SetStateAction<boolean>>;
+};
+
+export interface WalletsProps extends CommonModalProps {}
+
+export interface PricesProps extends CommonModalProps {}
+
+export interface GovProps extends CommonModalProps {}
+
+export interface LensProps extends CommonModalProps {}
+
+export interface IPFSProps extends CommonModalProps {}
+
+export interface GameBProps extends CommonModalProps {}
+
+export interface DefiProps extends CommonModalProps {}
+
+export interface RefiProps extends CommonModalProps {}
+
+export interface NetworksProps extends CommonModalProps {}
+
+export interface ModalvateProps extends CommonModalProps {}
+
+export interface HelpProps extends CommonModalProps {}
+
+export interface DocsProps extends CommonModalProps {}
 
 // Define a union type for modal props
 export type ModalProps =
-  | TimeZonesModalProps
-  | MusicModalProps
-  | GamebModalProps
-  | // Add other modal props interfaces here
-  CommonModalProps; // Fallback for other modals
+  | WClockProps
+  | SocialProps
+  | MusicProps
+  | LexiconProps
+  | PomodoroProps
+  | WalletsProps
+  | PricesProps
+  | GovProps
+  | LensProps
+  | IPFSProps
+  | GameBProps
+  | DefiProps
+  | RefiProps
+  | NetworksProps
+  | ModalvateProps
+  | HelpProps
+  | DocsProps
+  | CommonModalProps;

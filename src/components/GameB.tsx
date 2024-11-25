@@ -1,14 +1,14 @@
-// GamebModal.tsx
+// GameB.tsx
 import React, { useRef, useEffect } from 'react';
 import { Theme } from '../types';
 
-interface GamebModalProps {
+interface GameBProps {
   isOpen: boolean;
   onClose: () => void;
   theme: Theme;
 }
 
-const GamebModal: React.FC<GamebModalProps> = ({ isOpen, onClose, theme }) => {
+const GameB: React.FC<GameBProps> = ({ isOpen, onClose, theme }) => {
   if (!isOpen) return null;
 
   const themeClasses = {
@@ -42,7 +42,7 @@ const GamebModal: React.FC<GamebModalProps> = ({ isOpen, onClose, theme }) => {
           <iframe
             src="https://innkeeping.github.io/gameB/"
             className="w-full h-full border-0"
-            title="Gameb Content"
+            title="GameB Content"
           ></iframe>
         </div>
       </div>
@@ -50,4 +50,4 @@ const GamebModal: React.FC<GamebModalProps> = ({ isOpen, onClose, theme }) => {
   );
 };
 
-export default GamebModal;
+export default GameB;

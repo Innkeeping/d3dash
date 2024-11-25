@@ -1,15 +1,16 @@
+// src/components/Music.tsx
 import React, { useRef, useEffect, useState } from 'react';
 import MusicNoteIndicator from './MusicNoteIndicator';
 import { Theme } from '../types';
 
-interface MusicModalProps {
+interface MusicProps {
   isOpen: boolean;
   onClose: () => void;
   onOpen: () => void;
   theme: Theme;
 }
 
-const MusicModal: React.FC<MusicModalProps> = ({ isOpen, onClose, onOpen, theme }) => {
+const Music: React.FC<MusicProps> = ({ isOpen, onClose, onOpen, theme }) => {
   const themeClasses = {
     purple: 'border-purple-500/30 bg-purple-900/20',
     green: 'border-green-500/30 bg-green-900/20',
@@ -244,4 +245,4 @@ const MusicModal: React.FC<MusicModalProps> = ({ isOpen, onClose, onOpen, theme 
   );
 };
 
-export default MusicModal;
+export default Music;

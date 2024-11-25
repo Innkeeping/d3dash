@@ -1,14 +1,15 @@
+// src/components/Social.tsx
 import React, { useState, useRef, useEffect } from 'react';
 import { X, Globe, Share, MessageSquare, Users, Link, Camera, Film, Check, Mail, Terminal } from 'lucide-react';
 import { Theme } from '../types';
 
-interface Web3SocialModalProps {
+interface SocialProps {
   isOpen: boolean;
   onClose: () => void;
   theme: Theme;
 }
 
-const Web3SocialModal: React.FC<Web3SocialModalProps> = ({ isOpen, onClose, theme }) => {
+const Social: React.FC<SocialProps> = ({ isOpen, onClose, theme }) => {
   if (!isOpen) return null;
 
   const themeClasses = {
@@ -137,7 +138,7 @@ const Web3SocialModal: React.FC<Web3SocialModalProps> = ({ isOpen, onClose, them
           setFocusedIndex(null);
           searchInputRef.current?.focus();
         } else if (focusedIndex === null) {
-
+          // Do nothing
         } else {
           setFocusedIndex((prevIndex) =>
             prevIndex === null || prevIndex <= 0 ? filteredSocialPlatforms.length - 1 : prevIndex - 1
@@ -226,4 +227,4 @@ const Web3SocialModal: React.FC<Web3SocialModalProps> = ({ isOpen, onClose, them
   );
 };
 
-export default Web3SocialModal;
+export default Social;

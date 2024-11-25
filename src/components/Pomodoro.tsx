@@ -1,10 +1,10 @@
-// src/components/PomodoroModal.tsx
+// src/components/Pomodoro.tsx
 import React, { useState, useEffect, useRef, Dispatch, SetStateAction } from 'react';
 import { X, Play, Pause, RotateCcw } from 'lucide-react';
 import { Theme } from '../types';
 import useClickOutside from '../hooks/useClickOutside';
 
-interface PomodoroModalProps {
+interface PomodoroProps {
   isOpen: boolean;
   onClose: () => void;
   theme: Theme;
@@ -15,7 +15,7 @@ interface PomodoroModalProps {
   setTimerTimeLeft: Dispatch<SetStateAction<number>>;
 }
 
-const PomodoroModal: React.FC<PomodoroModalProps> = ({
+const Pomodoro: React.FC<PomodoroProps> = ({
   isOpen,
   onClose,
   theme,
@@ -161,4 +161,4 @@ const PomodoroModal: React.FC<PomodoroModalProps> = ({
   );
 };
 
-export default PomodoroModal;
+export default Pomodoro;

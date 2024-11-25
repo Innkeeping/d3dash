@@ -1,15 +1,15 @@
-// src/components/IPFSModal.tsx
+// src/components/IPFS.tsx
 import React, { useState, useRef, useEffect } from 'react';
 import { X, Loader2 } from 'lucide-react';
 import { Theme } from '../types';
 
-interface IPFSModalProps {
+interface IPFSProps {
   isOpen: boolean;
   onClose: () => void;
   theme: Theme;
 }
 
-const IPFSModal: React.FC<IPFSModalProps> = ({ isOpen, onClose, theme }) => {
+const IPFS: React.FC<IPFSProps> = ({ isOpen, onClose, theme }) => {
   if (!isOpen) return null;
 
   const themeClasses = {
@@ -31,13 +31,11 @@ const IPFSModal: React.FC<IPFSModalProps> = ({ isOpen, onClose, theme }) => {
   const gateways = [
     { label: 'w3s.link', value: 'https://w3s.link/ipfs/' },
     { label: 'ipfs.io', value: 'https://ipfs.io/ipfs/' },
-
   ];
 
   const modalRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
         onClose();
@@ -51,7 +49,6 @@ const IPFSModal: React.FC<IPFSModalProps> = ({ isOpen, onClose, theme }) => {
   }, [onClose]);
 
   useEffect(() => {
-
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
@@ -139,4 +136,4 @@ const IPFSModal: React.FC<IPFSModalProps> = ({ isOpen, onClose, theme }) => {
   );
 };
 
-export default IPFSModal;
+export default IPFS;

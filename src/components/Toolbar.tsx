@@ -1,38 +1,21 @@
 // src/Toolbar.tsx
-import React, { useState, useEffect } from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { Network, Radio, Heart, Coins, Book, Terminal, Palette, Coffee, Clock, Glasses, DollarSign, MessageCircle, Music, HelpCircle, Folder, Circle } from 'lucide-react';
 import { Theme, ModalsState, ModalsProps } from '../types';
-import PomodoroModal from './PomodoroModal';
-import RefiModal from './RefiModal';
-import Networks from './Networks';
-import Defi from './Defi';
-import Docs from './Docs';
-import TimeZonesModal from './TimeZonesModal';
-import Lens from './Lens';
-import GamebModal from './GamebModal';
-import Prices from './Prices';
-import IPFSModal from './IPFSModal';
-import Web3SocialModal from './Web3SocialModal';
-import WalletsModal from './WalletsModal';
-import LexiconModal from './LexiconModal';
-import MusicModal from './MusicModal';
-import Help from './Help';
-import Modalvate from './Modalvate';
-import Gov from './Gov';
 
 interface ToolbarProps {
   theme: Theme;
   setTheme: (theme: Theme) => void;
-  onPomodoroOpen: () => void;
-  onTimeZonesOpen: () => void;
   showToolbar: boolean;
   toggleToolbar: () => void;
   openModal: (modalKey: keyof ModalsState) => void;
   closeModal: (modalKey: keyof ModalsState) => void;
-  modals: ModalsProps;
+  toggleModal: (modalKey: keyof ModalsState) => void;
+  toggleTheme: () => void;
 }
 
-const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, onPomodoroOpen, onTimeZonesOpen, showToolbar, toggleToolbar, openModal, closeModal, modals }) => {
+const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, showToolbar, toggleToolbar, openModal, closeModal, toggleModal, toggleTheme }) => {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [firstKeyPress, setFirstKeyPress] = useState<number | null>(null);
   const [keyPressTimeout, setKeyPressTimeout] = useState<NodeJS.Timeout | null>(null);
@@ -46,18 +29,13 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, onPomodoroOpen, onTi
       const currentThemeIndex = themes.indexOf(theme);
       setTheme(themes[(currentThemeIndex + 1) % themes.length]);
     } else if (id === 'break') {
-      onPomodoroOpen(); // Open Pomodoro Modal
+      toggleModal('isPomodoroOpen'); // Open Pomodoro Modal
     } else if (id === 'timezones') {
-      onTimeZonesOpen();
+      openModal('isWClockOpen'); // Open World Clock Modal
     } else {
       const modalKey = `is${id.charAt(0).toUpperCase() + id.slice(1)}Open` as keyof ModalsState;
       console.log(`Opening modal with key: ${modalKey}`); // Debug statement
-      if (modals.isOpen[modalKey] !== undefined) {
-        openModal(modalKey);
-      } else {
-        console.error(`Modal key ${modalKey} not found in modals state`);
-        console.log(`Available modal keys:`, Object.keys(modals.isOpen));
-      }
+      openModal(modalKey);
     }
   };
 
@@ -168,37 +146,6 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, onPomodoroOpen, onTi
         <span className="sr-only">Toggle Toolbar</span>
         ☰
       </button>
-      <PomodoroModal
-        isOpen={modals.isOpen.isPomodoroModalOpen || false}
-        onClose={() => closeModal('isPomodoroModalOpen')}
-        theme={theme}
-        onTimerUpdate={modals.onTimerUpdate}
-        isTimerRunning={modals.isTimerRunning}
-        timerTimeLeft={modals.timerTimeLeft}
-        setIsTimerRunning={modals.setIsTimerRunning}
-        setTimerTimeLeft={modals.setTimerTimeLeft}
-      />
-      <RefiModal isOpen={modals.isOpen.isRefiOpen} onClose={() => closeModal('isRefiOpen')} theme={theme} />
-      <Gov isOpen={modals.isOpen.isGovOpen} onClose={() => closeModal('isGovOpen')} theme={theme} />
-      <Networks isOpen={modals.isOpen.isNetworksOpen} onClose={() => closeModal('isNetworksOpen')} theme={theme} />
-      <Defi isOpen={modals.isOpen.isDefiOpen} onClose={() => closeModal('isDefiOpen')} theme={theme} />
-      <Docs isOpen={modals.isOpen.isDocsOpen} onClose={() => closeModal('isDocsOpen')} theme={theme} />
-      <TimeZonesModal isOpen={modals.isOpen.isTimeZonesOpen} onClose={() => closeModal('isTimeZonesOpen')} theme={theme} />
-      <Lens isOpen={modals.isOpen.isLensOpen} onClose={() => closeModal('isLensOpen')} theme={theme} />
-      <GamebModal isOpen={modals.isOpen.isGamebOpen} onClose={() => closeModal('isGamebOpen')} theme={theme} iframeUrl="https://innkeeping.github.io/gameB/" />
-      <Prices isOpen={modals.isOpen.isPricesOpen} onClose={() => closeModal('isPricesOpen')} theme={theme} />
-      <IPFSModal isOpen={modals.isOpen.isIpfsOpen} onClose={() => closeModal('isIpfsOpen')} theme={theme} />
-      <Web3SocialModal isOpen={modals.isOpen.isWeb3SocialOpen} onClose={() => closeModal('isWeb3SocialOpen')} theme={theme} />
-      <WalletsModal isOpen={modals.isOpen.isWalletsOpen} onClose={() => closeModal('isWalletsOpen')} theme={theme} />
-      <LexiconModal isOpen={modals.isOpen.isLexiconOpen} onClose={() => closeModal('isLexiconOpen')} theme={theme} />
-      <MusicModal
-        isOpen={modals.isOpen.isMusicOpen}
-        onClose={() => closeModal('isMusicOpen')}
-        theme={theme}
-        onOpen={() => console.log('MusicModal opened')} // Provide the onOpen prop
-      />
-      <Help isOpen={modals.isOpen.isHelpOpen} onClose={() => closeModal('isHelpOpen')} theme={theme} />
-      <Modalvate isOpen={modals.isOpen.isModalvateOpen} onClose={() => closeModal('isModalvateOpen')} theme={theme} />
     </div>
   );
 };

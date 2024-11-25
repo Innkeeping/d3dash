@@ -1,14 +1,13 @@
-// Desktop.tsx
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import SearchBar from './SearchBar';
 import { fetchShortcutsAndLinks, filterItems } from '../utils/filtering';
 import useModals from '../hooks/useModals';
 import useKeyboardEvents from '../hooks/useKeyboardEvents';
 import { searchTerms } from '../config';
-import { CommonLink, KeyboardEventHandlers, Shortcut, TimerUpdateHandler } from '../types';
+import { CommonLink, KeyboardEventHandlers, Shortcut, TimerUpdateHandler, ModalsProps } from '../types';
 import Toolbar from './Toolbar';
 import Modals from './Modals';
-import { ModalsProps, Theme } from '../types';
+import { Theme } from '../types';
 import CombinedGrid from './CombinedGrid';
 import { Heart, Info, Book } from 'lucide-react';
 import TimerDisplay from './TimerDisplay'; // Assuming you have a TimerDisplay component
@@ -19,9 +18,6 @@ const Desktop: React.FC = () => {
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
 
   const modals = useModals('purple');
-
-  const [isTimerRunning, setIsTimerRunning] = useState(false);
-  const [timerTimeLeft, setTimerTimeLeft] = useState(25 * 60); // 25 minutes in seconds
 
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchBarRef = useRef<HTMLInputElement>(null);
@@ -89,9 +85,9 @@ const Desktop: React.FC = () => {
   };
 
   const onEscape = useCallback(() => {
-    const modalKeys = Object.keys(modals) as (keyof ModalsProps['isOpen'])[];
+    const modalKeys = Object.keys(modals.isOpen) as (keyof ModalsProps['isOpen'])[];
     modalKeys.forEach(key => {
-      if (key.startsWith('is') && key.endsWith('ModalOpen') && modals.isOpen[key]) {
+      if (key.startsWith('is') && key.endsWith('Open') && modals.isOpen[key]) {
         modals.closeModal(key);
       }
     });
@@ -132,12 +128,6 @@ const Desktop: React.FC = () => {
     searchInputRef.current?.focus();
     setFocusedIndex(null);
   }, []);
-
-  const onTimerUpdate: TimerUpdateHandler = (isRunning, timeLeft) => {
-    setIsTimerRunning(isRunning);
-    setTimerTimeLeft(timeLeft);
-    modals.onTimerUpdate(isRunning, timeLeft);
-  };
 
   return (
     <div
@@ -197,16 +187,15 @@ const Desktop: React.FC = () => {
       />
 
       <TimerDisplay
-        isTimerRunning={isTimerRunning}
-        timerTimeLeft={timerTimeLeft}
-        onClick={() => modals.toggleModal('pomodoroModal')}
+        isTimerRunning={modals.isTimerRunning}
+        timerTimeLeft={modals.timerTimeLeft}
+        onClick={() => modals.toggleModal('isPomodoroOpen')}
       />
 
       <Toolbar
-        ref={toolbarRef}
         theme={modals.theme}
         setTheme={modals.setTheme}
-        onTimeZonesOpen={() => modals.toggleModal('isTimeZonesOpen')}
+        onWClockOpen={() => modals.toggleModal('isWClockOpen')}
         showToolbar={showToolbar}
         toggleToolbar={toggleToolbar}
         openModal={modals.openModal}
@@ -214,18 +203,25 @@ const Desktop: React.FC = () => {
         toggleModal={modals.toggleModal}
         toggleTheme={modals.toggleTheme}
         isOpen={modals.isOpen}
-        timerTimeLeft={timerTimeLeft}
-        setTimerTimeLeft={setTimerTimeLeft}
-        isTimerRunning={isTimerRunning}
-        setIsTimerRunning={setIsTimerRunning}
+        timerTimeLeft={modals.timerTimeLeft}
+        setTimerTimeLeft={modals.setTimerTimeLeft}
+        isTimerRunning={modals.isTimerRunning}
+        setIsTimerRunning={modals.setIsTimerRunning}
       />
 
       <Modals
-        {...modals}
-        isTimerRunning={isTimerRunning}
-        timerTimeLeft={timerTimeLeft}
-        setIsTimerRunning={setIsTimerRunning}
-        setTimerTimeLeft={setTimerTimeLeft}
+        theme={modals.theme}
+        setTheme={modals.setTheme}
+        openModal={modals.openModal}
+        closeModal={modals.closeModal}
+        toggleModal={modals.toggleModal}
+        toggleTheme={modals.toggleTheme}
+        onTimerUpdate={modals.onTimerUpdate}
+        timerTimeLeft={modals.timerTimeLeft}
+        setTimerTimeLeft={modals.setTimerTimeLeft}
+        isTimerRunning={modals.isTimerRunning}
+        setIsTimerRunning={modals.setIsTimerRunning}
+        isOpen={modals.isOpen}
       />
     </div>
   );

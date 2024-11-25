@@ -1,59 +1,101 @@
-// Modals.tsx
 import React from 'react';
-import TimeZonesModal from './TimeZonesModal';
-import Web3SocialModal from './Web3SocialModal';
-import WalletsModal from './WalletsModal';
-import LexiconModal from './LexiconModal';
-import MusicModal from './MusicModal';
+import WClock from './WClock';
+import Social from './Social';
+import Wallets from './Wallets';
+import Lexicon from './Lexicon';
+import Music from './Music';
 import Help from './Help'; // Corrected import
 import Modalvate from './Modalvate';
-import { ModalsState, Theme, CommonModalProps, MusicModalProps, GamebModalProps } from '../types'; // Import necessary types
+import { ModalsProps, Theme, CommonModalProps, MusicProps, GameBProps, PomodoroProps, ModalProps } from '../types'; // Import necessary types
 import Prices from './Prices'; // Updated import
 import Gov from './Gov'; // Updated import
 import Lens from './Lens'; // Updated import
-import IPFSModal from './IPFSModal';
-import GamebModal from './GamebModal';
+import IPFS from './IPFS';
+import GameB from './GameB';
 import Defi from './Defi'; // Updated import
+import Refi from './Refi'; // Updated import
+import Networks from './Networks'; // Assuming you have a Networks component
+import Pomodoro from './Pomodoro'; // Assuming you have a Pomodoro component
 
-const Modals: React.FC<ModalsState> = ({
-  isTimeZonesOpen,
-  isWeb3SocialOpen,
-  isWalletsOpen,
-  isLexiconOpen,
-  isMusicOpen,
-  isHelpOpen,
-  isModalvateOpen,
-  isPricesOpen,
-  isGovOpen,
-  isDocsOpen,
-  isLensfeedOpen,
-  isGamebOpen,
-  isIpfsOpen,
-  isDefiOpen,
-  isRefiOpen,
-  isNetworksOpen,
-  isLensOpen,
-  closeModal,
+const Modals: React.FC<ModalsProps> = ({
   theme,
+  setTheme,
+  openModal,
+  closeModal,
+  toggleModal,
+  toggleTheme,
+  onTimerUpdate,
+  timerTimeLeft,
+  setTimerTimeLeft,
+  isTimerRunning,
+  setIsTimerRunning,
+  isOpen, // isOpen is of type ModalsState
 }) => {
-
-  const gamebIframeUrl = 'https://innkeeping.github.io/gameB/';
+  // Destructure isOpen to get individual modal states
+  const {
+    isWClockOpen,
+    isSocialOpen,
+    isWalletsOpen,
+    isLexiconOpen,
+    isMusicOpen,
+    isHelpOpen,
+    isModalvateOpen,
+    isPricesOpen,
+    isGovOpen,
+    isDocsOpen,
+    isLensOpen,
+    isGameBOpen,
+    isIpfsoOpen,
+    isDefiOpen,
+    isRefiOpen,
+    isNetworksOpen,
+    isPomodoroOpen,
+  } = isOpen;
 
   // Define an array of modal configurations with specific props
-  const modalConfigurations = [
-    { component: TimeZonesModal, props: { isOpen: isTimeZonesOpen, onClose: () => closeModal('isTimeZonesOpen'), theme } as CommonModalProps },
-    { component: Web3SocialModal, props: { isOpen: isWeb3SocialOpen, onClose: () => closeModal('isWeb3SocialOpen'), theme } as CommonModalProps },
-    { component: WalletsModal, props: { isOpen: isWalletsOpen, onClose: () => closeModal('isWalletsOpen'), theme } as CommonModalProps },
-    { component: LexiconModal, props: { isOpen: isLexiconOpen, onClose: () => closeModal('isLexiconOpen'), theme } as CommonModalProps },
-    { component: Help, props: { isOpen: isHelpOpen, onClose: () => closeModal('isHelpOpen'), theme } as CommonModalProps },
-    { component: Modalvate, props: { isOpen: isModalvateOpen, onClose: () => closeModal('isModalvateOpen'), theme } as CommonModalProps },
-    { component: Prices, props: { isOpen: isPricesOpen, onClose: () => closeModal('isPricesOpen'), theme } as CommonModalProps },
-    { component: Gov, props: { isOpen: isGovOpen, onClose: () => closeModal('isGovOpen'), theme } as CommonModalProps },
-    { component: Lens, props: { isOpen: isLensfeedOpen, onClose: () => closeModal('isLensfeedOpen'), theme } as CommonModalProps },
-    { component: IPFSModal, props: { isOpen: isIpfsOpen, onClose: () => closeModal('isIpfsOpen'), theme } as CommonModalProps },
-    { component: Defi, props: { isOpen: isDefiOpen, onClose: () => closeModal('isDefiOpen'), theme } as CommonModalProps },
-    // Add other modals with their specific props
+  const modalConfigurations: { component: React.FC<ModalProps>; props: ModalProps }[] = [
+    { component: WClock, props: { isOpen: isWClockOpen, onClose: () => closeModal('isWClockOpen'), theme } },
+    { component: Social, props: { isOpen: isSocialOpen, onClose: () => closeModal('isSocialOpen'), theme } },
+    { component: Wallets, props: { isOpen: isWalletsOpen, onClose: () => closeModal('isWalletsOpen'), theme } },
+    { component: Lexicon, props: { isOpen: isLexiconOpen, onClose: () => closeModal('isLexiconOpen'), theme } },
+    { component: Help, props: { isOpen: isHelpOpen, onClose: () => closeModal('isHelpOpen'), theme } },
+    { component: Modalvate, props: { isOpen: isModalvateOpen, onClose: () => closeModal('isModalvateOpen'), theme } },
+    { component: Prices, props: { isOpen: isPricesOpen, onClose: () => closeModal('isPricesOpen'), theme } },
+    { component: Gov, props: { isOpen: isGovOpen, onClose: () => closeModal('isGovOpen'), theme } },
+    { component: Lens, props: { isOpen: isLensOpen, onClose: () => closeModal('isLensOpen'), theme } },
+    { component: IPFS, props: { isOpen: isIpfsoOpen, onClose: () => closeModal('isIpfsoOpen'), theme } },
+    { component: Defi, props: { isOpen: isDefiOpen, onClose: () => closeModal('isDefiOpen'), theme } },
+    { component: Refi, props: { isOpen: isRefiOpen, onClose: () => closeModal('isRefiOpen'), theme } },
+    { component: Networks, props: { isOpen: isNetworksOpen, onClose: () => closeModal('isNetworksOpen'), theme } },
+    // Remove Pomodoro from here
   ];
+
+  // Handle MusicModal separately
+  const musicProps: MusicProps = {
+    isOpen: isMusicOpen,
+    onClose: () => closeModal('isMusicOpen'),
+    theme,
+    onOpen: () => {}, // Provide an empty function or the actual onOpen handler if needed
+  };
+
+  // Handle GameBModal separately
+  const gameBProps: GameBProps = {
+    isOpen: isGameBOpen,
+    onClose: () => closeModal('isGameBOpen'),
+    theme,
+  };
+
+  // Handle PomodoroModal separately
+  const pomodoroProps: PomodoroProps = {
+    isOpen: isPomodoroOpen,
+    onClose: () => closeModal('isPomodoroOpen'),
+    theme,
+    onTimerUpdate,
+    timerTimeLeft,
+    setTimerTimeLeft,
+    isTimerRunning,
+    setIsTimerRunning,
+  };
 
   return (
     <>
@@ -68,19 +110,13 @@ const Modals: React.FC<ModalsState> = ({
       })}
 
       {/* Handle MusicModal separately */}
-      <MusicModal
-        isOpen={isMusicOpen}
-        onClose={() => closeModal('isMusicOpen')}
-        onOpen={() => {}} // Provide an empty function or the actual onOpen handler if needed
-        theme={theme}
-      />
+      <Music {...musicProps} />
 
-      {/* Handle GamebModal separately */}
-      <GamebModal
-        isOpen={isGamebOpen}
-        onClose={() => closeModal('isGamebOpen')}
-        theme={theme}
-      />
+      {/* Handle GameBModal separately */}
+      <GameB {...gameBProps} />
+
+      {/* Handle PomodoroModal separately */}
+      <Pomodoro {...pomodoroProps} />
     </>
   );
 };

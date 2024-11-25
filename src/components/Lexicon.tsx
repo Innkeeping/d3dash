@@ -1,15 +1,17 @@
+// src/components/Lexicon.tsx
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Wallet } from 'lucide-react';
+import { X, Book } from 'lucide-react';
 import { Theme } from '../types';
-import walletsData from '../data/wallets.json';
+import web3_lexicon from '../data/lexicon.json';
+import useClickOutside from '../hooks/useClickOutside';
 
-interface WalletsModalProps {
+interface LexiconProps {
   isOpen: boolean;
   onClose: () => void;
   theme: Theme;
 }
 
-const WalletsModal: React.FC<WalletsModalProps> = ({ isOpen, onClose, theme }) => {
+const Lexicon: React.FC<LexiconProps> = ({ isOpen, onClose, theme }) => {
   if (!isOpen) return null;
 
   const themeClasses = {
@@ -22,10 +24,10 @@ const WalletsModal: React.FC<WalletsModalProps> = ({ isOpen, onClose, theme }) =
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const modalRef = useRef<HTMLDivElement | null>(null);
-  const listItemsRef = useRef<(HTMLAnchorElement | null)[]>([]);
+  const listItemsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  const filteredWallets = walletsData.filter((wallet) =>
-    wallet.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredTerms = web3_lexicon.filter((term) =>
+    term.term.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   useEffect(() => {
@@ -35,31 +37,7 @@ const WalletsModal: React.FC<WalletsModalProps> = ({ isOpen, onClose, theme }) =
     }
   }, [isOpen]);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        onClose();
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [onClose]);
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [onClose]);
+  useClickOutside(modalRef, onClose);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -68,7 +46,7 @@ const WalletsModal: React.FC<WalletsModalProps> = ({ isOpen, onClose, theme }) =
       } else if (event.key === 'ArrowDown') {
         event.preventDefault();
         setFocusedIndex((prevIndex) =>
-          prevIndex === null || prevIndex >= filteredWallets.length - 1 ? 0 : prevIndex + 1
+          prevIndex === null || prevIndex >= filteredTerms.length - 1 ? 0 : prevIndex + 1
         );
       } else if (event.key === 'ArrowUp') {
         event.preventDefault();
@@ -76,10 +54,10 @@ const WalletsModal: React.FC<WalletsModalProps> = ({ isOpen, onClose, theme }) =
           setFocusedIndex(null);
           searchInputRef.current?.focus();
         } else if (focusedIndex === null) {
-          // Do nothing if already focused on the search bar
+          // Do nothing
         } else {
           setFocusedIndex((prevIndex) =>
-            prevIndex === null || prevIndex <= 0 ? filteredWallets.length - 1 : prevIndex - 1
+            prevIndex === null || prevIndex <= 0 ? filteredTerms.length - 1 : prevIndex - 1
           );
         }
       } else if (event.key === 'Enter' && focusedIndex !== null) {
@@ -87,7 +65,6 @@ const WalletsModal: React.FC<WalletsModalProps> = ({ isOpen, onClose, theme }) =
         const link = listItemsRef.current[focusedIndex];
         if (link) {
           link.focus();
-          link.click();
         }
       }
     };
@@ -96,21 +73,13 @@ const WalletsModal: React.FC<WalletsModalProps> = ({ isOpen, onClose, theme }) =
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [filteredWallets, focusedIndex, onClose]);
+  }, [filteredTerms, focusedIndex, onClose]);
 
   useEffect(() => {
     if (focusedIndex !== null && listItemsRef.current[focusedIndex]) {
       listItemsRef.current[focusedIndex].focus();
     }
   }, [focusedIndex]);
-
-  const renderIcon = (icon: string, iconClass: string) => {
-    if (icon === 'Wallet') {
-      return <Wallet className={iconClass} size={24} />;
-    }
-
-    return null;
-  };
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -119,7 +88,7 @@ const WalletsModal: React.FC<WalletsModalProps> = ({ isOpen, onClose, theme }) =
         className={`w-[600px] max-h-[90vh] rounded-xl border ${themeClasses[theme]} backdrop-blur-md p-6 overflow-y-auto`}
       >
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold">Wallets</h2>
+          <h2 className="text-2xl font-bold">Web3 Lexicon</h2>
           <button onClick={onClose} className="p-1 hover:bg-gray-800/50 rounded-lg">
             <X size={20} />
           </button>
@@ -129,7 +98,7 @@ const WalletsModal: React.FC<WalletsModalProps> = ({ isOpen, onClose, theme }) =
           <input
             ref={searchInputRef}
             type="text"
-            placeholder="Search wallets..."
+            placeholder="Search terms..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full p-4 rounded-lg border border-gray-700 bg-gray-800/50 focus:outline-none focus:border-purple-400"
@@ -137,41 +106,38 @@ const WalletsModal: React.FC<WalletsModalProps> = ({ isOpen, onClose, theme }) =
         </div>
 
         <div className="space-y-4">
-          {filteredWallets.map((wallet, index) => (
-            <a
-              key={wallet.name}
+          {filteredTerms.map((term, index) => (
+            <div
+              key={term.term}
               ref={(el) => (listItemsRef.current[index] = el)}
-              href={wallet.link}
-              target="_blank"
-              rel="noopener noreferrer"
               tabIndex={0}
               className={`flex items-center gap-4 p-4 rounded-lg hover:bg-gray-800/30 transition-colors ${
                 focusedIndex === index ? 'bg-gray-800/30' : ''
               }`}
             >
               <div className="p-2 rounded-lg bg-gray-800/50">
-                {renderIcon(wallet.icon, wallet.iconClass)}
+                <Book className="text-purple-400" size={24} />
               </div>
               <div>
-                <h3 className="font-semibold text-lg">{wallet.name}</h3>
-                <p className="text-sm opacity-75">{wallet.description}</p>
+                <h3 className="font-semibold text-lg">{term.term}</h3>
+                <p className="text-sm opacity-75">{term.description}</p>
               </div>
-            </a>
+            </div>
           ))}
         </div>
 
-        {filteredWallets.length === 0 && (
+        {filteredTerms.length === 0 && (
           <div className="mt-6 text-sm opacity-75">
             <p>No results found for "{searchQuery}".</p>
           </div>
         )}
 
         <div className="mt-6 text-sm opacity-75">
-          <p>Information for various cryptocurrency wallets.</p>
+          <p>Explore a variety of Web3, DeFi, blockchain, and decentralized governance terms.</p>
         </div>
       </div>
     </div>
   );
 };
 
-export default WalletsModal;
+export default Lexicon;

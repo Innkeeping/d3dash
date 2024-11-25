@@ -1,13 +1,11 @@
 import { useState, useCallback } from 'react';
-import { Theme, ModalsProps, TimerUpdateHandler, ModalsState } from '../types';
+import { ModalsState, Theme, ModalsProps, TimerUpdateHandler } from '../types';
 
 const useModals = (initialTheme: Theme): ModalsProps => {
   const [theme, setTheme] = useState<Theme>(initialTheme);
-
-  // Initialize isOpen state with all modal keys set to false
   const [isOpen, setIsOpen] = useState<ModalsState>({
-    isTimeZonesOpen: false,
-    isWeb3SocialOpen: false,
+    isWClockOpen: false,
+    isSocialOpen: false,
     isWalletsOpen: false,
     isLexiconOpen: false,
     isMusicOpen: false,
@@ -16,54 +14,40 @@ const useModals = (initialTheme: Theme): ModalsProps => {
     isPricesOpen: false,
     isGovOpen: false,
     isDocsOpen: false,
-    isLensfeedOpen: false,
-    isGamebOpen: false,
-    isIpfsOpen: false,
+    isLensOpen: false,
+    isGameBOpen: false,
+    isIpfsoOpen: false,
     isDefiOpen: false,
     isRefiOpen: false,
     isNetworksOpen: false,
-    isLensOpen: false,
+    isPomodoroOpen: false,
   });
 
-  const [timerTimeLeft, setTimerTimeLeft] = useState(25 * 60); // 25 minutes in seconds
-  const [isTimerRunning, setIsTimerRunning] = useState(false);
-
-  const setOpen = (modalKey: keyof ModalsState, open: boolean) => {
-    setIsOpen((prevIsOpen) => ({
-      ...prevIsOpen,
-      [modalKey]: open,
-    }));
-  };
-
-  const toggleTheme = useCallback(() => {
-    setTheme(prevTheme => {
-      const themes: Theme[] = ['purple', 'green', 'teal'];
-      const currentThemeIndex = themes.indexOf(prevTheme);
-      return themes[(currentThemeIndex + 1) % themes.length];
-    });
-  }, []);
+  const [timerTimeLeft, setTimerTimeLeft] = useState<number>(25 * 60); // 25 minutes in seconds
+  const [isTimerRunning, setIsTimerRunning] = useState<boolean>(false);
 
   const openModal = useCallback((modalKey: keyof ModalsState) => {
-    setOpen(modalKey, true);
+    setIsOpen(prev => ({ ...prev, [modalKey]: true }));
   }, []);
 
   const closeModal = useCallback((modalKey: keyof ModalsState) => {
-    setOpen(modalKey, false);
+    setIsOpen(prev => ({ ...prev, [modalKey]: false }));
   }, []);
 
   const toggleModal = useCallback((modalKey: keyof ModalsState) => {
-    setIsOpen((prevIsOpen) => ({
-      ...prevIsOpen,
-      [modalKey]: !prevIsOpen[modalKey],
-    }));
+    setIsOpen(prev => ({ ...prev, [modalKey]: !prev[modalKey] }));
   }, []);
 
-  const onTimerUpdate: TimerUpdateHandler = useCallback((isRunning, timeLeft) => {
+  const toggleTheme = useCallback(() => {
+    setTheme(prev => (prev === 'purple' ? 'green' : prev === 'green' ? 'teal' : 'purple'));
+  }, []);
+
+  const onTimerUpdate = useCallback((isRunning: boolean, timeLeft: number) => {
     setIsTimerRunning(isRunning);
     setTimerTimeLeft(timeLeft);
   }, []);
 
-  const modalsState: ModalsProps = {
+  return {
     theme,
     setTheme,
     openModal,
@@ -75,10 +59,8 @@ const useModals = (initialTheme: Theme): ModalsProps => {
     setTimerTimeLeft,
     isTimerRunning,
     setIsTimerRunning,
-    isOpen, // Include the isOpen property
+    isOpen,
   };
-
-  return modalsState;
 };
 
 export default useModals;

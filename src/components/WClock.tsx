@@ -1,16 +1,16 @@
-// src/components/TimeZonesModal.tsx
+// src/components/WClock.tsx
 import React, { useRef, useEffect, useState } from 'react';
-import { X, Clock } from 'lucide-react';
+import { X, Clock as LucideClock } from 'lucide-react';
 import { Theme } from '../types';
 import { timeZonesWithCities } from '../data/timeZonesWithCities';
 
-interface TimeZonesModalProps {
+interface WClockProps {
   isOpen: boolean;
   onClose: () => void;
   theme: Theme;
 }
 
-const TimeZonesModal: React.FC<TimeZonesModalProps> = ({ isOpen, onClose, theme }) => {
+const WClock: React.FC<WClockProps> = ({ isOpen, onClose, theme }) => {
   if (!isOpen) return null;
 
   const themeClasses = {
@@ -169,7 +169,7 @@ const TimeZonesModal: React.FC<TimeZonesModalProps> = ({ isOpen, onClose, theme 
                 className="flex items-center gap-4 p-4 rounded-lg hover:bg-gray-800/30 transition-colors"
               >
                 <div className="p-2 rounded-lg bg-gray-800/50">
-                  <Clock className="text-purple-400" size={24} />
+                  <LucideClock className="text-purple-400" size={24} />
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg">{tz.label}</h3>
@@ -209,4 +209,4 @@ const TimeZonesModal: React.FC<TimeZonesModalProps> = ({ isOpen, onClose, theme 
   );
 };
 
-export default TimeZonesModal;
+export default WClock;
