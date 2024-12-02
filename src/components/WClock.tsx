@@ -1,53 +1,53 @@
 // src/components/WClock.tsx
-import React, { useRef, useEffect, useState } from 'react';
-import { X, Clock as LucideClock } from 'lucide-react';
-import { Theme } from '../types';
-import { timeZonesWithCities } from '../data/timeZonesWithCities';
+import React, { useRef, useEffect, useState } from 'react'
+import { X, Clock as LucideClock } from 'lucide-react'
+import { Theme } from '../types'
+import { timeZonesWithCities } from '../data/timeZonesWithCities'
 
 interface WClockProps {
-  isOpen: boolean;
-  onClose: () => void;
-  theme: Theme;
+  isOpen: boolean
+  onClose: () => void
+  theme: Theme
 }
 
 const WClock: React.FC<WClockProps> = ({ isOpen, onClose, theme }) => {
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   const themeClasses = {
     purple: 'border-purple-500/30 bg-purple-900/20',
     green: 'border-green-500/30 bg-green-900/20',
     teal: 'border-teal-500/30 bg-teal-900/20'
-  };
+  }
 
-  const [currentTime, setCurrentTime] = useState(new Date());
-  const [searchQuery, setSearchQuery] = useState('');
-  const modalRef = useRef<HTMLDivElement | null>(null);
-  const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const [currentTime, setCurrentTime] = useState(new Date())
+  const [searchQuery, setSearchQuery] = useState('')
+  const modalRef = useRef<HTMLDivElement | null>(null)
+  const searchInputRef = useRef<HTMLInputElement | null>(null)
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
-    }, 1000);
+    }, 1000)
 
     return () => {
       clearInterval(timer);
-    };
-  }, []);
+    }
+  }, [])
 
   useEffect(() => {
     if (isOpen && searchInputRef.current) {
       setTimeout(() => {
         if (searchInputRef.current) {
-          searchInputRef.current.focus();
+          searchInputRef.current.focus()
         }
-      }, 100);
+      }, 100)
     }
-  }, [isOpen]);
+  }, [isOpen])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        onClose();
+        onClose()
       }
     };
 
@@ -55,20 +55,20 @@ const WClock: React.FC<WClockProps> = ({ isOpen, onClose, theme }) => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [onClose]);
+  }, [onClose])
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        onClose();
+        onClose()
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown)
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [onClose]);
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [onClose])
 
   const formatTime = (date: Date, timeZone: string) => {
     return date.toLocaleTimeString([], {
@@ -77,65 +77,65 @@ const WClock: React.FC<WClockProps> = ({ isOpen, onClose, theme }) => {
       second: '2-digit',
       timeZone: timeZone,
       hour12: false,
-    });
-  };
+    })
+  }
 
   const formatTimeZoneOffset = (timeZone: string) => {
-    const date = new Date();
-    const options = { timeZone: timeZone, timeZoneName: 'shortOffset' } as const;
-    const formatted = date.toLocaleTimeString('en-US', options);
-    const offset = formatted.split(' ').pop();
-    return offset ? offset.replace('GMT', 'UTC') : '';
+    const date = new Date()
+    const options = { timeZone: timeZone, timeZoneName: 'shortOffset' } as const
+    const formatted = date.toLocaleTimeString('en-US', options)
+    const offset = formatted.split(' ').pop()
+    return offset ? offset.replace('GMT', 'UTC') : ''
   };
 
   const getTimeZoneOffset = (timeZone: string) => {
-    const date = new Date();
-    const options = { timeZone: timeZone, timeZoneName: 'shortOffset' } as const;
-    const formatted = date.toLocaleTimeString('en-US', options);
-    const offset = formatted.split(' ').pop();
-    if (!offset) return 0;
+    const date = new Date()
+    const options = { timeZone: timeZone, timeZoneName: 'shortOffset' } as const
+    const formatted = date.toLocaleTimeString('en-US', options)
+    const offset = formatted.split(' ').pop()
+    if (!offset) return 0
 
-    const [sign, hours, minutes] = offset.match(/([+-])(\d{2}):(\d{2})/)?.slice(1) || ['+', '0', '0'];
-    const totalMinutes = (parseInt(hours) * 60 + parseInt(minutes)) * (sign === '+' ? 1 : -1);
-    return totalMinutes;
+    const [sign, hours, minutes] = offset.match(/([+-])(\d{2}):(\d{2})/)?.slice(1) || ['+', '0', '0']
+    const totalMinutes = (parseInt(hours) * 60 + parseInt(minutes)) * (sign === '+' ? 1 : -1)
+    return totalMinutes
   };
 
   const sortedTimeZones = [...timeZonesWithCities].sort((a, b) => {
-    return getTimeZoneOffset(a.value) - getTimeZoneOffset(b.value);
-  });
+    return getTimeZoneOffset(a.value) - getTimeZoneOffset(b.value)
+  })
 
   const normalizeOffset = (offset: string) => {
     return offset
       .replace(/GMT/g, 'UTC')
       .replace(/\s+/g, '')
-      .toLowerCase();
-  };
+      .toLowerCase()
+  }
 
   const extractOffsetFromQuery = (query: string) => {
-    const match = query.match(/(UTC|GMT)\s*([+-]?\d+)/i);
+    const match = query.match(/(UTC|GMT)\s*([+-]?\d+)/i)
     if (match) {
       return normalizeOffset(match[1] + match[2]);
     }
-    return normalizeOffset(query);
-  };
+    return normalizeOffset(query)
+  }
 
   const formatOffsetForComparison = (offset: string) => {
-    return offset.replace(/UTC([+-])(\d+)/, 'UTC$1$2');
-  };
+    return offset.replace(/UTC([+-])(\d+)/, 'UTC$1$2')
+  }
 
   const filteredTimeZones = sortedTimeZones.filter(tz => {
-    const labelMatch = tz.label.toLowerCase().includes(normalizeOffset(searchQuery));
+    const labelMatch = tz.label.toLowerCase().includes(normalizeOffset(searchQuery))
     const cityMatch = tz.cities.some(city =>
       city.toLowerCase().includes(normalizeOffset(searchQuery))
-    );
-    const countryMatch = tz.country && tz.country.toLowerCase().includes(normalizeOffset(searchQuery));
-    const timezoneMatch = tz.timezone && normalizeOffset(tz.timezone).includes(normalizeOffset(searchQuery));
+    )
+    const countryMatch = tz.country && tz.country.toLowerCase().includes(normalizeOffset(searchQuery))
+    const timezoneMatch = tz.timezone && normalizeOffset(tz.timezone).includes(normalizeOffset(searchQuery))
     const offsetMatch = formatTimeZoneOffset(tz.value)
       .toLowerCase()
       .includes(formatOffsetForComparison(extractOffsetFromQuery(searchQuery)));
 
     return labelMatch || cityMatch || countryMatch || timezoneMatch || offsetMatch;
-  });
+  })
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -206,7 +206,7 @@ const WClock: React.FC<WClockProps> = ({ isOpen, onClose, theme }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default WClock;
+export default WClock

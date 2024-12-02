@@ -1,28 +1,28 @@
 // src/components/Social.tsx
-import React, { useState, useRef, useEffect } from 'react';
-import { X, Globe, Share, MessageSquare, Users, Link, Camera, Film, Check, Mail, Terminal } from 'lucide-react';
-import { Theme } from '../types';
+import React, { useState, useRef, useEffect } from 'react'
+import { X, Globe, Share, MessageSquare, Users, Link, Camera, Film, Check, Mail, Terminal } from 'lucide-react'
+import { Theme } from '../types'
 
 interface SocialProps {
-  isOpen: boolean;
-  onClose: () => void;
-  theme: Theme;
+  isOpen: boolean
+  onClose: () => void
+  theme: Theme
 }
 
 const Social: React.FC<SocialProps> = ({ isOpen, onClose, theme }) => {
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   const themeClasses = {
     purple: 'border-purple-500/30 bg-purple-900/20',
     green: 'border-green-500/30 bg-green-900/20',
     teal: 'border-teal-500/30 bg-teal-900/20',
-  };
+  }
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
-  const searchInputRef = useRef<HTMLInputElement | null>(null);
-  const modalRef = useRef<HTMLDivElement | null>(null);
-  const listItemsRef = useRef<(HTMLAnchorElement | null)[]>([]);
+  const [searchQuery, setSearchQuery] = useState('')
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null)
+  const searchInputRef = useRef<HTMLInputElement | null>(null)
+  const modalRef = useRef<HTMLDivElement | null>(null)
+  const listItemsRef = useRef<(HTMLAnchorElement | null)[]>([])
 
   const socialPlatforms = [
     {
@@ -97,30 +97,30 @@ const Social: React.FC<SocialProps> = ({ isOpen, onClose, theme }) => {
       url: 'https://lenspeer.com/',
       description: 'Lenspeer is a decentralized social network for communities.',
     },
-  ];
+  ]
 
   const filteredSocialPlatforms = socialPlatforms.filter((platform) =>
     platform.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  )
 
   useEffect(() => {
     if (isOpen && searchInputRef.current) {
-      searchInputRef.current.focus();
-      setFocusedIndex(null);
+      searchInputRef.current.focus()
+      setFocusedIndex(null)
     }
-  }, [isOpen]);
+  }, [isOpen])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        onClose();
+        onClose()
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside)
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
   }, [onClose]);
 
   useEffect(() => {
@@ -131,7 +131,7 @@ const Social: React.FC<SocialProps> = ({ isOpen, onClose, theme }) => {
         event.preventDefault();
         setFocusedIndex((prevIndex) =>
           prevIndex === null || prevIndex >= filteredSocialPlatforms.length - 1 ? 0 : prevIndex + 1
-        );
+        )
       } else if (event.key === 'ArrowUp') {
         event.preventDefault();
         if (focusedIndex === 0) {
@@ -142,28 +142,28 @@ const Social: React.FC<SocialProps> = ({ isOpen, onClose, theme }) => {
         } else {
           setFocusedIndex((prevIndex) =>
             prevIndex === null || prevIndex <= 0 ? filteredSocialPlatforms.length - 1 : prevIndex - 1
-          );
+          )
         }
       } else if (event.key === 'Enter' && focusedIndex !== null) {
-        event.preventDefault();
-        const link = listItemsRef.current[focusedIndex];
+        event.preventDefault()
+        const link = listItemsRef.current[focusedIndex]
         if (link) {
           link.click();
         }
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown)
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [filteredSocialPlatforms, focusedIndex, onClose]);
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [filteredSocialPlatforms, focusedIndex, onClose])
 
   useEffect(() => {
     if (focusedIndex !== null && listItemsRef.current[focusedIndex]) {
-      listItemsRef.current[focusedIndex].focus();
+      listItemsRef.current[focusedIndex].focus()
     }
-  }, [focusedIndex]);
+  }, [focusedIndex])
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -224,7 +224,7 @@ const Social: React.FC<SocialProps> = ({ isOpen, onClose, theme }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Social;
+export default Social

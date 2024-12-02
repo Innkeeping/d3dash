@@ -1,18 +1,18 @@
 // src/components/Pomodoro.tsx
-import React, { useState, useEffect, useRef, Dispatch, SetStateAction } from 'react';
-import { X, Play, Pause, RotateCcw } from 'lucide-react';
-import { Theme } from '../types';
-import useClickOutside from '../hooks/useClickOutside';
+import React, { useState, useEffect, useRef, Dispatch, SetStateAction } from 'react'
+import { X, Play, Pause, RotateCcw } from 'lucide-react'
+import { Theme } from '../types'
+import useClickOutside from '../hooks/useClickOutside'
 
 interface PomodoroProps {
-  isOpen: boolean;
-  onClose: () => void;
-  theme: Theme;
-  onTimerUpdate: (isRunning: boolean, timeLeft: number) => void;
-  isTimerRunning: boolean;
-  timerTimeLeft: number;
-  setIsTimerRunning: Dispatch<SetStateAction<boolean>>;
-  setTimerTimeLeft: Dispatch<SetStateAction<number>>;
+  isOpen: boolean
+  onClose: () => void
+  theme: Theme
+  onTimerUpdate: (isRunning: boolean, timeLeft: number) => void
+  isTimerRunning: boolean
+  timerTimeLeft: number
+  setIsTimerRunning: Dispatch<SetStateAction<boolean>>
+  setTimerTimeLeft: Dispatch<SetStateAction<number>>
 }
 
 const Pomodoro: React.FC<PomodoroProps> = ({
@@ -25,83 +25,83 @@ const Pomodoro: React.FC<PomodoroProps> = ({
   setIsTimerRunning,
   setTimerTimeLeft,
 }) => {
-  const [currentMode, setCurrentMode] = useState<'work' | 'break'>('work');
-  const [showNotification, setShowNotification] = useState(false);
-  const [notificationMessage, setNotificationMessage] = useState('');
-  const modalRef = useRef<HTMLDivElement>(null);
+  const [currentMode, setCurrentMode] = useState<'work' | 'break'>('work')
+  const [showNotification, setShowNotification] = useState(false)
+  const [notificationMessage, setNotificationMessage] = useState('')
+  const modalRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
+    let interval: NodeJS.Timeout | null = null
 
     if (isTimerRunning && timerTimeLeft > 0) {
-      console.log('Starting interval');
+      console.log('Starting interval')
       interval = setInterval(() => {
-        setTimerTimeLeft((time) => time - 1);
-      }, 1000);
+        setTimerTimeLeft((time) => time - 1)
+      }, 1000)
     } else if (timerTimeLeft === 0) {
-      if (interval) clearInterval(interval);
-      setShowNotification(true);
-      setNotificationMessage(currentMode === 'work' ? 'Work Time Over!' : 'Break Time Over!');
-      setTimeout(() => setShowNotification(false), 3000);
-      toggleMode();
+      if (interval) clearInterval(interval)
+      setShowNotification(true)
+      setNotificationMessage(currentMode === 'work' ? 'Work Time Over!' : 'Break Time Over!')
+      setTimeout(() => setShowNotification(false), 3000)
+      toggleMode()
     }
 
-    onTimerUpdate(isTimerRunning, timerTimeLeft);
+    onTimerUpdate(isTimerRunning, timerTimeLeft)
 
     return () => {
       if (interval) clearInterval(interval);
-    };
-  }, [isTimerRunning, timerTimeLeft, currentMode, onTimerUpdate, setTimerTimeLeft]);
+    }
+  }, [isTimerRunning, timerTimeLeft, currentMode, onTimerUpdate, setTimerTimeLeft])
 
-  useClickOutside(modalRef, onClose);
+  useClickOutside(modalRef, onClose)
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        onClose();
+        onClose()
       }
-    };
+    }
 
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown)
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('keydown', handleKeyDown)
     };
-  }, [onClose]);
+  }, [onClose])
 
   const toggleTimer = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
+    event.stopPropagation()
     setIsTimerRunning((prevIsRunning: boolean) => {
-      console.log('Toggling timer:', !prevIsRunning);
-      return !prevIsRunning;
-    });
-  };
+      console.log('Toggling timer:', !prevIsRunning)
+      return !prevIsRunning
+    })
+  }
 
   const resetTimer = () => {
-    setIsTimerRunning(false);
-    setTimerTimeLeft(currentMode === 'work' ? 25 * 60 : 5 * 60);
-    setShowNotification(false);
-  };
+    setIsTimerRunning(false)
+    setTimerTimeLeft(currentMode === 'work' ? 25 * 60 : 5 * 60)
+    setShowNotification(false)
+  }
 
   const toggleMode = () => {
-    setCurrentMode(currentMode === 'work' ? 'break' : 'work');
-    setTimerTimeLeft(currentMode === 'work' ? 5 * 60 : 25 * 60);
-    setIsTimerRunning(false);
-    setShowNotification(false);
-  };
+    setCurrentMode(currentMode === 'work' ? 'break' : 'work')
+    setTimerTimeLeft(currentMode === 'work' ? 5 * 60 : 25 * 60)
+    setIsTimerRunning(false)
+    setShowNotification(false)
+  }
 
   const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  };
+    const mins = Math.floor(seconds / 60)
+    const secs = seconds % 60
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
+  }
 
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   const themeClasses = {
     purple: 'border-purple-500/30 bg-purple-900/20',
     green: 'border-green-500/30 bg-green-900/20',
     teal: 'border-teal-500/30 bg-teal-900/20'
-  };
+  }
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -158,7 +158,7 @@ const Pomodoro: React.FC<PomodoroProps> = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Pomodoro;
+export default Pomodoro

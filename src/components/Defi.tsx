@@ -1,28 +1,37 @@
 // src/Defi.tsx
-import React, { useState, useRef, useEffect } from 'react';
-import { X, DollarSign, PieChart, BarChart, Compass, Briefcase, HardDrive, CircleDollarSign, Network } from 'lucide-react';
-import { Theme } from '../types';
+import React, { useState, useRef, useEffect } from 'react'
+import {
+  X,
+  DollarSign,
+  PieChart,
+  BarChart,
+  Compass,
+  Briefcase,
+  HardDrive,
+  CircleDollarSign,
+  Network } from 'lucide-react'
+import { Theme } from '../types'
 
 interface DefiProps {
-  isOpen: boolean;
-  onClose: () => void;
-  theme: Theme;
+  isOpen: boolean
+  onClose: () => void
+  theme: Theme
 }
 
 const Defi: React.FC<DefiProps> = ({ isOpen, onClose, theme }) => {
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   const themeClasses = {
     purple: 'border-purple-500/30 bg-purple-900/20',
     green: 'border-green-500/30 bg-green-900/20',
     teal: 'border-teal-500/30 bg-teal-900/20'
-  };
+  }
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
-  const searchInputRef = useRef<HTMLInputElement | null>(null);
-  const modalRef = useRef<HTMLDivElement | null>(null);
-  const listItemsRef = useRef<(HTMLAnchorElement | null)[]>([]);
+  const [searchQuery, setSearchQuery] = useState('')
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null)
+  const searchInputRef = useRef<HTMLInputElement | null>(null)
+  const modalRef = useRef<HTMLDivElement | null>(null)
+  const listItemsRef = useRef<(HTMLAnchorElement | null)[]>([])
 
   const defiProjects = [
     {
@@ -85,79 +94,79 @@ const Defi: React.FC<DefiProps> = ({ isOpen, onClose, theme }) => {
       url: 'https://quickswap.exchange/',
       description: 'A decentralized exchange (DEX) on the Polygon network',
     },
-  ];
+  ]
 
   const filteredDefiProjects = defiProjects.filter((project) =>
     project.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  )
 
   useEffect(() => {
     if (isOpen) {
       const timeoutId = setTimeout(() => {
         if (searchInputRef.current) {
-          searchInputRef.current.focus();
-          setFocusedIndex(null);
+          searchInputRef.current.focus()
+          setFocusedIndex(null)
         }
-      }, 100);
+      }, 100)
 
-      return () => clearTimeout(timeoutId);
+      return () => clearTimeout(timeoutId)
     }
-  }, [isOpen]);
+  }, [isOpen])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        onClose();
+        onClose()
       }
-    };
+    }
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside)
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [onClose]);
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [onClose])
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        onClose();
+        onClose()
       } else if (event.key === 'ArrowDown') {
-        event.preventDefault();
+        event.preventDefault()
         setFocusedIndex((prevIndex) =>
           prevIndex === null || prevIndex >= filteredDefiProjects.length - 1 ? 0 : prevIndex + 1
-        );
+        )
       } else if (event.key === 'ArrowUp') {
-        event.preventDefault();
+        event.preventDefault()
         if (focusedIndex === 0) {
-          setFocusedIndex(null);
-          searchInputRef.current?.focus();
+          setFocusedIndex(null)
+          searchInputRef.current?.focus()
         } else if (focusedIndex === null) {
 
         } else {
           setFocusedIndex((prevIndex) =>
             prevIndex === null || prevIndex <= 0 ? filteredDefiProjects.length - 1 : prevIndex - 1
-          );
+          )
         }
       } else if (event.key === 'Enter' && focusedIndex !== null) {
-        event.preventDefault();
-        const link = listItemsRef.current[focusedIndex];
+        event.preventDefault()
+        const link = listItemsRef.current[focusedIndex]
         if (link) {
-          link.click();
+          link.click()
         }
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown)
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [filteredDefiProjects, focusedIndex, onClose]);
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [filteredDefiProjects, focusedIndex, onClose])
 
   useEffect(() => {
     if (focusedIndex !== null && listItemsRef.current[focusedIndex]) {
-      listItemsRef.current[focusedIndex].focus();
+      listItemsRef.current[focusedIndex].focus()
     }
-  }, [focusedIndex]);
+  }, [focusedIndex])
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -218,7 +227,7 @@ const Defi: React.FC<DefiProps> = ({ isOpen, onClose, theme }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Defi;
+export default Defi

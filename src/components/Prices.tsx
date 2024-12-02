@@ -1,190 +1,184 @@
-import React, { useRef, useEffect, useState } from 'react';
-import axios from 'axios';
-import { X } from 'lucide-react';
-import { Theme } from '../types';
+import React, { useRef, useEffect, useState } from 'react'
+import axios from 'axios'
+import { X } from 'lucide-react'
+import { Theme } from '../types'
 
 interface PricesProps {
-  isOpen: boolean;
-  onClose: () => void;
-  theme: Theme;
+  isOpen: boolean
+  onClose: () => void
+  theme: Theme
 }
 
 interface Crypto {
-  id: string;
-  symbol: string;
-  name: string;
-  current_price: number;
+  id: string
+  symbol: string
+  name: string
+  current_price: number
 }
 
 const Prices: React.FC<PricesProps> = ({ isOpen, onClose, theme }) => {
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   const themeClasses = {
     purple: 'border-purple-500/30 bg-purple-900/20',
     green: 'border-green-500/30 bg-green-900/20',
     teal: 'border-teal-500/30 bg-teal-900/20',
-  };
+  }
 
   const tokenNameClasses = {
     purple: 'text-purple-400',
     green: 'text-green-400',
     teal: 'text-teal-400',
-  };
+  }
 
-  const tokenSymbolClasses = {
-    purple: 'text-purple-500',
-    green: 'text-green-500',
-    teal: 'text-teal-500',
-  };
+  const priceClasses = 'font-bold'
 
-  const priceClasses = 'font-bold';
+  const [cryptoPrices, setCryptoPrices] = useState<Crypto[]>([])
+  const [searchQuery, setSearchQuery] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [lastFetchTimestamp, setLastFetchTimestamp] = useState<string | null>(null)
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null)
+  const searchInputRef = useRef<HTMLInputElement | null>(null)
+  const modalRef = useRef<HTMLDivElement | null>(null)
+  const listItemsRef = useRef<(HTMLDivElement | null)[]>([])
 
-  const [cryptoPrices, setCryptoPrices] = useState<Crypto[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [lastFetchTimestamp, setLastFetchTimestamp] = useState<string | null>(null);
-  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
-  const searchInputRef = useRef<HTMLInputElement | null>(null);
-  const modalRef = useRef<HTMLDivElement | null>(null);
-  const listItemsRef = useRef<(HTMLDivElement | null)[]>([]);
-
-  const cryptoIds = ['ethereum', 'optimism', 'bitcoin', 'matic-network', 'giveth', 'golem'];
+  const cryptoIds = ['ethereum', 'optimism', 'bitcoin', 'matic-network', 'giveth', 'golem']
 
   const fetchCryptoPrices = async () => {
-    setLoading(true);
-    setError(null);
-    setLastFetchTimestamp(new Date().toISOString());
+    setLoading(true)
+    setError(null)
+    setLastFetchTimestamp(new Date().toISOString())
     try {
       const response = await axios.get<any>(
         `https://api.coingecko.com/api/v3/simple/price?ids=${cryptoIds.join(',')}&vs_currencies=usd&include_24hr_change=false`
-      );
+      )
 
       const cryptoData = cryptoIds.map((id) => {
-        const price = response.data[id].usd;
+        const price = response.data[id].usd
         let symbol, name;
         switch (id) {
           case 'ethereum':
-            symbol = 'ETH';
-            name = 'Ethereum';
-            break;
+            symbol = 'ETH'
+            name = 'Ethereum'
+            break
           case 'optimism':
-            symbol = 'OP';
-            name = 'Optimism';
-            break;
+            symbol = 'OP'
+            name = 'Optimism'
+            break
           case 'bitcoin':
-            symbol = 'BTC';
-            name = 'Bitcoin';
-            break;
+            symbol = 'BTC'
+            name = 'Bitcoin'
+            break
           case 'matic-network':
-            symbol = 'POL';
-            name = 'Polygon';
-            break;
+            symbol = 'POL'
+            name = 'Polygon'
+            break
           case 'giveth':
-            symbol = 'GIV';
-            name = 'Giveth';
-            break;
+            symbol = 'GIV'
+            name = 'Giveth'
+            break
           case 'golem':
-            symbol = 'GLM';
-            name = 'Golem';
-            break;
+            symbol = 'GLM'
+            name = 'Golem'
+            break
           default:
-            symbol = '';
-            name = '';
+            symbol = ''
+            name = ''
         }
         return {
           id,
           symbol,
           name,
           current_price: price,
-        };
-      });
+        }
+      })
 
-      setCryptoPrices(cryptoData);
-      setLoading(false);
+      setCryptoPrices(cryptoData)
+      setLoading(false)
     } catch (error) {
-      console.error('Error fetching crypto prices:', error);
-      setError('Failed to fetch crypto prices.');
-      setLoading(false);
+      console.error('Error fetching crypto prices:', error)
+      setError('Failed to fetch crypto prices.')
+      setLoading(false)
     }
-  };
+  }
 
   const filteredCryptos = cryptoPrices.filter((crypto) =>
     crypto.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     crypto.symbol.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  )
 
   useEffect(() => {
-    fetchCryptoPrices();
+    fetchCryptoPrices()
 
-    const intervalId = setInterval(fetchCryptoPrices, 300000);
+    const intervalId = setInterval(fetchCryptoPrices, 300000)
 
-    return () => clearInterval(intervalId);
-  }, []);
+    return () => clearInterval(intervalId)
+  }, [])
 
   useEffect(() => {
     if (isOpen && searchInputRef.current) {
       setTimeout(() => {
         const inputElement = searchInputRef.current;
         if (inputElement) {
-          inputElement.focus();
-          setFocusedIndex(null);
+          inputElement.focus()
+          setFocusedIndex(null)
         }
-      }, 100); // 100ms delay
+      }, 100)
     }
-  }, [isOpen]);
+  }, [isOpen])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        onClose();
+        onClose()
       }
-    };
+    }
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside)
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [onClose]);
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [onClose])
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        onClose();
+        onClose()
       } else if (event.key === 'ArrowDown') {
-        event.preventDefault();
+        event.preventDefault()
         setFocusedIndex((prevIndex) =>
           prevIndex === null || prevIndex >= filteredCryptos.length - 1 ? 0 : prevIndex + 1
-        );
+        )
       } else if (event.key === 'ArrowUp') {
-        event.preventDefault();
+        event.preventDefault()
         if (focusedIndex === 0) {
-          setFocusedIndex(null);
-          searchInputRef.current?.focus();
+          setFocusedIndex(null)
+          searchInputRef.current?.focus()
         } else if (focusedIndex === null) {
 
         } else {
           setFocusedIndex((prevIndex) =>
             prevIndex === null || prevIndex <= 0 ? filteredCryptos.length - 1 : prevIndex - 1
-          );
+          )
         }
       } else if (event.key === 'Enter' && focusedIndex !== null) {
-        event.preventDefault();
+        event.preventDefault()
 
       }
-    };
+    }
 
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown)
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [filteredCryptos, focusedIndex, onClose]);
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [filteredCryptos, focusedIndex, onClose])
 
   useEffect(() => {
     if (focusedIndex !== null && listItemsRef.current[focusedIndex]) {
-      listItemsRef.current[focusedIndex].focus();
+      listItemsRef.current[focusedIndex].focus()
     }
-  }, [focusedIndex]);
+  }, [focusedIndex])
 
 
   const formatUTCDate = (date: Date): string => {
@@ -197,9 +191,9 @@ const Prices: React.FC<PricesProps> = ({ isOpen, onClose, theme }) => {
       second: '2-digit',
       hour12: false,
       timeZone: 'UTC',
-    };
-    return new Intl.DateTimeFormat('en-US', options).format(date) + ' UTC';
-  };
+    }
+    return new Intl.DateTimeFormat('en-US', options).format(date) + ' UTC'
+  }
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -282,7 +276,7 @@ const Prices: React.FC<PricesProps> = ({ isOpen, onClose, theme }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Prices;
+export default Prices

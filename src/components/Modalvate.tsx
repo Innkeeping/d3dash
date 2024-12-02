@@ -1,81 +1,81 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { Theme } from '../types';
+import React, { useRef, useEffect, useState } from 'react'
+import { Theme } from '../types'
 
 interface ModalvateProps {
-  isOpen: boolean;
-  onClose: () => void;
-  theme: Theme;
+  isOpen: boolean
+  onClose: () => void
+  theme: Theme
 }
 
 const Modalvate: React.FC<ModalvateProps> = ({ isOpen, onClose, theme }) => {
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   const themeClasses = {
     purple: 'border-purple-500/30 bg-purple-900/20',
     green: 'border-green-500/30 bg-green-900/20',
     teal: 'border-teal-500/30 bg-teal-900/20'
-  };
+  }
 
-  const [randomStatement, setRandomStatement] = useState('');
-  const [isFetching, setIsFetching] = useState(true);
-  const [fetchError, setFetchError] = useState('');
+  const [randomStatement, setRandomStatement] = useState('')
+  const [isFetching, setIsFetching] = useState(true)
+  const [fetchError, setFetchError] = useState('')
 
-  const modalRef = useRef<HTMLDivElement | null>(null);
+  const modalRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     const fetchStatements = async () => {
       try {
-        const response = await fetch('https://bafybeigsudocl4hqg5cprsqptrotnqxuz6pwko34nemjzt5coya76s5oou.ipfs.w3s.link/love.json');
+        const response = await fetch('https://bafybeigsudocl4hqg5cprsqptrotnqxuz6pwko34nemjzt5coya76s5oou.ipfs.w3s.link/love.json')
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error('Network response was not ok')
         }
-        const data = await response.json();
+        const data = await response.json()
         if (data && data.statements && data.statements.length > 0) {
-          const randomIndex = Math.floor(Math.random() * data.statements.length);
-          setRandomStatement(data.statements[randomIndex]);
+          const randomIndex = Math.floor(Math.random() * data.statements.length)
+          setRandomStatement(data.statements[randomIndex])
         } else {
-          throw new Error('No statements found in the JSON data');
+          throw new Error('No statements found in the JSON data')
         }
       } catch (error) {
-        setFetchError('Failed to fetch statements');
-        console.error('Error fetching statements:', error);
+        setFetchError('Failed to fetch statements')
+        console.error('Error fetching statements:', error)
       } finally {
-        setIsFetching(false);
+        setIsFetching(false)
       }
-    };
+    }
 
     if (isOpen) {
-      fetchStatements();
+      fetchStatements()
     }
-  }, [isOpen]);
+  }, [isOpen])
 
   useEffect(() => {
 
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        onClose();
+        onClose()
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside)
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside)
     };
-  }, [onClose]);
+  }, [onClose])
 
   useEffect(() => {
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        onClose();
+        onClose()
       }
-    };
+    }
 
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown)
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [onClose]);
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [onClose])
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -98,7 +98,7 @@ const Modalvate: React.FC<ModalvateProps> = ({ isOpen, onClose, theme }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Modalvate;
+export default Modalvate

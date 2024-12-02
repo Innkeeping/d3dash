@@ -1,134 +1,133 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import SearchBar from './SearchBar';
-import { fetchShortcutsAndLinks, filterItems } from '../utils/filtering';
-import useModals from '../hooks/useModals';
-import useKeyboardEvents from '../hooks/useKeyboardEvents';
-import { searchTerms } from '../config';
-import { CommonLink, KeyboardEventHandlers, Shortcut, TimerUpdateHandler, ModalsState } from '../types';
-import Toolbar from './Toolbar';
-import Modals from './Modals';
-import { Theme } from '../types';
-import CombinedGrid from './CombinedGrid';
-import { Heart, Info, Book } from 'lucide-react';
-import TimerDisplay from './TimerDisplay'; // Assuming you have a TimerDisplay component
+import React, { useState, useRef, useEffect, useCallback } from 'react'
+import SearchBar from './SearchBar'
+import { fetchShortcutsAndLinks, filterItems } from '../utils/filtering'
+import useModals from '../hooks/useModals'
+import useKeyboardEvents from '../hooks/useKeyboardEvents'
+import { searchTerms } from '../config'
+import { CommonLink, KeyboardEventHandlers, Shortcut, ModalsState } from '../types'
+import Toolbar from './Toolbar'
+import Modals from './Modals'
+import CombinedGrid from './CombinedGrid'
+import { Heart, Info, Book } from 'lucide-react'
+import TimerDisplay from './TimerDisplay'
 
 const Desktop: React.FC = () => {
-  const [search, setSearch] = useState('');
-  const [showToolbar, setShowToolbar] = useState(false);
-  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
+  const [search, setSearch] = useState('')
+  const [showToolbar, setShowToolbar] = useState(false)
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null)
 
-  // Ensure useModals returns ModalsState
-  const modals: ModalsState = useModals('purple');
 
-  const searchInputRef = useRef<HTMLInputElement>(null);
-  const searchBarRef = useRef<HTMLInputElement>(null);
+  const modals: ModalsState = useModals('purple')
+
+  const searchInputRef = useRef<HTMLInputElement>(null)
+  const searchBarRef = useRef<HTMLInputElement>(null)
   const combinedGridRef = useRef<{ gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> } | null>(null);
-  const toolbarRef = useRef<HTMLDivElement>(null);
+  const toolbarRef = useRef<HTMLDivElement>(null)
 
-  const [items, setItems] = useState<(Shortcut | CommonLink)[]>([]);
+  const [items, setItems] = useState<(Shortcut | CommonLink)[]>([])
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetchShortcutsAndLinks();
-      setItems(data);
+      const data = await fetchShortcutsAndLinks()
+      setItems(data)
     };
 
     fetchData();
   }, []);
 
-  const filteredItems = filterItems(search, items);
+  const filteredItems = filterItems(search, items)
 
   const themeClasses = {
     purple: 'bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900',
     green: 'bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900',
     teal: 'bg-gradient-to-br from-gray-900 via-teal-900 to-emerald-900',
-  };
+  }
 
   const toggleToolbar = () => {
-    setShowToolbar(!showToolbar);
+    setShowToolbar(!showToolbar)
     if (searchInputRef.current) {
-      searchInputRef.current.blur();
+      searchInputRef.current.blur()
     }
     if (toolbarRef.current) {
-      toolbarRef.current.focus();
+      toolbarRef.current.focus()
     }
   };
 
   const navigateToSearchBar = () => {
-    searchInputRef.current?.focus();
-    setFocusedIndex(null);
-  };
+    searchInputRef.current?.focus()
+    setFocusedIndex(null)
+  }
 
   const navigateToGrid = () => {
     if (combinedGridRef.current && combinedGridRef.current.gridItemsRef.current) {
       const firstItem = combinedGridRef.current.gridItemsRef.current[0];
       if (firstItem) {
-        firstItem.focus();
-        setFocusedIndex(0);
+        firstItem.focus()
+        setFocusedIndex(0)
       }
     }
-  };
+  }
 
   const openModalvate = () => {
-    modals.toggleModal('isModalvateOpen');
-  };
+    modals.toggleModal('isModalvateOpen')
+  }
 
   const openHelpModal = () => {
-    modals.toggleModal('isHelpOpen');
-  };
+    modals.toggleModal('isHelpOpen')
+  }
 
   const openLexiconModal = () => {
-    modals.toggleModal('isLexiconOpen');
-  };
+    modals.toggleModal('isLexiconOpen')
+  }
 
   const handleOpenMusicModal = () => {
-    modals.toggleModal('isMusicOpen');
-  };
+    modals.toggleModal('isMusicOpen')
+  }
 
   const onEscape = useCallback(() => {
-    const modalKeys = Object.keys(modals.isOpen) as (keyof ModalsState['isOpen'])[];
+    const modalKeys = Object.keys(modals.isOpen) as (keyof ModalsState['isOpen'])[]
     modalKeys.forEach(key => {
       if (key.startsWith('is') && key.endsWith('Open') && modals.isOpen[key]) {
-        modals.closeModal(key);
+        modals.closeModal(key)
       }
-    });
-  }, [modals]);
+    })
+  }, [modals])
 
   const keyboardEventHandlers: KeyboardEventHandlers = {
     onCtrlK: () => {
-      searchInputRef.current?.focus();
-      setFocusedIndex(null);
+      searchInputRef.current?.focus()
+      setFocusedIndex(null)
     },
     onCtrlB: toggleToolbar,
     onEscape,
     onAltT: modals.toggleTheme,
     onAltM: handleOpenMusicModal,
     onAltH: () => modals.toggleModal('isHelpOpen'),
-  };
+  }
 
   const getKeyboardEventHandlers = useCallback(
     () => keyboardEventHandlers,
     [keyboardEventHandlers]
-  );
+  )
 
-  useKeyboardEvents(getKeyboardEventHandlers, modals, searchInputRef);
+  useKeyboardEvents(getKeyboardEventHandlers, modals, searchInputRef)
 
   useEffect(() => {
     const lowerSearch = search.toLowerCase();
-    const matchedTerm = Object.keys(searchTerms).find(term => lowerSearch.includes(term));
+    const matchedTerm = Object.keys(searchTerms).find(term => lowerSearch.includes(term))
 
     if (matchedTerm) {
-      const modalOrAction = searchTerms[matchedTerm as keyof typeof searchTerms];
-      modals.openModal(modalOrAction);
-      setSearch('');
+      const modalOrAction = searchTerms[matchedTerm as keyof typeof searchTerms]
+      modals.openModal(modalOrAction)
+      setSearch('')
     }
-  }, [search, modals.openModal]);
+  }, [search, modals.openModal])
 
   useEffect(() => {
-    // Focus the search bar on page load
-    searchInputRef.current?.focus();
+
+    searchInputRef.current?.focus()
     setFocusedIndex(null);
-  }, []);
+  }, [])
 
   return (
     <div
@@ -222,10 +221,10 @@ const Desktop: React.FC = () => {
         isTimerRunning={modals.isTimerRunning}
         setIsTimerRunning={modals.setIsTimerRunning}
         isOpen={modals.isOpen}
-        startTimer={modals.startTimer} // Added startTimer to Modals component
+        startTimer={modals.startTimer}
       />
     </div>
-  );
-};
+  )
+}
 
-export default Desktop;
+export default Desktop

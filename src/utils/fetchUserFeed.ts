@@ -1,8 +1,8 @@
 // src/utils/fetchUserFeed.ts
-import { LensExplorePublicationsResponse } from '../types';
+import { LensExplorePublicationsResponse } from '../types'
 
 export const fetchUserFeed = async (orderBy: string = "TOP_REACTED"): Promise<LensExplorePublicationsResponse['items']> => {
-  const ENDPOINT = 'https://api-v2.lens.dev';
+  const ENDPOINT = 'https://api-v2.lens.dev'
 
   const graphqlQuery = {
     query: `
@@ -42,22 +42,22 @@ export const fetchUserFeed = async (orderBy: string = "TOP_REACTED"): Promise<Le
     variables: {
       orderBy: orderBy
     }
-  };
+  }
 
   try {
     const response = await fetch(ENDPOINT, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        // 'Authorization': 'Bearer YOUR_ACCESS_TOKEN', // Include this if your API request requires authentication
+
       },
       body: JSON.stringify(graphqlQuery)
-    });
+    })
 
-    const data = await response.json();
-    return data.data.explorePublications.items;
+    const data = await response.json()
+    return data.data.explorePublications.items
   } catch (error) {
-    console.error("Error fetching user feed:", error);
-    return [];
+    console.error("Error fetching user feed:", error)
+    return []
   }
-};
+}

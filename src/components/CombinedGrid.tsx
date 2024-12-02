@@ -1,12 +1,13 @@
-import React, { useState, useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
-import { Shortcut, CommonLink, Theme } from '../types';
-import { fetchShortcutsAndLinks, filterItems } from '../utils/filtering';
+import React,
+{ useState, useRef, useEffect, forwardRef, useImperativeHandle } from 'react'
+import { Shortcut, CommonLink, Theme } from '../types'
+import { fetchShortcutsAndLinks, filterItems } from '../utils/filtering'
 
 interface CombinedGridProps {
-  theme: Theme;
-  search: string; // Add search prop
-  onNavigateToSearchBar?: () => void;
-  searchBarRef: React.RefObject<HTMLInputElement>;
+  theme: Theme
+  search: string
+  onNavigateToSearchBar?: () => void
+  searchBarRef: React.RefObject<HTMLInputElement>
 }
 
 const CombinedGrid = forwardRef<
@@ -32,100 +33,100 @@ const CombinedGrid = forwardRef<
       outline: 'outline-teal-500',
       icon: 'text-teal-400'
     }
-  };
+  }
 
-  const [items, setItems] = useState<(Shortcut | CommonLink)[]>([]);
-  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
-  const [arrowKeyPressed, setArrowKeyPressed] = useState<boolean>(false);
-  const gridItemsRef = useRef<(HTMLAnchorElement | null)[]>([]);
-  const gridContainerRef = useRef<HTMLDivElement | null>(null);
+  const [items, setItems] = useState<(Shortcut | CommonLink)[]>([])
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null)
+  const [arrowKeyPressed, setArrowKeyPressed] = useState<boolean>(false)
+  const gridItemsRef = useRef<(HTMLAnchorElement | null)[]>([])
+  const gridContainerRef = useRef<HTMLDivElement | null>(null)
 
   useImperativeHandle(ref, () => ({
     gridItemsRef
-  }));
+  }))
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetchShortcutsAndLinks();
-        console.log('Fetched data:', data); // Debugging log
+        const data = await fetchShortcutsAndLinks()
+
         setItems(data);
       } catch (error) {
-        console.error('Error fetching data:', error); // Debugging log
-      }
-    };
 
-    fetchData();
-  }, []);
+      }
+    }
+
+    fetchData()
+  }, [])
 
   useEffect(() => {
     if (gridContainerRef.current) {
       gridContainerRef.current.focus();
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (focusedIndex !== null && gridItemsRef.current[focusedIndex]) {
-      gridItemsRef.current[focusedIndex].focus();
+      gridItemsRef.current[focusedIndex].focus()
     }
-  }, [focusedIndex]);
+  }, [focusedIndex])
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (focusedIndex === null) return;
+    if (focusedIndex === null) return
 
-    const numRows = Math.ceil(getDisplayedItems().length / 6);
-    const numCols = 6;
+    const numRows = Math.ceil(getDisplayedItems().length / 6)
+    const numCols = 6
 
-    let newIndex = focusedIndex;
+    let newIndex = focusedIndex
 
     switch (event.key) {
       case 'ArrowUp':
-        newIndex = focusedIndex - numCols;
+        newIndex = focusedIndex - numCols
         if (newIndex < 0) {
-          onNavigateToSearchBar?.();
+          onNavigateToSearchBar?.()
           if (searchBarRef.current) {
-            searchBarRef.current.focus();
-            const end = searchBarRef.current.value.length;
-            searchBarRef.current.setSelectionRange(end, end);
-            searchBarRef.current.focus();
+            searchBarRef.current.focus()
+            const end = searchBarRef.current.value.length
+            searchBarRef.current.setSelectionRange(end, end)
+            searchBarRef.current.focus()
           }
-          return;
+          return
         }
-        break;
+        break
       case 'ArrowDown':
-        newIndex = focusedIndex + numCols;
-        break;
+        newIndex = focusedIndex + numCols
+        break
       case 'ArrowLeft':
-        newIndex = focusedIndex - 1;
-        break;
+        newIndex = focusedIndex - 1
+        break
       case 'ArrowRight':
-        newIndex = focusedIndex + 1;
-        break;
+        newIndex = focusedIndex + 1
+        break
       default:
-        return;
+        return
     }
 
     if (newIndex >= 0 && newIndex < getDisplayedItems().length) {
-      setFocusedIndex(newIndex);
-      setArrowKeyPressed(true);
+      setFocusedIndex(newIndex)
+      setArrowKeyPressed(true)
     }
-  };
+  }
 
   const handleFocus = (index: number) => {
-    setFocusedIndex(index);
-  };
+    setFocusedIndex(index)
+  }
 
   const handleBlur = () => {
-    setFocusedIndex(null);
-    setArrowKeyPressed(false);
-  };
+    setFocusedIndex(null)
+    setArrowKeyPressed(false)
+  }
 
   const getDisplayedItems = (): (Shortcut | CommonLink)[] => {
     if (search.trim() === '') {
-      return items.filter(item => item.type === 'shortcut');
+      return items.filter(item => item.type === 'shortcut')
     }
-    return filterItems(search, items);
-  };
+    return filterItems(search, items)
+  }
 
   return (
     <div
@@ -154,14 +155,14 @@ const CombinedGrid = forwardRef<
           role="gridcell"
           ref={(el) => (gridItemsRef.current[index] = el)}
           onClick={() => {
-            setFocusedIndex(index);
-            setArrowKeyPressed(true);
+            setFocusedIndex(index)
+            setArrowKeyPressed(true)
           }}
           onFocus={() => handleFocus(index)}
           onBlur={handleBlur}
         >
           <div className="transition-colors duration-300">
-            {/* Render the icon component directly */}
+
             <item.icon className={themeClasses[theme].icon} size={24} />
           </div>
           <span className="mt-2 text-sm font-medium">
@@ -170,7 +171,7 @@ const CombinedGrid = forwardRef<
         </a>
       ))}
     </div>
-  );
-});
+  )
+})
 
-export default CombinedGrid;
+export default CombinedGrid

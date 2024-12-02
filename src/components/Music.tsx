@@ -1,13 +1,13 @@
 // src/components/Music.tsx
-import React, { useRef, useEffect, useState } from 'react';
-import MusicNoteIndicator from './MusicNoteIndicator';
-import { Theme } from '../types';
+import React, { useRef, useEffect, useState } from 'react'
+import MusicNoteIndicator from './MusicNoteIndicator'
+import { Theme } from '../types'
 
 interface MusicProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onOpen: () => void;
-  theme: Theme;
+  isOpen: boolean
+  onClose: () => void
+  onOpen: () => void
+  theme: Theme
 }
 
 const Music: React.FC<MusicProps> = ({ isOpen, onClose, onOpen, theme }) => {
@@ -15,16 +15,16 @@ const Music: React.FC<MusicProps> = ({ isOpen, onClose, onOpen, theme }) => {
     purple: 'border-purple-500/30 bg-purple-900/20',
     green: 'border-green-500/30 bg-green-900/20',
     teal: 'border-teal-500/30 bg-teal-900/20'
-  };
+  }
 
   const buttonThemeClasses = {
     purple: 'bg-purple-700/50 border border-purple-500 text-white',
     green: 'bg-green-700/50 border border-green-500 text-white',
     teal: 'bg-teal-700/50 border border-teal-500 text-white'
-  };
+  }
 
-  const searchInputRef = useRef<HTMLInputElement | null>(null);
-  const modalRef = useRef<HTMLDivElement | null>(null);
+  const searchInputRef = useRef<HTMLInputElement | null>(null)
+  const modalRef = useRef<HTMLDivElement | null>(null)
 
   const [musicEmbedLinks, setMusicEmbedLinks] = useState([
     {
@@ -39,31 +39,31 @@ const Music: React.FC<MusicProps> = ({ isOpen, onClose, onOpen, theme }) => {
       id: '96cc4612-b6ca-4dc4-b728-a5a427bd608b',
       src: 'https://embed.sound.xyz/v1/release/96cc4612-b6ca-4dc4-b728-a5a427bd608b?referral_source=embed-sound'
     }
-  ]);
+  ])
 
-  const [newLink, setNewLink] = useState('');
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [newItemId, setNewItemId] = useState<string | null>(null);
+  const [newLink, setNewLink] = useState('')
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [error, setError] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [newItemId, setNewItemId] = useState<string | null>(null)
 
   useEffect(() => {
     if (isOpen) {
-      setIsPlaying(true);
+      setIsPlaying(true)
     }
-  }, [isOpen]);
+  }, [isOpen])
 
   useEffect(() => {
     if (isOpen && searchInputRef.current) {
-      searchInputRef.current.focus();
+      searchInputRef.current.focus()
     }
-  }, [isOpen]);
+  }, [isOpen])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        onClose();
+        onClose()
       }
     };
 
@@ -71,41 +71,41 @@ const Music: React.FC<MusicProps> = ({ isOpen, onClose, onOpen, theme }) => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [onClose]);
+  }, [onClose])
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        onClose();
+        onClose()
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown)
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('keydown', handleKeyDown)
     };
-  }, [onClose]);
+  }, [onClose])
 
   useEffect(() => {
     if (newItemId) {
       const timeout = setTimeout(() => {
-        setNewItemId(null);
-      }, 3000);
-      return () => clearTimeout(timeout);
+        setNewItemId(null)
+      }, 3000)
+      return () => clearTimeout(timeout)
     }
-  }, [newItemId]);
+  }, [newItemId])
 
   const extractSrcFromIframe = (iframeCode: string): string | null => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(iframeCode, 'text/html');
-    const iframe = doc.querySelector('iframe');
-    return iframe ? iframe.getAttribute('src') : null;
-  };
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(iframeCode, 'text/html')
+    const iframe = doc.querySelector('iframe')
+    return iframe ? iframe.getAttribute('src') : null
+  }
 
   const handleAddLink = (event: React.FormEvent) => {
-    event.preventDefault();
+    event.preventDefault()
     if (newLink.trim()) {
-      const src = extractSrcFromIframe(newLink.trim());
+      const src = extractSrcFromIframe(newLink.trim())
       if (src) {
         try {
           new URL(src);
@@ -113,53 +113,52 @@ const Music: React.FC<MusicProps> = ({ isOpen, onClose, onOpen, theme }) => {
             id: Date.now().toString(),
             src: src
           };
-          setMusicEmbedLinks([...musicEmbedLinks, newEmbed]);
-          setNewLink('');
-          setError('');
-          const newCount = musicEmbedLinks.length + 1;
+          setMusicEmbedLinks([...musicEmbedLinks, newEmbed])
+          setNewLink('')
+          setError('')
+          const newCount = musicEmbedLinks.length + 1
 
-          setSuccessMessage(`Embed link added successfully! You now have ${newCount} songs in the list.`);
+          setSuccessMessage(`Embed link added successfully! You now have ${newCount} songs in the list.`)
 
           const firstMessageTimeout = setTimeout(() => {
             setSuccessMessage(
               `Note: Songs will not autoplay in order. For more features, including playlists, visit <a class="text-blue-500" href="https://sound.xyz" target="_blank" rel="noopener noreferrer">sound.xyz</a>.`
-            );
+            )
 
             const secondMessageTimeout = setTimeout(() => {
               setSuccessMessage(
                 `You can close this modal with ESC or clicking out, and the music will still play.`
-              );
+              )
 
               const thirdMessageTimeout = setTimeout(() => {
-                setSuccessMessage('');
-              }, 3000);
+                setSuccessMessage('')
+              }, 3000)
 
-              return () => clearTimeout(thirdMessageTimeout);
-            }, 8000);
+              return () => clearTimeout(thirdMessageTimeout)
+            }, 8000)
 
-            return () => clearTimeout(secondMessageTimeout);
-          }, 3000);
+            return () => clearTimeout(secondMessageTimeout)
+          }, 3000)
 
-          setNewItemId(newEmbed.id);
-          return () => clearTimeout(firstMessageTimeout);
+          setNewItemId(newEmbed.id)
+          return () => clearTimeout(firstMessageTimeout)
         } catch (e) {
-          setError('Invalid URL. Please enter a valid embed link.');
+          setError('Invalid URL. Please enter a valid embed link.')
         }
       } else {
-        setError('Invalid iframe code. Please enter a valid iframe embed code.');
+        setError('Invalid iframe code. Please enter a valid iframe embed code.')
       }
     } else {
-      setError('Please enter a valid embed link.');
+      setError('Please enter a valid embed link.')
     }
   };
 
-  // Dynamically load music embed links when the modal is opened
+
   useEffect(() => {
     if (isOpen) {
-      // You can add any additional logic here if needed
-      // For example, fetching additional music links from an API
+
     }
-  }, [isOpen]);
+  }, [isOpen])
 
   return (
     <>
@@ -175,14 +174,6 @@ const Music: React.FC<MusicProps> = ({ isOpen, onClose, onOpen, theme }) => {
             isOpen ? 'translate-y-0' : 'translate-y-full'
           }`}
         >
-          {/* <div className="mb-2">
-            <input
-              ref={searchInputRef}
-              type="text"
-              placeholder="Search music..."
-              className="w-full p-3 rounded-lg border border-gray-700 bg-gray-800/50 focus:outline-none focus:border-purple-400"
-            />
-          </div> */}
 
           <div className="h-[275px] overflow-y-auto">
             {musicEmbedLinks.map((music) => (
@@ -242,7 +233,7 @@ const Music: React.FC<MusicProps> = ({ isOpen, onClose, onOpen, theme }) => {
       </div>
       <MusicNoteIndicator isPlaying={isPlaying} onOpen={onOpen} />
     </>
-  );
-};
+  )
+}
 
-export default Music;
+export default Music

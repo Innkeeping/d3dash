@@ -1,39 +1,44 @@
-import React, { Dispatch, SetStateAction, RefObject } from 'react';
-import WClock from './WClock';
-import Social from './Social';
-import Wallets from './Wallets';
-import Lexicon from './Lexicon';
-import Music from './Music';
-import Help from './Help';
-import Modalvate from './Modalvate';
-import Prices from './Prices';
-import Gov from './Gov';
-import Lens from './Lens';
-import IPFS from './IPFS';
-import GameB from './GameB';
-import Defi from './Defi';
-import Refi from './Refi';
-import Networks from './Networks';
-import Pomodoro from './Pomodoro';
-import { ModalsProps, Theme, CommonModalProps, MusicProps, GameBProps, PomodoroProps, ModalProps } from '../types';
-import Docs from './Docs';
+import React from 'react'
+import WClock from './WClock'
+import Social from './Social'
+import Wallets from './Wallets'
+import Lexicon from './Lexicon'
+import Music from './Music'
+import Help from './Help'
+import Modalvate from './Modalvate'
+import Prices from './Prices'
+import Gov from './Gov'
+import Lens from './Lens'
+import IPFS from './IPFS'
+import GameB from './GameB'
+import Defi from './Defi'
+import Refi from './Refi'
+import Networks from './Networks'
+import Pomodoro from './Pomodoro'
+import {
+  ModalsProps,
+  MusicProps,
+  GameBProps,
+  PomodoroProps,
+  ModalProps } from '../types'
+import Docs from './Docs'
 
 const Modals: React.FC<ModalsProps> = ({
   theme,
-  setTheme,
-  openModal,
+  // setTheme,
+  // openModal,
   closeModal,
-  toggleModal,
-  toggleTheme,
+  // toggleModal,
+  // toggleTheme,
   onTimerUpdate,
   timerTimeLeft,
   setTimerTimeLeft,
   isTimerRunning,
   setIsTimerRunning,
   isOpen,
-  startTimer, // Added startTimer to props
+  startTimer,
 }) => {
-  // Destructure isOpen to get individual modal states
+
   const {
     isWClockOpen,
     isSocialOpen,
@@ -52,9 +57,9 @@ const Modals: React.FC<ModalsProps> = ({
     isRefiOpen,
     isNetworksOpen,
     isPomodoroOpen,
-  } = isOpen;
+  } = isOpen
 
-  // Define an array of modal configurations with specific props
+
   const modalConfigurations: { component: React.FC<ModalProps>; props: ModalProps }[] = [
     { component: WClock, props: { isOpen: isWClockOpen, onClose: () => closeModal('isWClockOpen'), theme } },
     { component: Social, props: { isOpen: isSocialOpen, onClose: () => closeModal('isSocialOpen'), theme } },
@@ -70,24 +75,24 @@ const Modals: React.FC<ModalsProps> = ({
     { component: Refi, props: { isOpen: isRefiOpen, onClose: () => closeModal('isRefiOpen'), theme } },
     { component: Networks, props: { isOpen: isNetworksOpen, onClose: () => closeModal('isNetworksOpen'), theme } },
     { component: Docs, props: { isOpen: isDocsOpen, onClose: () => closeModal('isDocsOpen'), theme}},
-  ];
+  ]
 
-  // Handle MusicModal separately
+
   const musicProps: MusicProps = {
     isOpen: isMusicOpen,
     onClose: () => closeModal('isMusicOpen'),
     theme,
-    onOpen: () => {}, // Provide an empty function or the actual onOpen handler if needed
-  };
+    onOpen: () => {},
+  }
 
-  // Handle GameBModal separately
+
   const gameBProps: GameBProps = {
     isOpen: isGameBOpen,
     onClose: () => closeModal('isGameBOpen'),
     theme,
-  };
+  }
 
-  // Handle PomodoroModal separately
+
   const pomodoroProps: PomodoroProps = {
     isOpen: isPomodoroOpen,
     onClose: () => closeModal('isPomodoroOpen'),
@@ -97,8 +102,8 @@ const Modals: React.FC<ModalsProps> = ({
     setTimerTimeLeft,
     isTimerRunning,
     setIsTimerRunning,
-    startTimer, // Added startTimer to pomodoroProps
-  };
+    startTimer,
+  }
 
   return (
     <>
@@ -109,19 +114,18 @@ const Modals: React.FC<ModalsProps> = ({
             key={index}
             {...props}
           />
-        );
+        )
       })}
 
-      {/* Handle MusicModal separately */}
+
       <Music {...musicProps} />
 
-      {/* Handle GameBModal separately */}
       <GameB {...gameBProps} />
 
-      {/* Handle PomodoroModal separately */}
+
       <Pomodoro {...pomodoroProps} />
     </>
-  );
-};
+  )
+}
 
-export default Modals;
+export default Modals

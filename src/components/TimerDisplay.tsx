@@ -1,19 +1,19 @@
 // src/components/TimerDisplay.tsx
-import React from 'react';
-import { Timer } from 'lucide-react';
+import React from 'react'
+import { Timer } from 'lucide-react'
 
 interface TimerDisplayProps {
-  isTimerRunning: boolean;
-  timerTimeLeft: number;
-  onClick?: () => void;
+  isTimerRunning: boolean
+  timerTimeLeft: number
+  onClick?: () => void
 }
 
 const TimerDisplay: React.FC<TimerDisplayProps> = ({ isTimerRunning, timerTimeLeft, onClick }) => {
   const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  };
+    const mins = Math.floor(seconds / 60)
+    const secs = seconds % 60
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
+  }
 
   return (
     isTimerRunning && (
@@ -25,7 +25,7 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({ isTimerRunning, timerTimeLe
         <span className="text-white font-mono">{formatTime(timerTimeLeft)}</span>
       </div>
     )
-  );
-};
+  )
+}
 
-export default TimerDisplay;
+export default TimerDisplay

@@ -1,73 +1,77 @@
 // src/components/Lens.tsx
-import React, { useState, useRef, useEffect } from 'react';
-import { X } from 'lucide-react';
-import { Theme, LensPublication, LensImageMetadataV3, LensPostMetadata } from '../types';
-import { fetchUserFeed } from '../utils/fetchUserFeed';
+import React, { useState, useRef, useEffect } from 'react'
+import { X } from 'lucide-react'
+import {
+  Theme,
+  LensPublication,
+  LensImageMetadataV3,
+  LensPostMetadata } from '../types'
+import { fetchUserFeed } from '../utils/fetchUserFeed'
 
 interface LensProps {
-  isOpen: boolean;
-  onClose: () => void;
-  theme: Theme;
+  isOpen: boolean
+  onClose: () => void
+  theme: Theme
 }
 
 const Lens: React.FC<LensProps> = ({ isOpen, onClose, theme }) => {
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   const themeClasses = {
     purple: 'border-purple-500/30 bg-purple-900/20',
     green: 'border-green-500/30 bg-green-900/20',
     teal: 'border-teal-500/30 bg-teal-900/20'
-  };
+  }
 
-  const [feedItems, setFeedItems] = useState<LensPublication[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const modalRef = useRef<HTMLDivElement | null>(null);
+  const [feedItems, setFeedItems] = useState<LensPublication[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string | null>(null)
+  const modalRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     const fetchFeed = async () => {
       try {
-        const items = await fetchUserFeed();
-        setFeedItems(items);
+        const items = await fetchUserFeed()
+        setFeedItems(items)
       } catch (err) {
-        setError("Failed to fetch feed.");
+        setError("Failed to fetch feed.")
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchFeed();
-  }, []);
+    fetchFeed()
+  }, [])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        onClose();
+        onClose()
       }
-    };
+    }
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside)
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [onClose]);
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [onClose])
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        onClose();
+        onClose()
       }
-    };
+    }
 
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown)
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [onClose]);
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [onClose])
 
   const isImageMetadata = (metadata: LensPostMetadata): metadata is LensImageMetadataV3 => {
-    return metadata.__typename === 'ImageMetadataV3';
-  };
+    return metadata.__typename === 'ImageMetadataV3'
+  }
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -89,7 +93,7 @@ const Lens: React.FC<LensProps> = ({ isOpen, onClose, theme }) => {
         {feedItems.length > 0 && (
           <div className="space-y-4">
             {feedItems.map((item) => {
-              // Use a unique key based on the content or index if id is not available
+
               const key = isImageMetadata(item.metadata) ? item.metadata.id : item.metadata.content;
               return (
                 <div
@@ -110,7 +114,7 @@ const Lens: React.FC<LensProps> = ({ isOpen, onClose, theme }) => {
                     <p className="text-sm opacity-75 mt-2">Reactions: {item.stats.reactions}</p>
                   </div>
                 </div>
-              );
+              )
             })}
           </div>
         )}
@@ -126,7 +130,7 @@ const Lens: React.FC<LensProps> = ({ isOpen, onClose, theme }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Lens;
+export default Lens

@@ -23,4 +23,4 @@ export const searchTerms = {
   'sound': 'isMusicOpen',
   'tunes': 'isMusicOpen',
   'help': 'isHelpOpen',
-} as const;
+} as const

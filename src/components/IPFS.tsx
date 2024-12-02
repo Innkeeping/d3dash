@@ -1,82 +1,82 @@
 // src/components/IPFS.tsx
-import React, { useState, useRef, useEffect } from 'react';
-import { X, Loader2 } from 'lucide-react';
-import { Theme } from '../types';
+import React, { useState, useRef, useEffect } from 'react'
+import { X, Loader2 } from 'lucide-react'
+import { Theme } from '../types'
 
 interface IPFSProps {
-  isOpen: boolean;
-  onClose: () => void;
-  theme: Theme;
+  isOpen: boolean
+  onClose: () => void
+  theme: Theme
 }
 
 const IPFS: React.FC<IPFSProps> = ({ isOpen, onClose, theme }) => {
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   const themeClasses = {
     purple: 'border-purple-500/30 bg-purple-900/20 text-purple-300',
     green: 'border-green-500/30 bg-green-900/20 text-green-300',
     teal: 'border-teal-500/30 bg-teal-900/20 text-teal-300'
-  };
+  }
 
   const dropdownClasses = {
     purple: 'border-purple-500/30 focus:border-purple-500',
     green: 'border-green-500/30 focus:border-green-500',
     teal: 'border-teal-500/30 focus:border-teal-500'
-  };
+  }
 
-  const [cid, setCid] = useState('');
-  const [selectedGateway, setSelectedGateway] = useState('https://w3s.link/ipfs/');
-  const [isLoading, setIsLoading] = useState(false);
+  const [cid, setCid] = useState('')
+  const [selectedGateway, setSelectedGateway] = useState('https://w3s.link/ipfs/')
+  const [isLoading, setIsLoading] = useState(false)
 
   const gateways = [
     { label: 'w3s.link', value: 'https://w3s.link/ipfs/' },
     { label: 'ipfs.io', value: 'https://ipfs.io/ipfs/' },
-  ];
+  ]
 
-  const modalRef = useRef<HTMLDivElement | null>(null);
+  const modalRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        onClose();
+        onClose()
       }
-    };
+    }
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside)
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [onClose]);
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [onClose])
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        onClose();
+        onClose()
       }
-    };
+    }
 
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown)
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [onClose]);
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [onClose])
 
   const handleGatewayChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedGateway(e.target.value);
-  };
+    setSelectedGateway(e.target.value)
+  }
 
   const handleCidChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCid(e.target.value);
-  };
+    setCid(e.target.value)
+  }
 
   const handleCheck = () => {
     if (cid) {
-      setIsLoading(true);
-      const url = `${selectedGateway}${cid}`;
-      window.open(url, '_blank');
-      setIsLoading(false);
+      setIsLoading(true)
+      const url = `${selectedGateway}${cid}`
+      window.open(url, '_blank')
+      setIsLoading(false)
     }
-  };
+  }
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -133,7 +133,7 @@ const IPFS: React.FC<IPFSProps> = ({ isOpen, onClose, theme }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default IPFS;
+export default IPFS

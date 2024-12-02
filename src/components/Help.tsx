@@ -1,22 +1,22 @@
-import React, { useRef } from 'react';
-import { X } from 'lucide-react';
-import { Theme } from '../types';
-import useClickOutside from '../hooks/useClickOutside';
+import React, { useRef } from 'react'
+import { X } from 'lucide-react'
+import { Theme } from '../types'
+import useClickOutside from '../hooks/useClickOutside'
 
 interface HelpProps {
-  isOpen: boolean;
-  onClose: () => void;
-  theme: Theme;
+  isOpen: boolean
+  onClose: () => void
+  theme: Theme
 }
 
 const Help: React.FC<HelpProps> = ({ isOpen, onClose, theme }) => {
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   const themeClasses = {
     purple: 'border-purple-500/30 bg-purple-900/20',
     green: 'border-green-500/30 bg-green-900/20',
     teal: 'border-teal-500/30 bg-teal-900/20',
-  };
+  }
 
   const keyCommands = {
     'Ctrl+K': 'focusSearchBar',
@@ -25,7 +25,7 @@ const Help: React.FC<HelpProps> = ({ isOpen, onClose, theme }) => {
     'Alt+T': 'changeTheme',
     'Alt+M': 'toggleMusicModal',
     'Alt+H': 'toggleHelpModal',
-  };
+  }
 
   const modalDescriptions: { [key: string]: string } = {
     isCryptoPricesModalOpen: 'Open Crypto Prices',
@@ -36,24 +36,24 @@ const Help: React.FC<HelpProps> = ({ isOpen, onClose, theme }) => {
     isWalletsModalOpen: 'Open Wallets',
     isMusicModalOpen: 'Open Music',
     isHelpModalOpen: 'Open Help',
-  };
+  }
 
-  const searchTerms = {
-    'price': 'isCryptoPricesModalOpen',
-    'clock': 'isTimeZonesModalOpen',
-    'time': 'isTimeZonesModalOpen',
-    'utc': 'isTimeZonesModalOpen',
-    'docs': 'isDocsModalOpen',
-    'social': 'isWeb3SocialModalOpen',
-    'words': 'isLexiconModalOpen',
-    'dictionary': 'isLexiconModalOpen',
-    'lexicon': 'isLexiconModalOpen',
-    'wallet': 'isWalletsModalOpen',
-    'music': 'isMusicModalOpen',
-    'sound': 'isMusicModalOpen',
-    'tunes': 'isMusicModalOpen',
-    'help': 'isHelpModalOpen',
-  } as const;
+  // const searchTerms = {
+  //   'price': 'isCryptoPricesModalOpen',
+  //   'clock': 'isTimeZonesModalOpen',
+  //   'time': 'isTimeZonesModalOpen',
+  //   'utc': 'isTimeZonesModalOpen',
+  //   'docs': 'isDocsModalOpen',
+  //   'social': 'isWeb3SocialModalOpen',
+  //   'words': 'isLexiconModalOpen',
+  //   'dictionary': 'isLexiconModalOpen',
+  //   'lexicon': 'isLexiconModalOpen',
+  //   'wallet': 'isWalletsModalOpen',
+  //   'music': 'isMusicModalOpen',
+  //   'sound': 'isMusicModalOpen',
+  //   'tunes': 'isMusicModalOpen',
+  //   'help': 'isHelpModalOpen',
+  // } as const
 
   const groupedSearchTerms = {
     'isCryptoPricesModalOpen': ['price'],
@@ -64,11 +64,11 @@ const Help: React.FC<HelpProps> = ({ isOpen, onClose, theme }) => {
     'isWalletsModalOpen': ['wallet'],
     'isMusicModalOpen': ['music', 'sound', 'tunes'],
     'isHelpModalOpen': ['help'],
-  } as const;
+  } as const
 
-  const modalRef = useRef<HTMLDivElement | null>(null);
+  const modalRef = useRef<HTMLDivElement | null>(null)
 
-  useClickOutside(modalRef, onClose);
+  useClickOutside(modalRef, onClose)
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -162,7 +162,7 @@ const Help: React.FC<HelpProps> = ({ isOpen, onClose, theme }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Help;
+export default Help

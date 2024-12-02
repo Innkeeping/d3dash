@@ -1,110 +1,108 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { X, Book } from 'lucide-react';
-import { Theme } from '../types'; // Import the Theme type
-import { DocsProps } from '../types'; // Import the DocsProps type
-import docsData from '../data/docs.json'; // Import the JSON file
+import React, { useState, useRef, useEffect } from 'react'
+import { X, Book } from 'lucide-react'
+import { DocsProps } from '../types'
+import docsData from '../data/docs.json'
 
 const Docs: React.FC<DocsProps> = ({ isOpen, onClose, theme }) => {
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   const themeClasses = {
     purple: 'border-purple-500/30 bg-purple-900/20',
     green: 'border-green-500/30 bg-green-900/20',
     teal: 'border-teal-500/30 bg-teal-900/20',
-  };
+  }
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
-  const searchInputRef = useRef<HTMLInputElement | null>(null);
-  const modalRef = useRef<HTMLDivElement | null>(null);
-  const listItemsRef = useRef<(HTMLAnchorElement | null)[]>([]);
+  const [searchQuery, setSearchQuery] = useState('')
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null)
+  const searchInputRef = useRef<HTMLInputElement | null>(null)
+  const modalRef = useRef<HTMLDivElement | null>(null)
+  const listItemsRef = useRef<(HTMLAnchorElement | null)[]>([])
 
   const docs = docsData.map(doc => ({
     ...doc,
-    icon: <Book className="text-purple-400" size={24} /> // Map the icon to the Book component
-  }));
+    icon: <Book className="text-purple-400" size={24} />
+  }))
 
   const filteredDocs = docs.filter((doc) =>
     doc.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  )
 
   useEffect(() => {
     if (isOpen) {
       const timeoutId = setTimeout(() => {
         if (searchInputRef.current) {
-          searchInputRef.current.focus();
-          setFocusedIndex(null);
+          searchInputRef.current.focus()
+          setFocusedIndex(null)
         }
-      }, 100);
+      }, 100)
 
-      // Cleanup the timeout if the component unmounts or `isOpen` changes before the timeout completes
-      return () => clearTimeout(timeoutId);
+      return () => clearTimeout(timeoutId)
     }
-  }, [isOpen]);
+  }, [isOpen])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        onClose();
+        onClose()
       }
-    };
+    }
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside)
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [onClose]);
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [onClose])
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        onClose();
+        onClose()
       } else if (event.key === 'ArrowDown') {
-        event.preventDefault();
+        event.preventDefault()
         setFocusedIndex((prevIndex) =>
           prevIndex === null || prevIndex >= filteredDocs.length - 1 ? 0 : prevIndex + 1
-        );
+        )
       } else if (event.key === 'ArrowUp') {
-        event.preventDefault();
+        event.preventDefault()
         if (focusedIndex === 0) {
-          setFocusedIndex(null);
+          setFocusedIndex(null)
           searchInputRef.current?.focus();
         } else if (focusedIndex === null) {
-          // Do nothing if already focused on the search bar
+
         } else {
           setFocusedIndex((prevIndex) =>
             prevIndex === null || prevIndex <= 0 ? filteredDocs.length - 1 : prevIndex - 1
-          );
+          )
         }
       } else if (event.key === 'Enter' && focusedIndex !== null) {
-        event.preventDefault();
-        const link = listItemsRef.current[focusedIndex];
+        event.preventDefault()
+        const link = listItemsRef.current[focusedIndex]
         if (link) {
-          link.click();
+          link.click()
         }
       }
-    };
+    }
 
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown)
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [filteredDocs, focusedIndex, onClose]);
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [filteredDocs, focusedIndex, onClose])
 
   useEffect(() => {
     if (focusedIndex !== null && listItemsRef.current[focusedIndex]) {
-      listItemsRef.current[focusedIndex].focus();
+      listItemsRef.current[focusedIndex].focus()
     }
-  }, [focusedIndex]);
+  }, [focusedIndex])
 
-  // Debugging: Log when the modal opens and closes
+
   useEffect(() => {
     if (isOpen) {
-      console.log('Docs opened');
+      console.log('Docs opened')
     } else {
-      console.log('Docs closed');
+      console.log('Docs closed')
     }
-  }, [isOpen]);
+  }, [isOpen])
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -165,7 +163,7 @@ const Docs: React.FC<DocsProps> = ({ isOpen, onClose, theme }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Docs;
+export default Docs

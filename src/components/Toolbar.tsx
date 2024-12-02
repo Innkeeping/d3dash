@@ -1,28 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { Network, Radio, Heart, Coins, Book, Terminal, Palette, Coffee, Clock, Glasses, DollarSign, MessageCircle, Music, HelpCircle, Folder, Circle } from 'lucide-react';
-import { ToolbarProps, Theme, ModalsState } from '../types';
+import React, { useEffect, useState } from 'react'
+import { Network, Radio, Heart, Coins, Book, Terminal, Palette, Coffee, Clock, Glasses, DollarSign } from 'lucide-react'
+import { ToolbarProps, Theme, ModalsState } from '../types'
 
-const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, showToolbar, toggleToolbar, openModal, closeModal, toggleModal, toggleTheme, isOpen }) => {
-  const [activeMenu, setActiveMenu] = useState<string | null>(null);
-  const [firstKeyPress, setFirstKeyPress] = useState<number | null>(null);
-  const [keyPressTimeout, setKeyPressTimeout] = useState<NodeJS.Timeout | null>(null);
+const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, showToolbar, toggleToolbar, openModal, toggleModal }) => {
+  const [activeMenu, setActiveMenu] = useState<string | null>(null)
+  const [firstKeyPress, setFirstKeyPress] = useState<number | null>(null)
+  const [keyPressTimeout, setKeyPressTimeout] = useState<NodeJS.Timeout | null>(null)
 
-  const themes: Theme[] = ['purple', 'green', 'teal'];
+
+  const themes: Theme[] = ['purple', 'green', 'teal']
 
   const handleMenuItemClick = (id: string) => {
     setActiveMenu(id);
 
     if (id === 'theme') {
       const currentThemeIndex = themes.indexOf(theme);
-      setTheme(themes[(currentThemeIndex + 1) % themes.length]);
+      setTheme(themes[(currentThemeIndex + 1) % themes.length])
     } else if (id === 'break') {
-      toggleModal('isPomodoroOpen'); // Open Pomodoro Modal
+      toggleModal('isPomodoroOpen')
     } else if (id === 'timezones') {
-      openModal('isWClockOpen'); // Open World Clock Modal
+      openModal('isWClockOpen')
     } else {
-      const modalKey = `is${id.charAt(0).toUpperCase() + id.slice(1)}Open` as keyof ModalsState['isOpen'];
-      console.log(`Opening modal with key: ${modalKey}`); // Debug statement
-      openModal(modalKey);
+      const modalKey = `is${id.charAt(0).toUpperCase() + id.slice(1)}Open` as keyof ModalsState['isOpen']
+      console.log(`Opening modal with key: ${modalKey}`)
+      openModal(modalKey)
     }
   };
 
@@ -45,67 +46,63 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, showToolbar, toggleT
     // { id: 'modalvate', icon: <Circle size={20} />, label: 'Modalvate' },
     { id: 'break', icon: <Coffee size={20} />, label: 'Take a Break' },
     { id: 'theme', icon: <Palette size={20} />, label: 'Theme' },
-  ];
+  ]
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
-      if (!showToolbar) return; // Do nothing if the toolbar is not shown
+      if (!showToolbar) return;
 
-      // Check if the event target is an input, textarea, or contenteditable element
       const target = event.target as HTMLElement;
       if (target.isContentEditable || ['INPUT', 'TEXTAREA'].includes(target.tagName)) {
-        return;
+        return
       }
 
-      const key = event.key;
+      const key = event.key
 
-      const index = parseInt(key, 10);
+      const index = parseInt(key, 10)
 
       if (!isNaN(index)) {
         if (firstKeyPress !== null) {
-          // If there's already a first key press, combine it with the current key press
-          const fullIndex = parseInt(firstKeyPress.toString() + key, 10);
+
+          const fullIndex = parseInt(firstKeyPress.toString() + key, 10)
 
           if (fullIndex >= 1 && fullIndex <= toolbarItems.length) {
-            handleMenuItemClick(toolbarItems[fullIndex - 1].id);
+            handleMenuItemClick(toolbarItems[fullIndex - 1].id)
           }
 
-          // Reset the first key press
-          setFirstKeyPress(null);
+          setFirstKeyPress(null)
         } else {
-          // Set the first key press
-          setFirstKeyPress(index);
 
-          // Set a timeout to reset the first key press if no second key press is detected
+          setFirstKeyPress(index)
+
+
           const timeout = setTimeout(() => {
             if (index >= 1 && index <= toolbarItems.length) {
-              handleMenuItemClick(toolbarItems[index - 1].id);
+              handleMenuItemClick(toolbarItems[index - 1].id)
             }
-            setFirstKeyPress(null);
-          }, 300); // 300ms delay to wait for a second key press
+            setFirstKeyPress(null)
+          }, 300);
 
-          setKeyPressTimeout(timeout);
+          setKeyPressTimeout(timeout)
         }
       } else {
-        // Reset the first key press if a non-numeric key is pressed
-        setFirstKeyPress(null);
+        setFirstKeyPress(null)
         if (keyPressTimeout) {
-          clearTimeout(keyPressTimeout);
-          setKeyPressTimeout(null);
+          clearTimeout(keyPressTimeout)
+          setKeyPressTimeout(null)
         }
       }
-    };
+    }
 
-    // Use event capturing to intercept key events before they reach the input fields
-    document.addEventListener('keydown', handleKeyPress, true);
+    document.addEventListener('keydown', handleKeyPress, true)
 
     return () => {
-      document.removeEventListener('keydown', handleKeyPress, true);
+      document.removeEventListener('keydown', handleKeyPress, true)
       if (keyPressTimeout) {
         clearTimeout(keyPressTimeout);
       }
-    };
-  }, [showToolbar, toolbarItems, firstKeyPress, keyPressTimeout, openModal]);
+    }
+  }, [showToolbar, toolbarItems, firstKeyPress, keyPressTimeout, openModal])
 
   return (
     <div className="fixed bottom-6 right-4 z-50">
@@ -134,7 +131,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, showToolbar, toggleT
         ☰
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default Toolbar;
+export default Toolbar

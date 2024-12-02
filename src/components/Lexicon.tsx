@@ -1,85 +1,85 @@
 // src/components/Lexicon.tsx
-import React, { useState, useRef, useEffect } from 'react';
-import { X, Book } from 'lucide-react';
-import { Theme } from '../types';
-import web3_lexicon from '../data/lexicon.json';
-import useClickOutside from '../hooks/useClickOutside';
+import React, { useState, useRef, useEffect } from 'react'
+import { X, Book } from 'lucide-react'
+import { Theme } from '../types'
+import web3_lexicon from '../data/lexicon.json'
+import useClickOutside from '../hooks/useClickOutside'
 
 interface LexiconProps {
-  isOpen: boolean;
-  onClose: () => void;
-  theme: Theme;
+  isOpen: boolean
+  onClose: () => void
+  theme: Theme
 }
 
 const Lexicon: React.FC<LexiconProps> = ({ isOpen, onClose, theme }) => {
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   const themeClasses = {
     purple: 'border-purple-500/30 bg-purple-900/20',
     green: 'border-green-500/30 bg-green-900/20',
     teal: 'border-teal-500/30 bg-teal-900/20',
-  };
+  }
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
-  const searchInputRef = useRef<HTMLInputElement | null>(null);
-  const modalRef = useRef<HTMLDivElement | null>(null);
-  const listItemsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const [searchQuery, setSearchQuery] = useState('')
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null)
+  const searchInputRef = useRef<HTMLInputElement | null>(null)
+  const modalRef = useRef<HTMLDivElement | null>(null)
+  const listItemsRef = useRef<(HTMLDivElement | null)[]>([])
 
   const filteredTerms = web3_lexicon.filter((term) =>
     term.term.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  )
 
   useEffect(() => {
     if (isOpen && searchInputRef.current) {
-      searchInputRef.current.focus();
-      setFocusedIndex(null);
+      searchInputRef.current.focus()
+      setFocusedIndex(null)
     }
-  }, [isOpen]);
+  }, [isOpen])
 
-  useClickOutside(modalRef, onClose);
+  useClickOutside(modalRef, onClose)
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        onClose();
+        onClose()
       } else if (event.key === 'ArrowDown') {
-        event.preventDefault();
+        event.preventDefault()
         setFocusedIndex((prevIndex) =>
           prevIndex === null || prevIndex >= filteredTerms.length - 1 ? 0 : prevIndex + 1
-        );
+        )
       } else if (event.key === 'ArrowUp') {
-        event.preventDefault();
+        event.preventDefault()
         if (focusedIndex === 0) {
-          setFocusedIndex(null);
-          searchInputRef.current?.focus();
+          setFocusedIndex(null)
+          searchInputRef.current?.focus()
         } else if (focusedIndex === null) {
-          // Do nothing
+
         } else {
           setFocusedIndex((prevIndex) =>
             prevIndex === null || prevIndex <= 0 ? filteredTerms.length - 1 : prevIndex - 1
-          );
+          )
         }
       } else if (event.key === 'Enter' && focusedIndex !== null) {
-        event.preventDefault();
-        const link = listItemsRef.current[focusedIndex];
+        event.preventDefault()
+        const link = listItemsRef.current[focusedIndex]
         if (link) {
-          link.focus();
+          link.focus()
         }
       }
-    };
+    }
 
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown)
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [filteredTerms, focusedIndex, onClose]);
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [filteredTerms, focusedIndex, onClose])
 
   useEffect(() => {
     if (focusedIndex !== null && listItemsRef.current[focusedIndex]) {
-      listItemsRef.current[focusedIndex].focus();
+      listItemsRef.current[focusedIndex].focus()
     }
-  }, [focusedIndex]);
+  }, [focusedIndex])
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -137,7 +137,7 @@ const Lexicon: React.FC<LexiconProps> = ({ isOpen, onClose, theme }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Lexicon;
+export default Lexicon
