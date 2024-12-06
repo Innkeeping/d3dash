@@ -164,7 +164,7 @@ const Networks: React.FC<NetworksProps> = ({ isOpen, onClose, theme }) => {
             placeholder="Search networks..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full p-4 rounded-lg border border-theme bg-theme focus:outline-none focus:border-theme text-theme"
+            className="w-full p-4 rounded-lg border border-theme bg-theme focus:outline-none focus:border-theme"
           />
         </div>
 

@@ -185,7 +185,7 @@ const Social: React.FC<SocialProps> = ({ isOpen, onClose, theme }) => {
             placeholder="Search social platforms..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full p-4 rounded-lg border border-theme bg-theme focus:outline-none focus:border-theme text-theme"
+            className="w-full p-4 rounded-lg border border-theme bg-theme focus:outline-none focus:border-theme"
           />
         </div>
 

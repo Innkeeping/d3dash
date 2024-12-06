@@ -23,4 +23,7 @@ export const searchTerms = {
   'sound': 'isMusicOpen',
   'tunes': 'isMusicOpen',
   'help': 'isHelpOpen',
+  'cid': 'isIpfsOpen',
+  'refi': 'isRefiOpen',
+  'scan': 'isNetworksOpen',
 } as const
