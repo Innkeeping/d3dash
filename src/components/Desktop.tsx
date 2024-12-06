@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
 import SearchBar from './SearchBar'
-import { fetchShortcutsAndLinks, filterItems } from '../utils/filtering'
+import { fetchShortcutsAndLinks } from '../utils/filtering'
 import useModals from '../hooks/useModals'
 import useKeyboardEvents from '../hooks/useKeyboardEvents'
 import { searchTerms } from '../config'
@@ -14,7 +14,7 @@ import TimerDisplay from './TimerDisplay'
 const Desktop: React.FC = () => {
   const [search, setSearch] = useState('')
   const [showToolbar, setShowToolbar] = useState(false)
-  const [focusedIndex, setFocusedIndex] = useState<number | null>(null)
+  const [, setFocusedIndex] = useState<number | null>(null)
 
   const modals: ModalsState = useModals('purple')
 
@@ -23,7 +23,7 @@ const Desktop: React.FC = () => {
   const combinedGridRef = useRef<{ gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> } | null>(null)
   const toolbarRef = useRef<HTMLDivElement>(null)
 
-  const [items, setItems] = useState<(Shortcut | CommonLink)[]>([])
+  const [, setItems] = useState<(Shortcut | CommonLink)[]>([])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,8 +33,6 @@ const Desktop: React.FC = () => {
 
     fetchData()
   }, [])
-
-  const filteredItems = filterItems(search, items)
 
   const themeClasses = {
     purple: 'bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900',
@@ -109,7 +107,7 @@ const Desktop: React.FC = () => {
     [keyboardEventHandlers]
   )
 
-  useKeyboardEvents(getKeyboardEventHandlers, modals, searchInputRef)
+  useKeyboardEvents(getKeyboardEventHandlers, searchInputRef)
 
   useEffect(() => {
     const lowerSearch = search.toLowerCase()

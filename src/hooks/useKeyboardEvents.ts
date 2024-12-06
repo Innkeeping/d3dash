@@ -1,9 +1,8 @@
 import { useEffect } from 'react'
-import { KeyboardEventHandlers, ModalsState } from '../types'
+import { KeyboardEventHandlers } from '../types'
 
 const useKeyboardEvents = (
   getHandlers: () => KeyboardEventHandlers,
-  modals: ModalsState,
   searchInputRef: React.RefObject<HTMLInputElement>
 ) => {
   useEffect(() => {
@@ -16,11 +15,7 @@ const useKeyboardEvents = (
         handlers.onCtrlK?.()
         shouldPreventDefault = true
       } else if (event.ctrlKey && event.key === 'b') {
-        if (searchInputRef.current && searchInputRef.current === document.activeElement) {
-          handlers.onCtrlB?.()
-        } else {
-          handlers.onCtrlB?.() // Ensure this is called even if searchInputRef is not active
-        }
+        handlers.onCtrlB?.()
         shouldPreventDefault = true
       } else if (event.key === 'Escape') {
         handlers.onEscape?.()
