@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, RefObject } from 'react'
 import { Network, Radio, Heart, Coins, Book, Terminal, Palette, Coffee, Clock, Glasses, DollarSign } from 'lucide-react'
 import { ToolbarProps, Theme, ModalsState } from '../types'
 
-const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, showToolbar, toggleToolbar, openModal, toggleModal }) => {
+const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, showToolbar, toggleToolbar, openModal, toggleModal, toolbarRef }) => {
   const [activeMenu, setActiveMenu] = useState<string | null>(null)
   const [firstKeyPress, setFirstKeyPress] = useState<number | null>(null)
   const [keyPressTimeout, setKeyPressTimeout] = useState<NodeJS.Timeout | null>(null)
-
 
   const themes: Theme[] = ['purple', 'green', 'teal']
 
@@ -38,12 +37,6 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, showToolbar, toggleT
     { id: 'lens', icon: <Glasses size={20} />, label: 'Lens Feed' },
     { id: 'prices', icon: <DollarSign size={20} />, label: 'Token Prices' },
     { id: 'ipfs', icon: <Network size={20} />, label: 'IPFS CID Checker' },
-    // { id: 'social', icon: <MessageCircle size={20} />, label: 'Web3 Social' },
-    // { id: 'wallets', icon: <Folder size={20} />, label: 'Wallets' },
-    // { id: 'lexicon', icon: <Book size={20} />, label: 'Lexicon' },
-    // { id: 'music', icon: <Music size={20} />, label: 'Music' },
-    // { id: 'help', icon: <HelpCircle size={20} />, label: 'Help' },
-    // { id: 'modalvate', icon: <Circle size={20} />, label: 'Modalvate' },
     { id: 'break', icon: <Coffee size={20} />, label: 'Take a Break' },
     { id: 'theme', icon: <Palette size={20} />, label: 'Theme' },
   ]
@@ -105,7 +98,11 @@ const Toolbar: React.FC<ToolbarProps> = ({ theme, setTheme, showToolbar, toggleT
   }, [showToolbar, toolbarItems, firstKeyPress, keyPressTimeout, openModal])
 
   return (
-    <div className="fixed bottom-6 right-4 z-50">
+    <div
+      ref={toolbarRef}
+      className="fixed bottom-6 right-4 z-50"
+      tabIndex={0} // Make the toolbar focusable
+    >
       {showToolbar && (
         <div className="absolute bottom-14 right-0 flex flex-col items-end space-y-2 md:flex-row md:space-y-0 md:space-x-2 md:bottom-6 md:right-14">
           {toolbarItems.map(item => (

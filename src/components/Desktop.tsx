@@ -14,14 +14,14 @@ import TimerDisplay from './TimerDisplay'
 const Desktop: React.FC = () => {
   const [search, setSearch] = useState('')
   const [showToolbar, setShowToolbar] = useState(false)
-  const [, setFocusedIndex] = useState<number | null>(null)
+  const [isSearchBarFocused, setIsSearchBarFocused] = useState(true) // Track focus state
 
   const modals: ModalsState = useModals('purple')
 
   const searchInputRef = useRef<HTMLInputElement>(null)
-  const searchBarRef = useRef<HTMLInputElement>(null)
   const combinedGridRef = useRef<{ gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> } | null>(null)
   const toolbarRef = useRef<HTMLDivElement>(null)
+  const searchBarRef = useRef<HTMLInputElement>(null) // Ensure searchBarRef is defined
 
   const [, setItems] = useState<(Shortcut | CommonLink)[]>([])
 
@@ -41,18 +41,20 @@ const Desktop: React.FC = () => {
   }
 
   const toggleToolbar = () => {
-    setShowToolbar(!showToolbar)
-    if (searchInputRef.current) {
-      searchInputRef.current.blur()
-    }
-    if (toolbarRef.current) {
-      toolbarRef.current.focus()
+    if (isSearchBarFocused) {
+      setShowToolbar(true)
+      setIsSearchBarFocused(false)
+      toolbarRef.current?.focus()
+    } else {
+      setShowToolbar(false)
+      setIsSearchBarFocused(true)
+      searchInputRef.current?.focus()
     }
   }
 
   const navigateToSearchBar = () => {
     searchInputRef.current?.focus()
-    setFocusedIndex(null)
+    setIsSearchBarFocused(true)
   }
 
   const navigateToGrid = () => {
@@ -60,7 +62,7 @@ const Desktop: React.FC = () => {
       const firstItem = combinedGridRef.current.gridItemsRef.current[0]
       if (firstItem) {
         firstItem.focus()
-        setFocusedIndex(0)
+        setIsSearchBarFocused(false)
       }
     }
   }
@@ -83,17 +85,25 @@ const Desktop: React.FC = () => {
 
   const onEscape = useCallback(() => {
     const modalKeys = Object.keys(modals.isOpen) as (keyof ModalsState['isOpen'])[]
+    let hasOpenModal = false
+
     modalKeys.forEach(key => {
       if (key.startsWith('is') && key.endsWith('Open') && modals.isOpen[key]) {
         modals.closeModal(key)
+        hasOpenModal = true
       }
     })
-  }, [modals])
+
+    // Focus the search bar if any modal was closed
+    if (hasOpenModal) {
+      navigateToSearchBar()
+    }
+  }, [modals, navigateToSearchBar])
 
   const keyboardEventHandlers: KeyboardEventHandlers = {
     onCtrlK: () => {
       searchInputRef.current?.focus()
-      setFocusedIndex(null)
+      setIsSearchBarFocused(true)
     },
     onCtrlB: toggleToolbar,
     onEscape,
@@ -122,7 +132,7 @@ const Desktop: React.FC = () => {
 
   useEffect(() => {
     searchInputRef.current?.focus()
-    setFocusedIndex(null)
+    setIsSearchBarFocused(true)
   }, [])
 
   return (
@@ -135,6 +145,7 @@ const Desktop: React.FC = () => {
         searchInputRef={searchInputRef}
         theme={modals.theme}
         onNavigateToGrid={navigateToGrid}
+        onFocus={() => setIsSearchBarFocused(true)}
       />
       <div className="absolute md:top-6 md:right-1/4 lg:right-1/5 xl:right-1/6 md:flex hidden justify-center md:mt-0 lg:mt-2 z-50 space-x-2">
         <button
@@ -202,6 +213,7 @@ const Desktop: React.FC = () => {
         setTimerTimeLeft={modals.setTimerTimeLeft}
         isTimerRunning={modals.isTimerRunning}
         setIsTimerRunning={modals.setIsTimerRunning}
+        toolbarRef={toolbarRef} // Pass toolbarRef to Toolbar
       />
 
       <Modals
@@ -218,6 +230,7 @@ const Desktop: React.FC = () => {
         setIsTimerRunning={modals.setIsTimerRunning}
         isOpen={modals.isOpen}
         startTimer={modals.startTimer}
+        onEscape={onEscape} // Pass onEscape handler to Modals
       />
     </div>
   )

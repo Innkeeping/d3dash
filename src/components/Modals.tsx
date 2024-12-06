@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import WClock from './WClock'
 import Social from './Social'
 import Wallets from './Wallets'
@@ -15,21 +15,12 @@ import Defi from './Defi'
 import Refi from './Refi'
 import Networks from './Networks'
 import Pomodoro from './Pomodoro'
-import {
-  ModalsProps,
-  MusicProps,
-  GameBProps,
-  PomodoroProps,
-  ModalProps } from '../types'
 import Docs from './Docs'
+import { ModalsProps, MusicProps, GameBProps, PomodoroProps, ModalProps } from '../types'
 
 const Modals: React.FC<ModalsProps> = ({
   theme,
-  // setTheme,
-  // openModal,
   closeModal,
-  // toggleModal,
-  // toggleTheme,
   onTimerUpdate,
   timerTimeLeft,
   setTimerTimeLeft,
@@ -37,6 +28,7 @@ const Modals: React.FC<ModalsProps> = ({
   setIsTimerRunning,
   isOpen,
   startTimer,
+  onEscape, // Add onEscape prop
 }) => {
 
   const {
@@ -59,7 +51,6 @@ const Modals: React.FC<ModalsProps> = ({
     isPomodoroOpen,
   } = isOpen
 
-
   const modalConfigurations: { component: React.FC<ModalProps>; props: ModalProps }[] = [
     { component: WClock, props: { isOpen: isWClockOpen, onClose: () => closeModal('isWClockOpen'), theme } },
     { component: Social, props: { isOpen: isSocialOpen, onClose: () => closeModal('isSocialOpen'), theme } },
@@ -77,7 +68,6 @@ const Modals: React.FC<ModalsProps> = ({
     { component: Docs, props: { isOpen: isDocsOpen, onClose: () => closeModal('isDocsOpen'), theme}},
   ]
 
-
   const musicProps: MusicProps = {
     isOpen: isMusicOpen,
     onClose: () => closeModal('isMusicOpen'),
@@ -85,13 +75,11 @@ const Modals: React.FC<ModalsProps> = ({
     onOpen: () => {},
   }
 
-
   const gameBProps: GameBProps = {
     isOpen: isGameBOpen,
     onClose: () => closeModal('isGameBOpen'),
     theme,
   }
-
 
   const pomodoroProps: PomodoroProps = {
     isOpen: isPomodoroOpen,
@@ -105,6 +93,20 @@ const Modals: React.FC<ModalsProps> = ({
     startTimer,
   }
 
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onEscape() // Call the onEscape handler
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyPress, true)
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress, true)
+    }
+  }, [onEscape])
+
   return (
     <>
       {modalConfigurations.map((config, index) => {
@@ -117,11 +119,9 @@ const Modals: React.FC<ModalsProps> = ({
         )
       })}
 
-
       <Music {...musicProps} />
 
       <GameB {...gameBProps} />
-
 
       <Pomodoro {...pomodoroProps} />
     </>

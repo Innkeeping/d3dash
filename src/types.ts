@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, ComponentType } from 'react'
+import { Dispatch, SetStateAction, ComponentType, RefObject } from 'react'
 
 export type IconProps = {
   className?: string
@@ -76,7 +76,6 @@ export type LensExplorePublicationsResponse = {
   items: LensPublication[];
 }
 
-
 export type TimerUpdateHandler = (isRunning: boolean, timeLeft: number) => void
 
 export interface ModalsState {
@@ -111,6 +110,7 @@ export interface ModalsState {
     isPomodoroOpen: boolean
   };
   startTimer: () => void
+  onEscape: () => void // Add onEscape prop
 }
 
 export interface ModalsProps {
@@ -127,6 +127,7 @@ export interface ModalsProps {
   setIsTimerRunning: Dispatch<SetStateAction<boolean>>
   isOpen: ModalsState['isOpen']
   startTimer: () => void
+  onEscape: () => void // Add onEscape prop
 }
 
 export interface KeyboardEventHandlers {
@@ -154,23 +155,14 @@ export interface ToolbarProps {
   setTimerTimeLeft: (timeLeft: number) => void
   isTimerRunning: boolean
   setIsTimerRunning: (isRunning: boolean) => void
+  toolbarRef: RefObject<HTMLDivElement>
 }
-
-// interface SearchBarProps {
-//   search: string
-//   setSearch: React.Dispatch<React.SetStateAction<string>>
-//   searchInputRef: RefObject<HTMLInputElement>
-//   theme: Theme
-//   onNavigateToGrid: () => void
-// }
-
 
 export interface CommonModalProps {
   isOpen: boolean
   onClose: () => void
   theme: Theme
 }
-
 
 export interface WClockProps extends CommonModalProps {}
 
@@ -217,7 +209,6 @@ export interface ModalvateProps extends CommonModalProps {}
 export interface HelpProps extends CommonModalProps {}
 
 export interface DocsProps extends CommonModalProps {}
-
 
 export type ModalProps =
   | WClockProps
