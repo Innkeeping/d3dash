@@ -24,6 +24,12 @@ const IPFS: React.FC<IPFSProps> = ({ isOpen, onClose, theme }) => {
     teal: 'border-teal-500/30 focus:border-teal-500'
   }
 
+  const buttonClasses = {
+    purple: 'bg-purple-500 hover:bg-purple-600 border-purple-600',
+    green: 'bg-green-500 hover:bg-green-600 border-green-600',
+    teal: 'bg-teal-500 hover:bg-teal-600 border-teal-600'
+  }
+
   const [cid, setCid] = useState('')
   const [selectedGateway, setSelectedGateway] = useState('https://w3s.link/ipfs/')
   const [isLoading, setIsLoading] = useState(false)
@@ -124,7 +130,7 @@ const IPFS: React.FC<IPFSProps> = ({ isOpen, onClose, theme }) => {
           </div>
 
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className={`text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${buttonClasses[theme]}`}
             onClick={handleCheck}
             disabled={isLoading}
           >
