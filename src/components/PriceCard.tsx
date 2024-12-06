@@ -1,6 +1,4 @@
-// src/PriceCard.tsx
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import { Theme } from '../types'
 
 interface PriceCardProps {
@@ -40,21 +38,22 @@ const PriceCard: React.FC<PriceCardProps> = ({ theme, toggleVisibility }) => {
   useEffect(() => {
     const fetchPrices = async () => {
       try {
-        const response = await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=ethereum,optimism,bitcoin&vs_currencies=usd');
-        setEthPrice(response.data.ethereum.usd)
-        setOpPrice(response.data.optimism.usd)
-        setBtcPrice(response.data.bitcoin.usd)
+        const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum,optimism,bitcoin&vs_currencies=usd')
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`)
+        }
+        const data = await response.json()
+        setEthPrice(data.ethereum.usd)
+        setOpPrice(data.optimism.usd)
+        setBtcPrice(data.bitcoin.usd)
       } catch (error) {
         console.error('Error fetching prices:', error)
       }
     }
 
-
     fetchPrices()
 
-
     const intervalId = setInterval(fetchPrices, 60000)
-
 
     return () => clearInterval(intervalId)
   }, [])

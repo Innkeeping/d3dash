@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState } from 'react'
-import axios from 'axios'
 import { X } from 'lucide-react'
 import { Theme } from '../types'
 
@@ -50,13 +49,19 @@ const Prices: React.FC<PricesProps> = ({ isOpen, onClose, theme }) => {
     setError(null)
     setLastFetchTimestamp(new Date().toISOString())
     try {
-      const response = await axios.get<any>(
+      const response = await fetch(
         `https://api.coingecko.com/api/v3/simple/price?ids=${cryptoIds.join(',')}&vs_currencies=usd&include_24hr_change=false`
       )
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
+      }
+
+      const data = await response.json()
+
       const cryptoData = cryptoIds.map((id) => {
-        const price = response.data[id].usd
-        let symbol, name;
+        const price = data[id].usd
+        let symbol, name
         switch (id) {
           case 'ethereum':
             symbol = 'ETH'
@@ -119,7 +124,7 @@ const Prices: React.FC<PricesProps> = ({ isOpen, onClose, theme }) => {
   useEffect(() => {
     if (isOpen && searchInputRef.current) {
       setTimeout(() => {
-        const inputElement = searchInputRef.current;
+        const inputElement = searchInputRef.current
         if (inputElement) {
           inputElement.focus()
           setFocusedIndex(null)
@@ -155,16 +160,14 @@ const Prices: React.FC<PricesProps> = ({ isOpen, onClose, theme }) => {
         if (focusedIndex === 0) {
           setFocusedIndex(null)
           searchInputRef.current?.focus()
-        } else if (focusedIndex === null) {
-
-        } else {
+        } else if (focusedIndex !== null) {
           setFocusedIndex((prevIndex) =>
             prevIndex === null || prevIndex <= 0 ? filteredCryptos.length - 1 : prevIndex - 1
           )
         }
       } else if (event.key === 'Enter' && focusedIndex !== null) {
         event.preventDefault()
-
+        // You can add additional logic here if needed
       }
     }
 
@@ -179,7 +182,6 @@ const Prices: React.FC<PricesProps> = ({ isOpen, onClose, theme }) => {
       listItemsRef.current[focusedIndex].focus()
     }
   }, [focusedIndex])
-
 
   const formatUTCDate = (date: Date): string => {
     const options: Intl.DateTimeFormatOptions = {
@@ -236,7 +238,7 @@ const Prices: React.FC<PricesProps> = ({ isOpen, onClose, theme }) => {
             <p>
               Last fetch attempt: {formatUTCDate(new Date(lastFetchTimestamp))}
             </p>
-         </div>
+          </div>
         )}
 
         {!loading && !error && (
