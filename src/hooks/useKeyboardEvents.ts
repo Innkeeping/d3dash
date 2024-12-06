@@ -14,21 +14,23 @@ const useKeyboardEvents = (
 
       if (event.ctrlKey && event.key === 'k') {
         handlers.onCtrlK?.()
-        shouldPreventDefault = true;
+        shouldPreventDefault = true
       } else if (event.ctrlKey && event.key === 'b') {
         if (searchInputRef.current && searchInputRef.current === document.activeElement) {
           handlers.onCtrlB?.()
+        } else {
+          handlers.onCtrlB?.() // Ensure this is called even if searchInputRef is not active
         }
-        shouldPreventDefault = true;
+        shouldPreventDefault = true
       } else if (event.key === 'Escape') {
         handlers.onEscape?.()
-        shouldPreventDefault = true;
+        shouldPreventDefault = true
       } else if (event.key === 'ArrowUp') {
         handlers.onArrowUp?.()
-        shouldPreventDefault = true;
+        shouldPreventDefault = true
       } else if (event.key === 'ArrowDown') {
         handlers.onArrowDown?.()
-        shouldPreventDefault = true;
+        shouldPreventDefault = true
       } else if (event.altKey && event.key === 't') {
         handlers.onAltT?.()
       } else if (event.altKey && event.key === 'm') {
@@ -46,8 +48,8 @@ const useKeyboardEvents = (
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
-    };
-  }, [getHandlers, modals, searchInputRef])
+    }
+  }, [getHandlers, searchInputRef]) // Remove modals from dependencies
 }
 
 export default useKeyboardEvents

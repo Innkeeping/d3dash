@@ -16,12 +16,11 @@ const Desktop: React.FC = () => {
   const [showToolbar, setShowToolbar] = useState(false)
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null)
 
-
   const modals: ModalsState = useModals('purple')
 
   const searchInputRef = useRef<HTMLInputElement>(null)
   const searchBarRef = useRef<HTMLInputElement>(null)
-  const combinedGridRef = useRef<{ gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> } | null>(null);
+  const combinedGridRef = useRef<{ gridItemsRef: React.RefObject<(HTMLAnchorElement | null)[]> } | null>(null)
   const toolbarRef = useRef<HTMLDivElement>(null)
 
   const [items, setItems] = useState<(Shortcut | CommonLink)[]>([])
@@ -30,10 +29,10 @@ const Desktop: React.FC = () => {
     const fetchData = async () => {
       const data = await fetchShortcutsAndLinks()
       setItems(data)
-    };
+    }
 
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
   const filteredItems = filterItems(search, items)
 
@@ -51,7 +50,7 @@ const Desktop: React.FC = () => {
     if (toolbarRef.current) {
       toolbarRef.current.focus()
     }
-  };
+  }
 
   const navigateToSearchBar = () => {
     searchInputRef.current?.focus()
@@ -60,7 +59,7 @@ const Desktop: React.FC = () => {
 
   const navigateToGrid = () => {
     if (combinedGridRef.current && combinedGridRef.current.gridItemsRef.current) {
-      const firstItem = combinedGridRef.current.gridItemsRef.current[0];
+      const firstItem = combinedGridRef.current.gridItemsRef.current[0]
       if (firstItem) {
         firstItem.focus()
         setFocusedIndex(0)
@@ -113,7 +112,7 @@ const Desktop: React.FC = () => {
   useKeyboardEvents(getKeyboardEventHandlers, modals, searchInputRef)
 
   useEffect(() => {
-    const lowerSearch = search.toLowerCase();
+    const lowerSearch = search.toLowerCase()
     const matchedTerm = Object.keys(searchTerms).find(term => lowerSearch.includes(term))
 
     if (matchedTerm) {
@@ -124,14 +123,13 @@ const Desktop: React.FC = () => {
   }, [search, modals.openModal])
 
   useEffect(() => {
-
     searchInputRef.current?.focus()
-    setFocusedIndex(null);
+    setFocusedIndex(null)
   }, [])
 
   return (
     <div
-      className={`relative min-h-screen ${themeClasses[modals.theme]} text-white overflow-hidden p-8`} // Added padding here
+      className={`relative min-h-screen ${themeClasses[modals.theme]} text-white overflow-hidden p-8`}
     >
       <SearchBar
         search={search}
