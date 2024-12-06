@@ -2,18 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* styles.css */
+
 :root {
   color-scheme: dark;
-  --scrollbar-track-color: rgba(31, 41, 55, 0.5)
-  --scrollbar-thumb-color: rgba(147, 51, 234, 0.5)
-  --scrollbar-thumb-hover-color: rgba(147, 51, 234, 0.7)
+  --scrollbar-track-color: rgba(31, 41, 55, 0.5);
+  --scrollbar-thumb-color: rgba(147, 51, 234, 0.5);
+  --scrollbar-thumb-hover-color: rgba(147, 51, 234, 0.7);
 }
 
 body {
   margin: 0;
   overflow: hidden;
 }
-
 
 ::-webkit-scrollbar {
   width: 8px;
@@ -30,36 +31,72 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--scrollbar-thumb-hover-color)
+  background: var(--scrollbar-thumb-hover-color);
 }
 
-
 .purple {
-  --scrollbar-thumb-color: rgba(147, 51, 234, 0.5)
-  --scrollbar-thumb-hover-color: rgba(147, 51, 234, 0.7)
+  --scrollbar-thumb-color: rgba(147, 51, 234, 0.5);
+  --scrollbar-thumb-hover-color: rgba(147, 51, 234, 0.7);
 }
 
 .green {
-  --scrollbar-thumb-color: rgba(16, 185, 129, 0.5)
-  --scrollbar-thumb-hover-color: rgba(16, 185, 129, 0.7)
+  --scrollbar-thumb-color: rgba(16, 185, 129, 0.5);
+  --scrollbar-thumb-hover-color: rgba(16, 185, 129, 0.7);
 }
 
 .teal {
-  --scrollbar-thumb-color: rgba(0, 128, 128, 0.5)
-  --scrollbar-thumb-hover-color: rgba(0, 128, 128, 0.7)
+  --scrollbar-thumb-color: rgba(0, 128, 128, 0.5);
+  --scrollbar-thumb-hover-color: rgba(0, 128, 128, 0.7);
 }
 
+.purple .border-theme {
+  border-color: rgba(147, 51, 234, 0.3);
+}
+
+.green .border-theme {
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.teal .border-theme {
+  border-color: rgba(0, 128, 128, 0.3);
+}
+
+.purple .bg-theme {
+  background-color: rgba(147, 51, 234, 0.05);
+}
+
+.green .bg-theme {
+  background-color: rgba(16, 185, 129, 0.05);
+}
+
+.teal .bg-theme {
+  background-color: rgba(0, 128, 128, 0.05);
+}
+
+.purple .text-theme {
+  color: rgba(147, 51, 234, 1);
+}
+
+.green .text-theme {
+  color: rgba(16, 185, 129, 1);
+}
+
+.teal .text-theme {
+  color: rgba(0, 128, 128, 1);
+}
+
+/* Additional styles */
 #music {
-  animation: fade-in 450ms
+  animation: fade-in 450ms;
 }
 
 @keyframes fade-in {
   from {
-    opacity:0;
-    translate: 0 100vh
+    opacity: 0;
+    translate: 0 100vh;
   }
   to {
-    opacity:1;
-    translate: 0 0
+    opacity: 1;
+    translate: 0 0;
   }
 }

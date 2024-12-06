@@ -170,7 +170,7 @@ const Music: React.FC<MusicProps> = ({ isOpen, onClose, onOpen, theme }) => {
         <div
           id="music"
           ref={modalRef}
-          className={`w-[800px] max-h-[160vh] rounded-xl border ${themeClasses[theme]} backdrop-blur-md p-2 overflow-y-auto transition-transform duration-300 ${
+          className={`w-[800px] max-h-[160vh] rounded-xl border ${themeClasses[theme]} backdrop-blur-md p-2 overflow-y-auto ${theme} transition-transform duration-300 ${
             isOpen ? 'translate-y-0' : 'translate-y-full'
           }`}
         >

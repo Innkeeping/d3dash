@@ -172,7 +172,7 @@ const Defi: React.FC<DefiProps> = ({ isOpen, onClose, theme }) => {
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div
         ref={modalRef}
-        className={`w-[600px] max-h-[90vh] rounded-xl border ${themeClasses[theme]} backdrop-blur-md p-6 overflow-y-auto`}
+        className={`w-[600px] max-h-[90vh] rounded-xl border ${themeClasses[theme]} backdrop-blur-md p-6 overflow-y-auto ${theme}`}
       >
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">DeFi Projects</h2>
@@ -188,7 +188,7 @@ const Defi: React.FC<DefiProps> = ({ isOpen, onClose, theme }) => {
             placeholder="Search DeFi projects..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full p-4 rounded-lg border border-gray-700 bg-gray-800/50 focus:outline-none focus:border-purple-400"
+            className="w-full p-4 rounded-lg border border-theme bg-theme focus:outline-none focus:border-theme text-theme"
           />
         </div>
 
