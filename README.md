@@ -1,5 +1,6 @@
-This is a simple dashboard for common web3 & regen exploration.
+This is a simple dashboard.
 
-Plan to continue to integrate more, such as:
+Currently it is focused for common web3 & regen exploration.
 
-[gameB Interactive Terminal](https://github.com/Innkeeping/gameB)
+Plan to continue to integrate customization using ipfs and contracts for user preferences.
+
